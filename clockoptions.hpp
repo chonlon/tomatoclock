@@ -1,0 +1,4 @@
+#ifndef CLOCKOPTIONS_H
+#define CLOCKOPTIONS_H
+
+#endif // CLOCKOPTIONS_H
