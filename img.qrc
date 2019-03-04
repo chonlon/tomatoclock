@@ -1,2 +1,5 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/background">
+        <file>1111.png</file>
+    </qresource>
+</RCC>

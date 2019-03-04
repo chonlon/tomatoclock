@@ -1,0 +1,11 @@
+/debug
+/release
+/x64
+/.localhistory
+/.vs
+
+*.tlog
+.localhistory/F/Code/codeOfSelf/Cpp/qt/tomatoclock/1550580178$mainwindow.cpp
+TomatoClock.vcxproj.filters
+*.filters
+*.filters

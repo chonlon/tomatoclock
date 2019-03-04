@@ -1,0 +1,15 @@
+#pragma once
+
+#include <QString>
+#include <QS
+namespace lon {
+namespace tomato_clock {
+struct TodayData {
+    QString *time_data_p;
+    vector<int>
+};
+
+}
+
+
+}
