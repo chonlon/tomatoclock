@@ -5,7 +5,6 @@ temp::temp(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::temp) {
     ui->setupUi(this);
-
 }
 
 temp::~temp() { delete ui; }

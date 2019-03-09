@@ -1,4 +1,4 @@
-#ifndef CLOCKSMALLWINDOW_H
+﻿#ifndef CLOCKSMALLWINDOW_H
 #define CLOCKSMALLWINDOW_H
 
 #include <QBrush>
@@ -12,6 +12,9 @@
 
 namespace lon {
 namespace clock_window {
+/// <summary>
+/// 小窗显示番茄钟的控件.
+/// </summary>
 class ClockSmallWindow : public QWidget {
     Q_OBJECT
   private:

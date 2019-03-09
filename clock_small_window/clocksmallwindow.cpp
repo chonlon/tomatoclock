@@ -1,4 +1,4 @@
-#include "clocksmallwindow.h"
+﻿#include "clocksmallwindow.h"
 
 // TODO 添加此窗口的设置透明度(ctrl + 滑轮).
 lon::clock_window::ClockSmallWindow::ClockSmallWindow(QWidget *parent)

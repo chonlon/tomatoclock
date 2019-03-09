@@ -1,4 +1,4 @@
-#ifndef TIMESTATUS_H
+﻿#ifndef TIMESTATUS_H
 #define TIMESTATUS_H
 
 #include <QDebug>

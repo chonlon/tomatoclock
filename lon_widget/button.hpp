@@ -4,9 +4,8 @@
 #include <QPushButton>
 #include <QtGui>
 #include <memory>
+#ifdef DEBUG
 #include <vector>
-
-namespace lon {
 /// <summary>
 /// --调试函数--
 /// 返回对应目录下所有文件文件名
@@ -27,7 +26,9 @@ static std::vector<QString> GetFileList(QString dir) {
     }
     return filePath;
 }
+#endif // DEBUG
 
+namespace lon {
 class Button : public QPushButton {
     Q_OBJECT
   private:
@@ -118,10 +119,9 @@ class Button : public QPushButton {
 
     /// <summary>
     /// 以自定义的图标设置按钮,
-    /// 使用这个方式会接管三个icon的指针指向变量的管理权.
+    /// 使用这个方式会接管三个icon的指针指向变量的所有权.
     /// </summary>
-    /// <param name: pnormal_icon> </param>
-    // 会在此类中释放三个指针所指内存.
+    /// <param name = "pnormal_icon"> </param>
     Button(QIcon *pnormal_icon, QIcon *pfocus_icon, QIcon *ppressed_icon,
            QWidget *parent = nullptr)
         : QPushButton(parent) {

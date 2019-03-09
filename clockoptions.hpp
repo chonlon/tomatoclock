@@ -17,7 +17,7 @@ namespace lon {
 /////////////////////////////
 // clock times
 /////////////////////////////
-/// \brief The ClockTime struct
+/// brief The ClockTime struct
 
 struct ClockTime {
     int8_t minutes_;
@@ -28,17 +28,13 @@ struct ClockTime {
         , seconds_(seconds) {}
 };
 
-
-
-
 class ClockOptions {
   private:
-
     typedef ClockTime ShortBreakTime;
     typedef ClockTime LongBreakTime;
     typedef ClockTime WorkTime;
 
-    WorkTime *     work_time_;
+    WorkTime *      work_time_;
     ShortBreakTime *sb_time_;
     LongBreakTime * lb_time_;
     int8_t          sbtimes_between_lb_;

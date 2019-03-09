@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -40,7 +40,8 @@ SOURCES += \
     clock_main_widget/clockmainwidget.cpp \
     clock_subwidgets/clockdisplaywidget.cpp \
     clock_subwidgets/clockrunningwidget.cpp \
-    clock_subwidgets/targetswidget.cpp
+    clock_subwidgets/targetswidget.cpp \
+    clock_subwidgets/chartswidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -64,7 +65,9 @@ HEADERS += \
     clock_subwidgets/targetswidget.h \
     clock_database/finishedtomatosql.hpp \
     clock_database/clocksql.hpp \
-    clock_database/DataStructure.hpp
+    clock_database/DataStructure.hpp \
+    clock_subwidgets/piecharttest.hpp \
+    clock_subwidgets/chartswidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

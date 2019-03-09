@@ -1,11 +1,43 @@
 /debug
 /release
 /x64
-/.localhistory
-/.vs
+.localhistory
+.vs
 
 *.tlog
-.localhistory/F/Code/codeOfSelf/Cpp/qt/tomatoclock/1550580178$mainwindow.cpp
 TomatoClock.vcxproj.filters
 *.filters
 *.filters
+
+
+# ignore all . files and . folders
+.*
+
+# Dont ignore .gitignore (this file)
+# This is just for verbosity, you can leave it out if
+# .gitignore is already tracked or if you use -f to
+# force-add it if you just created it
+#files
+!/.gitignore
+!*.cpp
+!*.h
+!*.hpp
+	#Qt and Vsfiles
+!*.pro
+!*.sln
+!*.ui
+!*.db
+!*.png
+!*.stash
+!*.pri
+!*.qrc
+
+#folders
+!/clock_database
+!/clock_main_widget
+!/clock_small_window
+!/clock_subwidgets
+!/lon_widget
+
+#exclude
+*.user

@@ -1,6 +1,4 @@
 #include "targetswidget.h"
 
-TargetsWidget::TargetsWidget(QWidget *parent) : QWidget(parent)
-{
-
-}
+lon::TargetsWidget::TargetsWidget(QWidget *parent)
+    : QWidget(parent) {}

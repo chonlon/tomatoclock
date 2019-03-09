@@ -1,24 +1,23 @@
 #ifndef TARGETSWIDGET_H
 #define TARGETSWIDGET_H
 
-#include <QWidget>
-#include <QVBoxLayout>
 #include <QGridLayout>
+#include <QVBoxLayout>
+#include <QWidget>
 
 namespace lon {
-class TargetsWidget : public QWidget
-{
+class TargetsWidget : public QWidget {
     Q_OBJECT
-private:
+  private:
     QGridLayout *labels_layout_p_;
     QVBoxLayout *targets_layout_p_;
-public:
+
+  public:
     explicit TargetsWidget(QWidget *parent = nullptr);
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 };
-
-}
+} // namespace lon
 #endif // TARGETSWIDGET_H

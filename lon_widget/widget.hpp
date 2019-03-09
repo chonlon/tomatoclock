@@ -18,7 +18,7 @@ namespace lon {
 /// <summary>
 /// 统一样式的Widget.
 /// 不允许自己定义layout(因为会破环titlebar),
-/// 只允许对centerWidget和botttomWidget进行操作.
+/// 只允许对centerWidget和botttomWidget进行操作(包括替换).
 ///	</summary>
 class Widget : public QWidget {
     Q_OBJECT
@@ -117,9 +117,9 @@ class Widget : public QWidget {
     virtual ~Widget() {}
 
     /// <summary> 返回底部栏的widget指针. </summary>
-    QWidget *bottomBar() { return bottom_bar_; }
+    QWidget *bottomBar() const { return bottom_bar_; }
     /// <summary> 返回中间栏的widget指针. </summary>
-    QWidget *centerWidget() { return center_widget_; }
+    QWidget *centerWidget() const { return center_widget_; }
 
     /// <summary> 设置自定义的bottombar. </summary>
     /// 注意: 重新设置bottomBar会导致默认生成的按钮的信号与槽的失效.

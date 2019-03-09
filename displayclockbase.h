@@ -1,4 +1,4 @@
-#ifndef DISPLAYCLOCKWIDGET_H
+﻿#ifndef DISPLAYCLOCKWIDGET_H
 #define DISPLAYCLOCKWIDGET_H
 
 #include <QBrush>
@@ -8,6 +8,9 @@
 
 #include "TimeStatus.hpp"
 namespace lon {
+/// <summary>
+/// 显示番茄钟的widget的基类, 主要提供timer的更新和time数据.
+/// </summary>
 class DisplayClockBase : public QWidget {
     Q_OBJECT
   protected:
@@ -15,7 +18,11 @@ class DisplayClockBase : public QWidget {
     QBrush *shortbreaking_foreground_brush_;
     QBrush *longbreaking_foreground_brush_;
 
-    /// <summary> 当前已经过时间所占总时间的百分比. </summary>
+    /// <summary>
+    /// 计算当前已经过时间所占总时间的百分比.
+    /// </summary>
+    /// <param name="timer_status"> 根据timer_status_计算百分比 </param>
+    /// <returns> 百分比结果 </returns>
     double currentPersent(lon::TimerStatus const *timer_status) {
         lon::ClockTime const *total_time = timer_status->getTotalTime();
         int total = total_time->minutes_ * 60 + total_time->seconds_;
@@ -28,6 +35,11 @@ class DisplayClockBase : public QWidget {
         return static_cast<double>(current_passed_time) / total;
     }
 
+	/// <summary>
+	/// 计算剩余时间.
+	/// </summary>
+	/// <param name="timer_status"> 根据timer_status计算剩余时间. </param>
+	/// <returns> 剩余时间的QString类型的指针, 内存的所有权会被移交给调用者. </returns>
     std::unique_ptr<QString>
         leftTimeString(lon::TimerStatus const *timer_status) {
         std::unique_ptr<QString> result(new QString());
@@ -53,7 +65,7 @@ class DisplayClockBase : public QWidget {
 
   public slots:
     /// <summary> 更新界面时间相关控件. </summary>
-    /// <param name: timer_status>
+    /// <param name = "timer_status">
     /// 根据此参数设置控件
     /// </param>
     virtual void updateTimeDisplay(lon::TimerStatus const *timer_status) = 0;

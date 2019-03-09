@@ -10,14 +10,12 @@
 #include "displayclockbase.h"
 
 namespace lon {
-
-
 /// <summary> 工作法时钟 </summary>
 class TomatoClockTimer : public QObject {
     Q_OBJECT
   private:
-    TimerStatus *timer_status_;
-    QTimer *     timer_;
+    TimerStatus *     timer_status_;
+    QTimer *          timer_;
     DisplayClockBase *display_clock_;
 
   public:
@@ -25,10 +23,10 @@ class TomatoClockTimer : public QObject {
 
     void setDisplayClockPointer(DisplayClockBase *display_clock);
 
-signals:
+  signals:
 
-public slots:
-private slots:
+  public slots:
+  private slots:
     void oneSecondPassed();
 };
 } // namespace lon
