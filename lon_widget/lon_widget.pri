@@ -7,5 +7,6 @@ HEADERS += lon_widget/titlebar.hpp \
     ./lon_widget/button.hpp \
     ./lon_widget/messagebox.hpp \
     ./lon_widget/widget.hpp \
-    $$PWD/listwidget.hpp
+    $$PWD/listwidget.hpp \
+    $$PWD/autodeletewidgetpointer.h
 RESOURCES += ./lon_widget/lon_widget.qrc

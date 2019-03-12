@@ -22,7 +22,8 @@ QtCharts::QChart *lon::ChartsWidget::initLineChartSeries(
     _max = std::max(5, _max);
     chart->createDefaultAxes();
     chart->axes(Qt::Vertical).first()->setRange(0, _max);
-	dynamic_cast<QValueAxis*>(chart->axes(Qt::Vertical).first())->setTickCount(_max + 1);
+    dynamic_cast<QValueAxis *>(chart->axes(Qt::Vertical).first())
+        ->setTickCount(_max + 1);
     chart->axes(Qt::Horizontal).first()->setRange(0, length);
     dynamic_cast<QValueAxis *>(chart->axes(Qt::Horizontal).first())
         ->setTickCount(length + 1);
@@ -30,7 +31,6 @@ QtCharts::QChart *lon::ChartsWidget::initLineChartSeries(
         ->setLabelFormat("%d");
     return chart;
 }
-
 
 QtCharts::QChart *lon::ChartsWidget::initPieChartSeries(
     std::vector<std::pair<QString, int>> labels_data,
@@ -56,9 +56,8 @@ lon::ChartsWidget::ChartsWidget(QWidget *parent)
     , lastweekdata_(sql_.getLastWeekData())
     , lastmonthdata_(sql_.getLastMonthData()) {
     using namespace QtCharts;
-    layout_p_ = new QHBoxLayout(this);
-	list_widget_p_ = new lon::ListWidget(this);
-
+    layout_p_      = new QHBoxLayout(this);
+    list_widget_p_ = new lon::ListWidget(this);
 
     finish_line_chart_view_p_     = nullptr;
     day_labels_pie_chart_view_p_  = nullptr;
@@ -80,22 +79,22 @@ lon::ChartsWidget::ChartsWidget(QWidget *parent)
     week_targets_piechart_chart_p_  = nullptr;
     month_targets_piechart_chart_p_ = nullptr;
 
-	initFinishedLineChart();
+    initFinishedLineChart();
     initFinishedTimeLineChart();
-	initLabelsPieChart();
-	initTargetsPieChart();
+    initLabelsPieChart();
+    initTargetsPieChart();
 
     finish_line_chart_view_p_->setFixedHeight(500);
     finishedtime_line_chart_view_p_->setFixedHeight(500);
     day_labels_pie_chart_view_p_->setFixedHeight(500);
     day_targets_pie_chart_view_p_->setFixedHeight(500);
 
-	list_widget_p_->addWidget(finish_line_chart_view_p_);
-	list_widget_p_->addWidget(finishedtime_line_chart_view_p_);
-	list_widget_p_->addWidget(day_labels_pie_chart_view_p_);
-	list_widget_p_->addWidget(day_targets_pie_chart_view_p_);
-	list_widget_p_->setHorizontalScrollBarVisible(true);
-	list_widget_p_->setVerticalScrollBarVisible(false);
+    list_widget_p_->addWidget(finish_line_chart_view_p_);
+    list_widget_p_->addWidget(finishedtime_line_chart_view_p_);
+    list_widget_p_->addWidget(day_labels_pie_chart_view_p_);
+    list_widget_p_->addWidget(day_targets_pie_chart_view_p_);
+    list_widget_p_->setHorizontalScrollBarVisible(true);
+    list_widget_p_->setVerticalScrollBarVisible(false);
     layout_p_->addWidget(list_widget_p_);
     this->setLayout(layout_p_);
 }
@@ -133,13 +132,13 @@ void lon::ChartsWidget::initLabelsPieChart() {
         new QtCharts::QChartView(day_labels_piechart_chart_p_);
 }
 
-void lon::ChartsWidget::initTargetsPieChart()
-{
+void lon::ChartsWidget::initTargetsPieChart() {
     using namespace QtCharts;
-    day_targets_piechart_chart_p_ = initPieChartSeries(todaydata_.target_data, QString::fromLocal8Bit("今日目标"));
-	day_targets_pie_chart_view_p_ = new QtCharts::QChartView(day_targets_piechart_chart_p_);
+    day_targets_piechart_chart_p_ = initPieChartSeries(
+        todaydata_.target_data, QString::fromLocal8Bit("今日目标"));
+    day_targets_pie_chart_view_p_ =
+        new QtCharts::QChartView(day_targets_piechart_chart_p_);
 }
-
 
 void lon::ChartsWidget::initBestworkTimeChart() {
     using namespace QtCharts;

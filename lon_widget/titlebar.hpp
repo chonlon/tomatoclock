@@ -61,7 +61,7 @@ class TitleBar : public QWidget {
                 pmaximize_button_->setFocus(max_normal_focus_);
                 pmaximize_button_->setPressed(max_normal_pressed_);
             }
-            // this->resize()
+			//this->resize();
             pmaximize_button_->setStyle(QApplication::style());
         }
     }

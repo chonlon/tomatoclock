@@ -32,7 +32,7 @@ template <unsigned int len_num> struct ChartDataBase {
                   time_data_p);
     }
 
-    ChartDataBase(ChartDataBase &&chart_data_base) {
+    ChartDataBase(ChartDataBase &&chart_data_base) noexcept {
         target_data = std::move(chart_data_base.target_data);
         label_data  = std::move(chart_data_base.label_data);
 
@@ -60,7 +60,7 @@ struct ChartDataWithTotalTime : public ChartDataBase<len_num> {
                   total_time_p);
     }
 
-    ChartDataWithTotalTime(ChartDataWithTotalTime &&data) {
+    ChartDataWithTotalTime(ChartDataWithTotalTime &&data) noexcept{
         ChartDataBase<len_num>::ChartDataBase(data);
         total_time_p      = data.total_time_p;
         data.total_time_p = nullptr;

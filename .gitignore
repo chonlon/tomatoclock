@@ -1,14 +1,7 @@
 /debug
 /release
 /x64
-.localhistory
-.vs
-
-*.tlog
-TomatoClock.vcxproj.filters
-*.filters
-*.filters
-
+*.fliter
 
 # ignore all . files and . folders
 .*
@@ -22,7 +15,7 @@ TomatoClock.vcxproj.filters
 !*.cpp
 !*.h
 !*.hpp
-	#Qt and Vsfiles
+##Qt and Vs files
 !*.pro
 !*.sln
 !*.ui
@@ -41,3 +34,4 @@ TomatoClock.vcxproj.filters
 
 #exclude
 *.user
+*.filters

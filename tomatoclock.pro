@@ -41,7 +41,11 @@ SOURCES += \
     clock_subwidgets/clockdisplaywidget.cpp \
     clock_subwidgets/clockrunningwidget.cpp \
     clock_subwidgets/targetswidget.cpp \
-    clock_subwidgets/chartswidget.cpp
+    clock_subwidgets/chartswidget.cpp \
+    clock_subwidgets/labelsandtargetswidget.cpp \
+    clock_subwidgets/targetwidget.cpp \
+    clock_subwidgets/addlabelwidget.cpp \
+    clock_subwidgets/addtargetwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -67,7 +71,12 @@ HEADERS += \
     clock_database/clocksql.hpp \
     clock_database/DataStructure.hpp \
     clock_subwidgets/piecharttest.hpp \
-    clock_subwidgets/chartswidget.h
+    clock_subwidgets/chartswidget.h \
+    clock_subwidgets/labelsandtargetswidget.h \
+    clock_subwidgets/targetwidget.h \
+    clock_subwidgets/addlabelwidget.h \
+    clock_subwidgets/addtargetwidget.h \
+    qstringhash.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QtWidgets>
+#include <QSizeGrip>
 #include <cassert>
 
 namespace lon {
@@ -26,27 +27,29 @@ class Widget : public QWidget {
     lon::TitleBar *title_bar_;
     QWidget *      center_widget_;
     QWidget *      bottom_bar_;
+	QSizeGrip	* size_grip_;
 
     lon::Button *ok_button_;
     lon::Button *cancel_button_;
 
-    QVBoxLayout *p_layout_;
+    QGridLayout *p_layout_;
 
   private:
     // 禁用setlayout, 只允许操作centerWidget和botttomWidget.
     virtual void setLayout(QLayout *) {}
 
     void initLayout() {
-        p_layout_ = new QVBoxLayout(this);
+        p_layout_ = new QGridLayout(this);
         p_layout_->setSpacing(0);
-        p_layout_->addWidget(title_bar_);
-        p_layout_->addWidget(center_widget_);
-        p_layout_->addWidget(bottom_bar_);
+        p_layout_->addWidget(title_bar_, 0, 0);
+        p_layout_->addWidget(center_widget_,1, 0);
+        p_layout_->addWidget(bottom_bar_,2, 0);
         p_layout_->setContentsMargins(0, 0, 0, 0);
-        this->setWindowFlags(Qt::FramelessWindowHint);
+
     }
     void initBottomBar() {
         bottom_bar_->setFixedHeight(50);
+		bottom_bar_->setWindowFlags(Qt::SubWindow);
 
         QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_bar_);
 
@@ -73,9 +76,11 @@ class Widget : public QWidget {
         cancel_button_->setFixedWidth(100);
         cancel_button_->setFlat(true);
 
+		bottom_layout->addStretch();
         bottom_layout->addWidget(ok_button_);
-        bottom_layout->addSpacing(50);
+		bottom_layout->addStretch();
         bottom_layout->addWidget(cancel_button_);
+		bottom_layout->addStretch();
 
         bottom_bar_->setLayout(bottom_layout);
     }
@@ -85,7 +90,10 @@ class Widget : public QWidget {
         connect(cancel_button_, SIGNAL(clicked()), this,
                 SLOT(onCancelButtonClicked()));
     }
-
+protected:
+	virtual void resizeEvent(QResizeEvent *event) {
+		this->resize(event->size());
+	}
   public:
     explicit Widget(QWidget *parent = nullptr)
         : QWidget(parent) {
@@ -93,11 +101,14 @@ class Widget : public QWidget {
                              Qt::WindowMinimizeButtonHint);
         title_bar_     = new lon::TitleBar(this);
         center_widget_ = new QWidget(this);
-        bottom_bar_    = new QWidget(this);
+		bottom_bar_ = new QWidget(this);
+		size_grip_ = new QSizeGrip(this);
+		size_grip_->setFixedSize(size_grip_->sizeHint());
 
         initBottomBar();
         initLayout();
         initConnect();
+		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
     }
 
     explicit Widget(QWidget *center_widget, QWidget *bottom_bar,
@@ -131,7 +142,7 @@ class Widget : public QWidget {
         delete bottom_bar_;
 
         bottom_bar_ = widget;
-        p_layout_->addWidget(bottom_bar_);
+        p_layout_->addWidget(bottom_bar_,2, 0);
         return true;
     }
 
@@ -143,8 +154,7 @@ class Widget : public QWidget {
 
         delete center_widget_;
         center_widget_ = widget;
-        p_layout_->insertWidget(1, center_widget_);
-
+		p_layout_->addWidget(center_widget_, 1, 0);
         return true;
     }
 

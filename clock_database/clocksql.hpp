@@ -16,7 +16,9 @@ class ClockSql {
         bool tableExists = query_->exec(
             "select count(*) from targets where TargetName = 'table'");
         if (!tableExists) {
-            query_->exec("CREATE TABLE targets (TargetId INT PRIMARY KEY, TargetName VARCHAR (50) UNIQUE, LabelName  VARCHAR (50) REFERENCES labels (LabelName));");
+            query_->exec("CREATE TABLE targets (TargetId INT PRIMARY KEY, "
+                         "TargetName VARCHAR (50) UNIQUE, LabelName  VARCHAR "
+                         "(50) REFERENCES labels (LabelName));");
         }
     }
 
@@ -25,7 +27,8 @@ class ClockSql {
         bool tableExists = query_->exec(
             "select count(*) from labels where LabelName = 'table'");
         if (!tableExists) {
-            query_->exec("CREATE TABLE labels (LabelName VARCHAR (50) PRIMARY KEY);");
+            query_->exec(
+                "CREATE TABLE labels (LabelName VARCHAR (50) PRIMARY KEY);");
         }
     }
 
@@ -34,7 +37,9 @@ class ClockSql {
         bool tableExists = query_->exec(
             "select count(*) from finishedtomato where name = 'table'");
         if (!tableExists) {
-            query_->exec("CREATE TABLE finishedtomato (TomatoId   INT  PRIMARY KEY, TargetId   INT  REFERENCES targets (TargetId), DuringTime INT, FinishTime DATETIME);");
+            query_->exec("CREATE TABLE finishedtomato (TomatoId   INT  PRIMARY "
+                         "KEY, TargetId   INT  REFERENCES targets (TargetId), "
+                         "DuringTime INT, FinishTime DATETIME);");
         }
     }
 
@@ -61,18 +66,17 @@ class ClockSql {
         initLabelsTable();
         initTargetsTable();
         initFinishedTomatoTable();
-		//query_->exec(" SELECT datetime(FinishTime) AS time,strftime('%H', FinishTime) AS hour FROM finishedtomato WHERE date('now', '-1 day') < date(FinishTime) ");
-        //while (query_->next()) {
+        // query_->exec(" SELECT datetime(FinishTime) AS time,strftime('%H',
+        // FinishTime) AS hour FROM finishedtomato WHERE date('now', '-1 day') <
+        // date(FinishTime) "); while (query_->next()) {
         //    qDebug() << query_->value(0).toString();
         //    qDebug() << query_->value(1).toString();
         //}
 
-        //getLastWeekData();
+        // getLastWeekData();
     }
 
-	~ClockSql() {
-		delete query_;
-	}
+    ~ClockSql() { delete query_; }
 
     /// <summary> 获取过去一周的番茄完成的情况. </summary>
     /// <returns> 以TodayData返回结果, 包括时间分布,将target分布, label分布
@@ -81,21 +85,31 @@ class ClockSql {
         using namespace lon::tomato_clock;
         TodayData data;
         // 获取今天的每个小时完成的番茄数量.
-        query_->exec("SELECT hour, count(hour) FROM (SELECT datetime(FinishTime) AS time, strftime('%H', FinishTime) AS hour FROM finishedtomato WHERE date('now', '-1 day') < date(FinishTime)) GROUP BY hour order by hour");
+        query_->exec("SELECT hour, count(hour) FROM (SELECT "
+                     "datetime(FinishTime) AS time, strftime('%H', FinishTime) "
+                     "AS hour FROM finishedtomato WHERE date('now', '-1 day') "
+                     "< date(FinishTime)) GROUP BY hour order by hour");
 
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
         //获取今天完成的番茄的target情况
-        query_->exec("SELECT targetname, count(targetname), FROM ( SELECT targets.TargetName AS targetname, FROM finishedtomato, targets WHERE date('now', '-1 day') < date(FinishTime) AND finishedtomato.TargetId = targets.TargetId);");
+        query_->exec("SELECT targetname, count(targetname), FROM ( SELECT "
+                     "targets.TargetName AS targetname, FROM finishedtomato, "
+                     "targets WHERE date('now', '-1 day') < date(FinishTime) "
+                     "AND finishedtomato.TargetId = targets.TargetId);");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
                 query_->value(0).toString(), query_->value(1).toInt()));
         }
         //获取今天完成的番茄的label数据
-        query_->exec("SELECT labelname, count(labelname) FROM ( SELECT targets.LabelName AS labelname FROM finishedtomato,targets WHERE date('now', '-1 day') < date(FinishTime) AND finishedtomato.TargetId = targets.TargetId);");
+        query_->exec(
+            "SELECT labelname, count(labelname) FROM ( SELECT "
+            "targets.LabelName AS labelname FROM finishedtomato,targets WHERE "
+            "date('now', '-1 day') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId);");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -108,20 +122,30 @@ class ClockSql {
         using namespace lon::tomato_clock;
         LastWeekData data;
         // 获取本周的每天完成的番茄数量.
-        query_->exec("SELECT day, count(day) FROM ( SELECT datetime(FinishTime) AS time, strftime('%d', FinishTime) AS dayFROM finishedtomato WHERE date('now', '-7 day') < date(FinishTime)) GROUP BY day ORDER BY day;");
+        query_->exec("SELECT day, count(day) FROM ( SELECT "
+                     "datetime(FinishTime) AS time, strftime('%d', FinishTime) "
+                     "AS dayFROM finishedtomato WHERE date('now', '-7 day') < "
+                     "date(FinishTime)) GROUP BY day ORDER BY day;");
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
         //获取本周完成的番茄的target情况
-        query_->exec("SELECT targetname,count(targetname),FROM (SELECT targets.TargetName AS targetname,FROM finishedtomato,targets WHERE date('now', '-7 day') < date(FinishTime) AND finishedtomato.TargetId = targets.TargetId);");
+        query_->exec(
+            "SELECT targetname,count(targetname),FROM (SELECT "
+            "targets.TargetName AS targetname,FROM finishedtomato,targets "
+            "WHERE date('now', '-7 day') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId);");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
                 query_->value(0).toString(), query_->value(1).toInt()));
         }
         //获取本周完成的番茄的label数据
-        query_->exec("SELECT labelname, count(labelname) FROM ( SELECT targets.LabelName AS labelname FROM finishedtomato, targets WHERE date('now', '-7 day') < date(FinishTime) AND finishedtomato.TargetId = targets.TargetId );");
+        query_->exec("SELECT labelname, count(labelname) FROM ( SELECT "
+                     "targets.LabelName AS labelname FROM finishedtomato, "
+                     "targets WHERE date('now', '-7 day') < date(FinishTime) "
+                     "AND finishedtomato.TargetId = targets.TargetId );");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -200,6 +224,10 @@ class ClockSql {
         return result;
     }
 
+    std::vector<QString> getLabels() { return std::vector<QString>(); }
+    std::vector<QString> getTargets(QString label_name) {
+        return std::vector<QString>();
+    }
 
     std::vector<int> getWorkTimeLastMouth() { return std::vector<int>(); }
 
@@ -224,6 +252,13 @@ class ClockSql {
             result.emplace_back(query_->value(0).toInt());
         }
         return result;
+    }
+
+    std::vector<QString> getAllLabels() { return std::vector<QString>(); }
+
+	// get targets by label name.
+    std::vector<QString> getTargetsByLabel(QString label) {
+        return std::vector<QString>();
     }
 };
 } // namespace lon
