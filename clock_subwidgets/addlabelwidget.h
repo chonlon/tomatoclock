@@ -25,7 +25,7 @@ class AddLabelWidget : public lon::Widget {
 signals:
 	void labelAdded(QString label_name);
 private slots:
-	void labelExists() {}
+	void labelExists();
   public slots:
 	void onOkButtonClicked();
 	void onCancelButtonClicked();

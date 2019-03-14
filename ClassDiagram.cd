@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="lon::TargetWidget" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAgAAAAAAAAAAAAAAAACACAAAAAAAAAAA=</HashCode>
+      <FileName>clock_subwidgets\targetwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui_temp" Collapsed="true">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABAAACDAIAAAABACAAAAAAAAAQAIACAAIAAAEDABBA=</HashCode>
+      <FileName>ui_temp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainWindow" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAABIAAEAAAIAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>mainwindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PieChartTest" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>clock_subwidgets\piecharttest.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="temp" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>temp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui::temp" Collapsed="true">
+    <Position X="3.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ui_temp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::TimeLeft" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAABABAAAAAAAAAAAAAAAAABAAAAAABAAAAAQA=</HashCode>
+      <FileName>TimeStatus.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::TimerStatus" Collapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABIAAAAAAAAAABEAQQBEAAAIAAIAAAAAAAAA=</HashCode>
+      <FileName>TimeStatus.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ClockOptions" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAEAAIAAACBAAIAAAAAAgAQCAQACAAAAABAAA=</HashCode>
+      <FileName>clockoptions.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ClockSql" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAACIBAQAAAAAwgAACACQAAEAAAAQIIIgAAACA=</HashCode>
+      <FileName>clock_database\clocksql.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::MessageBox" Collapsed="true">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>lon_widget\messagebox.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::AddLabelWidget" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAIIAAAAAAAAAAABgAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>clock_subwidgets\addlabelwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::AddTargetWidget" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>clock_subwidgets\addtargetwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::Button" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CGQAAAAAAAAAAAAAIAAAAABAAAAQAAAAAABAAAWAAAA=</HashCode>
+      <FileName>lon_widget\button.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ChartsWidget" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AyZgBCAAGgAFAACRAEAAQQABAACAAAAACCAEBTUgEBQ=</HashCode>
+      <FileName>clock_subwidgets\chartswidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ClockDisplayWidget" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABIAAAAAAEAAABAAAABAAAAAAAAAAAIAAAAAIAAA=</HashCode>
+      <FileName>clock_subwidgets\clockdisplaywidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ClockMainWidget" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAAAQAA=</HashCode>
+      <FileName>clock_main_widget\clockmainwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ClockRunningWidget" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAEABAAEAEAAAAEAAAAAAUAACCAAgAAAAAACAIAAAI=</HashCode>
+      <FileName>clock_subwidgets\clockrunningwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::DisplayClockBase" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgAAAAAAAgAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAEA=</HashCode>
+      <FileName>displayclockbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::LabelsAndTargetsWidget" Collapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAAAACAAACAAAAAAAACIAACACAAEAEAgIABCAAAAQ=</HashCode>
+      <FileName>clock_subwidgets\labelsandtargetswidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ListWidget" Collapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAABAAAAAAAIgAgAACAAAAIAAAAUAAAAAAAAA=</HashCode>
+      <FileName>lon_widget\listwidget.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::TitleBar" Collapsed="true">
+    <Position X="15.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAggAQgAEABQBoACACAAAADAAAgwAIMADAAAgCIgAAA=</HashCode>
+      <FileName>lon_widget\titlebar.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::TomatoClockTimer" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABAAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>tomatoclocktimer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::ToolsWidget" Collapsed="true">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAQAAAABAAAAIAAAAEQABA=</HashCode>
+      <FileName>clock_small_window\toolswidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::Widget" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgQAAAQlAYAAAAAQMAAACABoAACAAAAACAFCAA=</HashCode>
+      <FileName>lon_widget\widget.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::clock_window::ClockSmallWindow" Collapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAABEAAAAIEAEAABAAQAQgAAABAAAAAAAAAA=</HashCode>
+      <FileName>clock_small_window\clocksmallwindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lon::clock_window::ProgressWidget" Collapsed="true">
+    <Position X="2.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAYAACAAAAAkQEAAAIAAAAAAACAAAIAAAAAIAAA=</HashCode>
+      <FileName>clock_small_window\progresswidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="lon::tomato_clock::ChartDataBase&lt;len_num&gt;" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAQAAAAEAAAAAAAAAAAAAAQAAAIAAAAAA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::tomato_clock::ChartDataWithTotalTime&lt;len_num&gt;" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::tomato_clock::TodayData" Collapsed="true">
+    <Position X="15.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAEAAAAAAAAAEAAAAAAAgAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::tomato_clock::LastWeekData" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAACAAAAEAAAAAAAAAgBAAAAAAAIAAAAAA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::tomato_clock::LastMonthData" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAEAAAAAAAAAEBAAAAAAAIAACAAA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::tomato_clock::LastYearData" Collapsed="true">
+    <Position X="13.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAEAAAAAAAAAABAACAAAAIAAAABA=</HashCode>
+      <FileName>clock_database\DataStructure.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lon::ClockTime" Collapsed="true">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>clockoptions.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="std::hash&lt;QString&gt;" Collapsed="true">
+    <Position X="8.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>qstringhash.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="int8_t" Collapsed="true">
+    <Position X="13.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint8_t" Collapsed="true">
+    <Position X="11.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int16_t" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint16_t" Collapsed="true">
+    <Position X="15.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int32_t" Collapsed="true">
+    <Position X="10" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint32_t" Collapsed="true">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int64_t" Collapsed="true">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint64_t" Collapsed="true">
+    <Position X="10" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LonTypeDefines.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

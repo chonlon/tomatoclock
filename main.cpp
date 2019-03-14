@@ -8,6 +8,7 @@
 #include "lon_widget/listwidget.hpp"
 #include "lon_widget/messagebox.hpp"
 #include "clock_subwidgets/addlabelwidget.h"
+#include "clock_subwidgets/targetwidget.h"
 #include "mainwindow.h"
 #include "tomatoclocktimer.h"
 #include <QApplication>
@@ -15,23 +16,23 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    // lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
-    // lon::clock_window::ClockSmallWindow *window =
-    //    new lon::clock_window::ClockSmallWindow();
-    // lon::ClockRunningWidget *c = new lon::ClockRunningWidget();
-    // lon::ClockDisplayWidget *w = new lon::ClockDisplayWidget();
+	//lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
+	//lon::clock_window::ClockSmallWindow *window =
+	//	new lon::clock_window::ClockSmallWindow();
+	//lon::ClockRunningWidget *c = new lon::ClockRunningWidget();
+	//lon::ClockDisplayWidget *w = new lon::ClockDisplayWidget();
 
-    // timer->setDisplayClockPointer(c->clock_display_widget_p_);
-    // window->show();
+	////timer->setDisplayClockPointer(c->clock_display_widget_p_);
+	//timer->setDisplayClockPointer(window->progress_widget_);
+	//window->show();
 
-    // c->show();
+	//c->show();
 
-    // lon::ChartsWidget chartw;
-    //   chartw.show();
-    //lon::LabelsAndTargetsWidget lt;
-    //lt.show();
-	std::unordered_set<QString> *p = new std::unordered_set<QString>();
-	lon::AddLabelWidget alw(p);
-	alw.show();
+ //    lon::ChartsWidget chartw;
+ //    chartw.show();
+    lon::LabelsAndTargetsWidget lt;
+    lt.show();
+	//lon::TargetWidget t;
+	//t.show();
 	return a.exec();
 }

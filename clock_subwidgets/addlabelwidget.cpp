@@ -20,10 +20,15 @@ lon::AddLabelWidget::AddLabelWidget(const std::unordered_set<QString> *labels, Q
 	connect(this, SIGNAL(cancelButtonClicked()), this, SLOT(onCancelButtonClicked()));
 }
 
+void lon::AddLabelWidget::labelExists()
+{
+	showMessage(QString::fromLocal8Bit("标签已存在, 请重新输入"));
+}
+
 void lon::AddLabelWidget::onOkButtonClicked()
 {
 	QString input(line_edit_p_->text());
-	if (labels_p_->find(input) != labels_p_->end()) showMessage(QString::fromLocal8Bit("标签已存在, 请重新输入"));
+	if (labels_p_->find(input) != labels_p_->end()) labelExists();
 	emit labelAdded(input);
 	this->window()->close();
 }

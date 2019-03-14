@@ -45,7 +45,7 @@ class Widget : public QWidget {
         p_layout_->addWidget(center_widget_,1, 0);
         p_layout_->addWidget(bottom_bar_,2, 0);
         p_layout_->setContentsMargins(0, 0, 0, 0);
-
+		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
     }
     void initBottomBar() {
         bottom_bar_->setFixedHeight(50);
@@ -108,7 +108,7 @@ protected:
         initBottomBar();
         initLayout();
         initConnect();
-		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
+
     }
 
     explicit Widget(QWidget *center_widget, QWidget *bottom_bar,

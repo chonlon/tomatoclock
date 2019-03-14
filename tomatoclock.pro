@@ -40,7 +40,6 @@ SOURCES += \
     clock_main_widget/clockmainwidget.cpp \
     clock_subwidgets/clockdisplaywidget.cpp \
     clock_subwidgets/clockrunningwidget.cpp \
-    clock_subwidgets/targetswidget.cpp \
     clock_subwidgets/chartswidget.cpp \
     clock_subwidgets/labelsandtargetswidget.cpp \
     clock_subwidgets/targetwidget.cpp \
@@ -66,7 +65,6 @@ HEADERS += \
     clock_subwidgets/clockdisplaywidget.h \
     displayclockbase.h \
     clock_subwidgets/clockrunningwidget.h \
-    clock_subwidgets/targetswidget.h \
     clock_database/finishedtomatosql.hpp \
     clock_database/clocksql.hpp \
     clock_database/DataStructure.hpp \

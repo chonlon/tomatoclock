@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "clock_database/clocksql.hpp"
+#include "clock_subwidgets/targetwidget.h"
 #include "lon_widget/autodeletewidgetpointer.hpp"
 #include "lon_widget/button.hpp"
 #include "lon_widget/listwidget.hpp"
@@ -19,7 +20,7 @@ class LabelsAndTargetsWidget : public QWidget {
     Q_OBJECT
   private:
     QVBoxLayout *main_layout_p_;
-    QHBoxLayout *labels_widget_main_layout_p_;
+    QHBoxLayout *labels_main_layout_p_;
     QVBoxLayout *add_label_button_layout_p_;
     QGridLayout *labels_layout_p_;
     QHBoxLayout *target_main_layout_p_;
@@ -38,10 +39,15 @@ class LabelsAndTargetsWidget : public QWidget {
     lon::ListWidget *all_targets_widget_p_;
     lon::ClockSql    sql_;
 
-    //std::unordered_map<lon::Button *, lon::AutoDeleteWidgetPointer> button_map_;
+    std::unordered_map<lon::Button *, lon::AutoDeleteWidgetPointer*> button_map_;
+private: // functions
 
   public:
     explicit LabelsAndTargetsWidget(QWidget *parent = nullptr);
+	~LabelsAndTargetsWidget()
+	{
+		delete label_widget_spacer_p_;
+	}
 
   signals:
 

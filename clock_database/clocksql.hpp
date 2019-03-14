@@ -161,7 +161,7 @@ class ClockSql {
         using namespace lon::tomato_clock;
         LastMonthData data;
         // 获取本周的每天完成的番茄数量.
-        query_->exec("SELECT day,\
+		query_->exec("SELECT day,\
                          count(day) \
                     FROM (\
                              SELECT datetime(FinishTime) AS time,\
@@ -253,12 +253,38 @@ class ClockSql {
         }
         return result;
     }
+	/// <summary>
+	/// get all labels name, return by QString
+	/// </summary>
+	std::vector<QString> getAllLabels() {
+		std::vector<QString> result;
+		query_->exec("SELECT LabelName FROM labels");
+		while (query_->next()) {
+			result.emplace_back(query_->value(0).toString());
+		}
+		return result;
+	}
 
-    std::vector<QString> getAllLabels() { return std::vector<QString>(); }
+	QString getLabelByTarget() { return QString(); }
 
 	// get targets by label name.
+	/// <summary>
+	/// get all targets belong to label.
+	/// </summary>
+	/// <param name="label">label名字, 每个标签唯一, 当label==""时, 获得的是全部targets, 不限label.</param>
+	/// <returns>all targets' name.</returns>
     std::vector<QString> getTargetsByLabel(QString label) {
-        return std::vector<QString>();
+		std::vector<QString> result;
+		if (label.isEmpty()) {
+			query_->exec("SELECT TargetName FROM targets");
+		}
+		else {
+			query_->exec("SELECT TargetName FROM targets WHERE LabelName =" + label);
+		}
+		while (query_->next()) {
+			result.emplace_back(query_->value(0).toString());
+		}
+		return result;
     }
 };
 } // namespace lon
