@@ -55,6 +55,7 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(p
 			++current_row;
 		}
 	}
+
 	// targets..
     target_main_layout_p_ = new QHBoxLayout(this);
     target_button_layout_p_ = new QVBoxLayout(this);
@@ -82,26 +83,33 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(p
 
 	std::vector<QString> targets_name(sql_.getTargetsByLabel(""));
 	for (auto i : targets_name) {
-		lon::TargetWidget *target_widget = new lon::TargetWidget(this);
+		lon::TargetWidget *target_widget = new lon::TargetWidget("test", "test",this);
 		targets_list_widget_p_->addWidget(target_widget);
+		connect(target_widget, SIGNAL(startButtonClicked(const QString&,const QString&)), this, SIGNAL(startClock(const QString&,const QString&)));
 	}
 
 	// set this widget..
     main_layout_p_->addLayout(labels_main_layout_p_);
     main_layout_p_->addLayout(target_main_layout_p_);
     this->setLayout(main_layout_p_);
-
 }
 
 void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
 	lon::Button *button = qobject_cast<lon::Button*> (sender());
-	//if(button_map_[button].isNull()) {
-	//	QWidget *widget = new QWidget();
-	//	auto iter = button_map_.find(button);
-	//	button_map_.erase(iter);
- //       //button_map_.emplace(std::make_pair(
- //           //button, lon::AutoDeleteWidgetPointer(duration, widget)));
-	//}
+
+	auto iter = button_map_.find(button);
+	if((*iter).second->isNull()) {
+		QWidget *widget = new QWidget();
+		delete iter->second;
+		button_map_.erase(iter);
+        //button_map_.emplace(std::make_pair(
+            //button, lon::AutoDeleteWidgetPointer(duration, widget)));
+	}
 	// repalce current target list widget with targets belong the clicked label.
 }
+
+//void lon::LabelsAndTargetsWidget::startClock(const QString &label_name,const QString &target_name)
+//{
+//	qDebug() << "-------------" << label_name << "=======" << target_name;
+//}
 

@@ -44,7 +44,7 @@ class ListWidget : public QWidget {
     void addWidget(QWidget *widget) {
         widget_list_.emplace_back(widget);
         main_layout_->addSpacing(20);
-        main_layout_->addWidget(widget);
+        main_layout_->addWidget(widget, 0, Qt::AlignCenter);
     }
 
     void resize(int w, int h) {

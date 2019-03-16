@@ -1,15 +1,16 @@
 #include "targetwidget.h"
 
-lon::TargetWidget::TargetWidget(QWidget *parent) : QWidget(parent)
+lon::TargetWidget::TargetWidget(QString label_name, QString target_name, QWidget *parent) : QWidget(parent),
+label_name_(label_name),
+target_name_(target_name)
 {
-	QString target_name("target_name_add_later");
-	QString label_name("label_name_add_later");
+
 	label_p_ = new QLabel(this);
 	target_label_p_ = new QLabel(this);
 	main_layout_p_ = new QGridLayout(this);
 
-	label_p_->setText(label_name);
-	target_label_p_->setText(target_name);
+	label_p_->setText(label_name_);
+	target_label_p_->setText(target_name_);
 	label_p_->setFixedHeight(25);
 	target_label_p_->setFixedHeight(25);
 
@@ -27,5 +28,9 @@ lon::TargetWidget::TargetWidget(QWidget *parent) : QWidget(parent)
 	this->setLayout(main_layout_p_);
 
 	this->setFixedHeight(80);
-	connect(start_target_button_p_, SLOT(clicked()), this, SIGNAL(startButtonClicked()));
+	this->setMinimumWidth(450);
+	this->setMaximumWidth(650);
+	// qt 的singal和slot函数的参数必须的一样(或者signal的参数完全包含slot的参数).
+	//connect(start_target_button_p_, SIGNAL(clicked()), this, SIGNAL(startButtonClicked(label_name_, target_name_)));
+	connect(start_target_button_p_, SIGNAL(clicked()), this, SLOT(emitButtonClicked()));
 }

@@ -49,6 +49,4 @@ lon::ClockRunningWidget::ClockRunningWidget(QWidget *parent)
 }
 
 lon::ClockRunningWidget::~ClockRunningWidget() {
-    delete left_spacer_p_;
-    delete right_spacer_p_;
 }

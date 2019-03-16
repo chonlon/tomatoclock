@@ -5,6 +5,7 @@
 #include "clock_subwidgets/clockrunningwidget.h"
 #include "clock_subwidgets/labelsandtargetswidget.h"
 #include "clock_subwidgets/piecharttest.hpp"
+#include "clock_main_widget/clockmainwidget.h"
 #include "lon_widget/listwidget.hpp"
 #include "lon_widget/messagebox.hpp"
 #include "clock_subwidgets/addlabelwidget.h"
@@ -30,8 +31,8 @@ int main(int argc, char *argv[]) {
 
  //    lon::ChartsWidget chartw;
  //    chartw.show();
-    lon::LabelsAndTargetsWidget lt;
-    lt.show();
+	lon::ClockMainWidget m;
+	m.show();
 	//lon::TargetWidget t;
 	//t.show();
 	return a.exec();

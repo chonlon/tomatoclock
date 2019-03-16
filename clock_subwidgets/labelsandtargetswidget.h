@@ -44,15 +44,13 @@ private: // functions
 
   public:
     explicit LabelsAndTargetsWidget(QWidget *parent = nullptr);
-	~LabelsAndTargetsWidget()
-	{
-		delete label_widget_spacer_p_;
-	}
 
   signals:
-
+	void startClock(const QString &label_name, const QString &target_name);
   public slots:
     void onLabelButtonClicked();
+
+	//void startClock(const QString &label_name, const QString &target_name);
 };
 } // namespace lon
 #endif // LABELSANDTARGETSWIDGET_H

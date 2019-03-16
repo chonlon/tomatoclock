@@ -5,7 +5,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "lon_widget/listwidget.hpp"
+#include "tomatoclocktimer.h"
+#include "clock_subwidgets/labelsandtargetswidget.h"
+#include "clock_subwidgets/clockrunningwidget.h"
+#include "clock_small_window/clocksmallwindow.h"
+#include "lon_widget/messagebox.hpp"
 namespace lon {
 /// <summary>
 /// 这个类是番茄钟在主界面显示的总widget.
@@ -13,11 +17,17 @@ namespace lon {
 class ClockMainWidget : public QWidget {
     Q_OBJECT
   private:
-    lon::ListWidget *list_widget_p_;
+	  bool keep_working_;
 
-    QGridLayout *top_layout_p_;
-    QVBoxLayout *main_layout_p_;
+	  lon::LabelsAndTargetsWidget *labels_targets_widget_p_;
+	  lon::ClockRunningWidget *clock_running_widget_p_;
+	  lon::clock_window::ClockSmallWindow *clock_small_window_p_;
 
+	  lon::TomatoClockTimer *timer;
+
+	  QVBoxLayout *main_layout_;
+private:
+	void tomatoSaveToSql(QString time, QString label = QString(""), QString target = QString("")) {}
   public:
     explicit ClockMainWidget(QWidget *parent = nullptr);
 
@@ -25,8 +35,10 @@ class ClockMainWidget : public QWidget {
 
   public slots:
     // 是否切换显示计时
-    void switchToDisplayClock() {}
-    void switchToDispalyTarget() {}
+	void displayClock(const QString& label, const QString& target);
+	void dispalyTarget();
+
+	void clockFinished();
 };
 } // namespace lon
 

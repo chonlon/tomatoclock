@@ -8,7 +8,8 @@ void lon::TomatoClockTimer::setDisplayClockPointer(
 }
 
 lon::TomatoClockTimer::TomatoClockTimer(QObject *parent)
-    : QObject(parent) {
+	: QObject(parent),
+	  started_(false) {
     timer_ = new QTimer(this);
     timer_->start(10);
     std::unique_ptr<lon::ClockOptions> clock(new lon::ClockOptions());
@@ -17,9 +18,19 @@ lon::TomatoClockTimer::TomatoClockTimer(QObject *parent)
 }
 
 void lon::TomatoClockTimer::oneSecondPassed() {
-    timer_status_->subOneSecond();
-    qDebug("%d : %d", timer_status_->timeleft()->minutes(),
-           timer_status_->timeleft()->seconds());
+	if (!started_) return;
+    bool finish = timer_status_->subOneSecond();
 
-    display_clock_->updateTimeDisplay(timer_status_);
+	if (finish) {
+		stop();
+		emit tomatoFinished();
+		return;
+	}
+
+	qDebug("%d : %d", timer_status_->timeleft()->minutes(),
+          timer_status_->timeleft()->seconds());
+
+	if(display_clock_)
+		display_clock_->updateTimeDisplay(timer_status_);
 }
+

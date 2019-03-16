@@ -14,17 +14,26 @@ namespace lon {
 class TomatoClockTimer : public QObject {
     Q_OBJECT
   private:
+	bool started_;
+
     TimerStatus *     timer_status_;
     QTimer *          timer_;
     DisplayClockBase *display_clock_;
 
+	void stop() { started_ = false; }
   public:
     explicit TomatoClockTimer(QObject *parent = nullptr);
 
     void setDisplayClockPointer(DisplayClockBase *display_clock);
 
-  signals:
+	void start() { started_ = true; }
 
+	/// <summary>
+	/// 清除此次运行, 比如番茄钟中途被关闭, 回退到上一个状态, 并停止计时.
+	/// </summary>
+	void clearRunning() {}
+  signals:
+	  void tomatoFinished();
   public slots:
   private slots:
     void oneSecondPassed();
