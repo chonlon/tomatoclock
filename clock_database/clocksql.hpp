@@ -78,6 +78,11 @@ class ClockSql {
 
     ~ClockSql() { delete query_; }
 
+	// a tomato have just finished
+	void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
+		query_->exec("INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, targets.TargetId,25, DateTime('now', 'localtime') from finishedtomato , targets where TargetName = '7' and LabelName = '化学'");
+	}
+
     /// <summary> 获取过去一周的番茄完成的情况. </summary>
     /// <returns> 以TodayData返回结果, 包括时间分布,将target分布, label分布
     /// </returns>

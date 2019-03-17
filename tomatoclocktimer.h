@@ -27,6 +27,8 @@ class TomatoClockTimer : public QObject {
     void setDisplayClockPointer(DisplayClockBase *display_clock);
 
 	void start() { started_ = true; }
+	TimerStatus const* timerStaus() { return timer_status_; }
+
 
 	/// <summary>
 	/// 清除此次运行, 比如番茄钟中途被关闭, 回退到上一个状态, 并停止计时.

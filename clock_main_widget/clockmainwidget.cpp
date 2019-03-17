@@ -1,11 +1,31 @@
 #include "clockmainwidget.h"
+
+#include "tomatoclocktimer.h"
+#include "clock_subwidgets/chartswidget.h"
+#include "clock_subwidgets/labelsandtargetswidget.h"
+#include "clock_subwidgets/clockrunningwidget.h"
+#include "clock_small_window/clocksmallwindow.h"
+#include "lon_widget/messagebox.hpp"
+#include "clock_database/clocksql.hpp"
 using namespace lon;
+//PRIVATE
+void lon::ClockMainWidget::tomatoSaveToSql(QString label /*= QString("")*/, QString target /*= QString("")*/)
+{
+	auto duringtime = timer->timerStaus()->clock_options()->work_time()->minutes_;
+	//if enabel break the tomato..
+	//duringtime -= timer->timerStaus()->timeleft()->minutes();
+	sql_p_->addAFinishedTomato(duringtime, "7", "化学");
+}
+
 
 lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     : QWidget(parent), keep_working_(false) {
-	labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(this);
+	sql_p_ = new lon::ClockSql();
+
+	labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_,this);
 	clock_running_widget_p_ = nullptr;
 	clock_small_window_p_ = nullptr;
+	chart_widget_p_ = nullptr;
 
 	timer = nullptr;
 
@@ -34,7 +54,7 @@ void lon::ClockMainWidget::displayClock(const QString& label, const QString& tar
 	timer->setDisplayClockPointer(clock_running_widget_p_->clock_display_widget_p_);
 }
 
-void lon::ClockMainWidget::dispalyTarget()
+void lon::ClockMainWidget::displayTarget()
 {
 	// 切换界面时, 操作不频繁, 故不保留原界面.
 	if (clock_running_widget_p_) {
@@ -43,17 +63,30 @@ void lon::ClockMainWidget::dispalyTarget()
 		clock_running_widget_p_ = nullptr;
 	}
 
-	labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(this);
+	labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
 	main_layout_->addWidget(labels_targets_widget_p_);
 	connect(labels_targets_widget_p_, SIGNAL(startClock(const QString&, const QString&)), this, SLOT(displayClock(const QString&, const QString&)));
 }
 
+void lon::ClockMainWidget::displayChart()
+{
+	if (labels_targets_widget_p_) {
+		main_layout_->removeWidget(labels_targets_widget_p_);
+		delete labels_targets_widget_p_;
+		labels_targets_widget_p_ = nullptr;
+	}
+	chart_widget_p_ = new lon::ChartsWidget(this);
+	main_layout_->addWidget(chart_widget_p_);
+
+}
+
 void lon::ClockMainWidget::clockFinished()
 {
+	tomatoSaveToSql();
 	if(keep_working_) {}
 	else {
-		lon::MessageBox m(QString::fromLocal8Bit("番茄完成"), QString::fromLocal8Bit("番茄已完成."));
-		dispalyTarget();
+		lon::MessageBox *m = new lon::MessageBox(QString::fromLocal8Bit("番茄完成"), QString::fromLocal8Bit("番茄已完成."));
+		displayTarget();
 	}
 }
 

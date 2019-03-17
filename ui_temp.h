@@ -11,10 +11,9 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -22,44 +21,76 @@ QT_BEGIN_NAMESPACE
 class Ui_temp
 {
 public:
-    QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *horizontalLayout;
-    QVBoxLayout *verticalLayout_2;
-    QLabel *label;
-    QLabel *label_2;
+    QGridLayout *gridLayout;
     QPushButton *pushButton;
+    QPushButton *pushButton_8;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton_5;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_4;
+    QPushButton *pushButton_6;
+    QPushButton *pushButton_7;
+    QPushButton *pushButton_9;
 
     void setupUi(QWidget *temp)
     {
         if (temp->objectName().isEmpty())
             temp->setObjectName(QString::fromUtf8("temp"));
-        temp->resize(658, 347);
-        horizontalLayout_2 = new QHBoxLayout(temp);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout = new QHBoxLayout();
+        temp->resize(638, 364);
+        horizontalLayout = new QHBoxLayout(temp);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        label = new QLabel(temp);
-        label->setObjectName(QString::fromUtf8("label"));
-
-        verticalLayout_2->addWidget(label);
-
-        label_2 = new QLabel(temp);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-
-        verticalLayout_2->addWidget(label_2);
-
-
-        horizontalLayout->addLayout(verticalLayout_2);
-
+        gridLayout = new QGridLayout();
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         pushButton = new QPushButton(temp);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
-        horizontalLayout->addWidget(pushButton);
+        gridLayout->addWidget(pushButton, 2, 3, 1, 2);
+
+        pushButton_8 = new QPushButton(temp);
+        pushButton_8->setObjectName(QString::fromUtf8("pushButton_8"));
+
+        gridLayout->addWidget(pushButton_8, 0, 4, 1, 1);
+
+        pushButton_3 = new QPushButton(temp);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
+        gridLayout->addWidget(pushButton_3, 2, 1, 1, 1);
+
+        pushButton_5 = new QPushButton(temp);
+        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
+
+        gridLayout->addWidget(pushButton_5, 0, 3, 1, 1);
+
+        pushButton_2 = new QPushButton(temp);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        gridLayout->addWidget(pushButton_2, 0, 1, 1, 1);
+
+        pushButton_4 = new QPushButton(temp);
+        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+
+        gridLayout->addWidget(pushButton_4, 2, 0, 1, 1);
+
+        pushButton_6 = new QPushButton(temp);
+        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
+
+        gridLayout->addWidget(pushButton_6, 0, 0, 1, 1);
+
+        pushButton_7 = new QPushButton(temp);
+        pushButton_7->setObjectName(QString::fromUtf8("pushButton_7"));
+
+        gridLayout->addWidget(pushButton_7, 3, 1, 1, 1);
 
 
-        horizontalLayout_2->addLayout(horizontalLayout);
+        horizontalLayout->addLayout(gridLayout);
+
+        pushButton_9 = new QPushButton(temp);
+        pushButton_9->setObjectName(QString::fromUtf8("pushButton_9"));
+        pushButton_9->setMinimumSize(QSize(45, 45));
+        pushButton_9->setMaximumSize(QSize(45, 45));
+
+        horizontalLayout->addWidget(pushButton_9);
 
 
         retranslateUi(temp);
@@ -70,9 +101,15 @@ public:
     void retranslateUi(QWidget *temp)
     {
         temp->setWindowTitle(QApplication::translate("temp", "Form", nullptr));
-        label->setText(QApplication::translate("temp", "TextLabel", nullptr));
-        label_2->setText(QApplication::translate("temp", "TextLabel", nullptr));
         pushButton->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_8->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_3->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_5->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_2->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_4->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_6->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_7->setText(QApplication::translate("temp", "PushButton", nullptr));
+        pushButton_9->setText(QApplication::translate("temp", "PushButton", nullptr));
     } // retranslateUi
 
 };

@@ -35,3 +35,4 @@
 #exclude
 *.user
 *.filters
+/ClassDiagram1.cd

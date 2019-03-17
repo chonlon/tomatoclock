@@ -403,6 +403,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="1111.png" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="lon_widget\Resources\back.png" />
     <None Include="lon_widget\Resources\button.png" />
     <None Include="lon_widget\Resources\close_focus.png" />

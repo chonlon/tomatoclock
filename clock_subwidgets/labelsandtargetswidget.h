@@ -10,12 +10,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "clock_database/clocksql.hpp"
-#include "clock_subwidgets/targetwidget.h"
+
 #include "lon_widget/autodeletewidgetpointer.hpp"
-#include "lon_widget/button.hpp"
-#include "lon_widget/listwidget.hpp"
+
 namespace lon {
+	class ListWidget;
+	class Button;
+	class ClockSql;
+
 class LabelsAndTargetsWidget : public QWidget {
     Q_OBJECT
   private:
@@ -32,18 +34,25 @@ class LabelsAndTargetsWidget : public QWidget {
 	QSpacerItem *label_widget_spacer_p_;
     QSpacerItem *target_button_spacer_p_;
 
-    lon::Button *add_label_button_p_;
-    lon::Button *add_target_button_p_;
-    lon::Button *history_button_p_;
+    Button *add_label_button_p_;
+    Button *add_target_button_p_;
+    Button *history_button_p_;
+	Button *setting_button_p_;
 
-    lon::ListWidget *all_targets_widget_p_;
-    lon::ClockSql    sql_;
+    ListWidget *all_targets_widget_p_;
+	//开关数据库的开销大, 所以还是使用指针更好.
+    ClockSql   *sql_;
 
     std::unordered_map<lon::Button *, lon::AutoDeleteWidgetPointer*> button_map_;
 private: // functions
-
+	// default construction are not allowed.
+	LabelsAndTargetsWidget();
   public:
-    explicit LabelsAndTargetsWidget(QWidget *parent = nullptr);
+	  /// <summary>
+	  /// LabelsAndTargetsWidget的构造函数, 使用者需要提供ClockSql指针, 以满足数据要求
+	  /// </summary>
+	  /// <param name="sql">数据库指针, 使用者仍然保留*sql的所有权, 但此类可能会修改数据库.</param>
+    explicit LabelsAndTargetsWidget(lon::ClockSql *sql, QWidget *parent = nullptr);
 
   signals:
 	void startClock(const QString &label_name, const QString &target_name);

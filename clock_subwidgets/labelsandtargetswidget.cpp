@@ -1,9 +1,17 @@
-#include "labelsandtargetswidget.h"
+ï»¿#include "labelsandtargetswidget.h"
+#include "lon_widget/button.hpp"
+#include "lon_widget/listwidget.hpp"
+#include "clock_database/clocksql.hpp"
+#include "clock_subwidgets/targetwidget.h"
+
+#include <iostream>
+
 static const unsigned int duration = 600000;
 static const unsigned int label_widget_height = 100;
 static const int button_width_height = 50;
 
-lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(parent)
+lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql, QWidget *parent) : QWidget(parent),
+sql_(sql)
 {
     main_layout_p_ = new QVBoxLayout(this);
 	// labels ..
@@ -17,11 +25,11 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(p
 	labels_widget_p_->setFixedHeight(label_widget_height);
     add_label_button_p_->setFixedSize( button_width_height,
 									   button_width_height);
-	add_label_button_p_->setToolTip(QString::fromLocal8Bit("Ìí¼Ó±êÇ©"));
+	add_label_button_p_->setToolTip(QString::fromLocal8Bit("æ·»åŠ æ ‡ç­¾"));
 
-	// ¹ØÓÚlayoutµÄaddSapcerItem, ÎÄµµÀïÃæÃ»ÓĞĞ´Ã÷»á»ñµÃitemÖ¸ÕëµÄËùÓĞÈ¨, µ«ÊÂÊµÉÏÊÇ»ñµÃÁËµÄ(Ğ´ÔÚaddItemÀïÃæÁË...).
-	// ËùÒÔÍ¬Ò»¸öspacer_item²»ÄÜÌí¼ÓÁ½´Î.
-	// ¶øÇÒ, ÔÚ´ËÀàµÄÎö¹¹º¯ÊıÖĞ²»ĞèÒª¿¼ÂÇÊÍ·Åspacer_itemµÄÄÚ´æ.
+	// å…³äºlayoutçš„addSapcerItem, æ–‡æ¡£é‡Œé¢æ²¡æœ‰å†™æ˜ä¼šè·å¾—itemæŒ‡é’ˆçš„æ‰€æœ‰æƒ, ä½†äº‹å®ä¸Šæ˜¯è·å¾—äº†çš„(å†™åœ¨addItemé‡Œé¢äº†...).
+	// æ‰€ä»¥åŒä¸€ä¸ªspacer_itemä¸èƒ½æ·»åŠ ä¸¤æ¬¡.
+	// è€Œä¸”, åœ¨è¿™ä¸ªç±»çš„ææ„å‡½æ•°ä¸­ä¸éœ€è¦è€ƒè™‘é‡Šæ”¾spacer_itemçš„å†…å­˜.
 	unsigned int height = (label_widget_height - button_width_height) / 2;
 	label_widget_spacer_p_ = new QSpacerItem(
       height , height, QSizePolicy::Minimum , QSizePolicy::Fixed);
@@ -40,7 +48,7 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(p
     //                                         Qt::AlignRight);
 
 
-	std::vector<QString> labels_name(sql_.getAllLabels());
+	std::vector<QString> labels_name(sql_->getAllLabels());
 	uint8_t row_width = 8;
 	uint8_t current_cloumn= 0;
 	uint8_t current_row = 0;
@@ -67,21 +75,25 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(QWidget *parent) : QWidget(p
 
 	add_target_button_p_ = new lon::Button(this);
     history_button_p_    = new lon::Button(this);
+	setting_button_p_ = new lon::Button(this);
 
 	add_target_button_p_->setFixedSize(button_width_height,
                                        button_width_height);
-	add_target_button_p_->setToolTip(QString::fromLocal8Bit("Ìí¼ÓÄ¿±ê"));
+	add_target_button_p_->setToolTip(QString::fromLocal8Bit("æ·»åŠ ç›®æ ‡"));
     history_button_p_->setFixedSize(button_width_height, button_width_height);
-	history_button_p_->setToolTip(QString::fromLocal8Bit("²é¿´ÀúÊ··¬ÇÑ"));
+	history_button_p_->setToolTip(QString::fromLocal8Bit("æŸ¥çœ‹å†å²ç•ªèŒ„"));
+	setting_button_p_->setFixedSize(button_width_height, button_width_height);
+	setting_button_p_->setToolTip(QString::fromLocal8Bit("è®¾ç½®"));
 
     target_button_layout_p_->addWidget(add_target_button_p_);
     target_button_layout_p_->addWidget(history_button_p_);
     target_button_layout_p_->addSpacerItem(target_button_spacer_p_);
+	target_button_layout_p_->addWidget(setting_button_p_);
 
 	target_main_layout_p_->addWidget(targets_list_widget_p_);
     target_main_layout_p_->addLayout(target_button_layout_p_);
 
-	std::vector<QString> targets_name(sql_.getTargetsByLabel(""));
+	std::vector<QString> targets_name(sql_->getTargetsByLabel(""));
 	for (auto i : targets_name) {
 		lon::TargetWidget *target_widget = new lon::TargetWidget("test", "test",this);
 		targets_list_widget_p_->addWidget(target_widget);
