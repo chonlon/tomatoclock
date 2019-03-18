@@ -4,9 +4,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QWidget>
-#include <unordered_set>
+#include <list>
 
-#include "qstringhash.h"
 #include "lon_widget/messagebox.hpp"
 #include "lon_widget/widget.hpp"
 namespace lon {
@@ -17,10 +16,10 @@ class AddLabelWidget : public lon::Widget {
 	QLabel *label_p_;
 	QHBoxLayout *center_layout_p_;
 
-	const std::unordered_set<QString> *labels_p_;
+	std::list<QString> labels_;
 
   public:
-    explicit AddLabelWidget(const std::unordered_set<QString> *labels, QWidget *parent = nullptr);
+    explicit AddLabelWidget(std::list<QString> labels, QWidget *parent = nullptr);
 
 signals:
 	void labelAdded(QString label_name);

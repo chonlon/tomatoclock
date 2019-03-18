@@ -25,8 +25,7 @@ class Widget : public QWidget {
     Q_OBJECT
   private:
     lon::TitleBar *title_bar_;
-    QWidget *      center_widget_;
-    QWidget *      bottom_bar_;
+
 	QSizeGrip	* size_grip_;
 
     lon::Button *ok_button_;
@@ -34,6 +33,10 @@ class Widget : public QWidget {
 
     QGridLayout *p_layout_;
 
+	bool size_girp_enabled;
+protected:
+	QWidget *      center_widget_;
+	QWidget *      bottom_bar_;
   private:
     // 禁用setlayout, 只允许操作centerWidget和botttomWidget.
     virtual void setLayout(QLayout *) {}
@@ -45,7 +48,6 @@ class Widget : public QWidget {
         p_layout_->addWidget(center_widget_,1, 0);
         p_layout_->addWidget(bottom_bar_,2, 0);
         p_layout_->setContentsMargins(0, 0, 0, 0);
-		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
     }
     void initBottomBar() {
         bottom_bar_->setFixedHeight(50);
@@ -95,21 +97,22 @@ protected:
 		this->resize(event->size());
 	}
   public:
-    explicit Widget(QWidget *parent = nullptr)
+    explicit Widget(QWidget *parent = nullptr, lon::TitleBar::Buttons status = TitleBar::ALL)
         : QWidget(parent) {
         this->setWindowFlags(Qt::FramelessWindowHint |
                              Qt::WindowMinimizeButtonHint);
-        title_bar_     = new lon::TitleBar(this);
+        title_bar_     = new lon::TitleBar(this, status);
         center_widget_ = new QWidget(this);
 		bottom_bar_ = new QWidget(this);
-		size_grip_ = new QSizeGrip(this);
-		size_grip_->setFixedSize(size_grip_->sizeHint());
+		size_girp_enabled = false;
+
 
         initBottomBar();
         initLayout();
         initConnect();
 
     }
+
 
     explicit Widget(QWidget *center_widget, QWidget *bottom_bar,
                     QWidget *parent = nullptr)
@@ -134,7 +137,7 @@ protected:
 
     /// <summary> 设置自定义的bottombar. </summary>
     /// 注意: 重新设置bottomBar会导致默认生成的按钮的信号与槽的失效.
-    bool setBottomBar(QWidget *widget) {
+    virtual bool setBottomBar(QWidget *widget) {
         if (!widget) return false;
 
         p_layout_->removeWidget(bottom_bar_);
@@ -147,7 +150,7 @@ protected:
     }
 
     /// <summary> 设置自定义的centerwidget. </summary>
-    bool setCenterWidget(QWidget *widget) {
+    virtual bool setCenterWidget(QWidget *widget) {
         if (!widget) return false;
 
         p_layout_->removeWidget(center_widget_);
@@ -167,6 +170,17 @@ protected:
     virtual void setTitleBack(const QIcon &icon) {
         title_bar_->setBackground(icon);
     }
+
+	virtual void enabelSizeGrip() {
+		size_girp_enabled = true;
+		size_grip_ = new QSizeGrip(this);
+		size_grip_->setFixedSize(size_grip_->sizeHint());
+		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
+	}
+
+	virtual bool sizeGripEnabled() {
+		return size_girp_enabled;
+	}
 
   signals:
     void okButtonClicked();

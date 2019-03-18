@@ -12,7 +12,10 @@ static void deleteAfterMs(unsigned int duration, QWidget **w_pointer, std::mutex
     unsigned int left = duration;
     while (left > 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        if(should_delete) left -= 10;
+		{
+			std::lock_guard<std::mutex> lm(mutex);
+			if (should_delete) left -= 10;
+		}
     }
     if(left == 0)
     {
@@ -41,6 +44,7 @@ private:
 
     AutoDeleteWidgetPointer(unsigned int widget_duration, QWidget* widget) {
         widget_p_ = widget;
+		should_delete_ = false;
         // new a thread to delete pointer after duration, and will not block this thread.
         std::thread t(deleteAfterMs, widget_duration, &widget_p_, std::ref(pointer_mutex_), std::ref(should_delete_));
         t.detach();
@@ -53,6 +57,7 @@ private:
     }
 
     void setShouldDelete(bool should_delete) {
+		std::lock_guard<std::mutex> lm(pointer_mutex_);
         should_delete_ = should_delete;
     }
     const QWidget *getWidgetPointer() {

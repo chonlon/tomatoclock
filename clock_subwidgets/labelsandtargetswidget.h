@@ -30,6 +30,7 @@ class LabelsAndTargetsWidget : public QWidget {
 
 	QWidget *    labels_widget_p_;
     lon::ListWidget *targets_list_widget_p_;
+	lon::AutoDeleteWidgetPointer *current_widget_pointer_;
 
 	QSpacerItem *label_widget_spacer_p_;
     QSpacerItem *target_button_spacer_p_;
@@ -38,6 +39,7 @@ class LabelsAndTargetsWidget : public QWidget {
     Button *add_target_button_p_;
     Button *history_button_p_;
 	Button *setting_button_p_;
+	Button *all_button_;
 
     ListWidget *all_targets_widget_p_;
 	//开关数据库的开销大, 所以还是使用指针更好.
@@ -47,18 +49,26 @@ class LabelsAndTargetsWidget : public QWidget {
 private: // functions
 	// default construction are not allowed.
 	LabelsAndTargetsWidget();
+
+	void initLabelsLayout();
+	void initTargetsLayout();
+	void initTargets(QString label_name);
+	void initConnect();
   public:
-	  /// <summary>
-	  /// LabelsAndTargetsWidget的构造函数, 使用者需要提供ClockSql指针, 以满足数据要求
-	  /// </summary>
-	  /// <param name="sql">数据库指针, 使用者仍然保留*sql的所有权, 但此类可能会修改数据库.</param>
+	/// <summary>
+	/// LabelsAndTargetsWidget的构造函数, 使用者需要提供ClockSql指针, 以满足数据要求
+	/// </summary>
+	/// <param name="sql">数据库指针, 使用者仍然保留*sql的所有权, 但此类可能会修改数据库.</param>
     explicit LabelsAndTargetsWidget(lon::ClockSql *sql, QWidget *parent = nullptr);
 
   signals:
 	void startClock(const QString &label_name, const QString &target_name);
+	void showChart();
+	void changeSetting();
   public slots:
     void onLabelButtonClicked();
-
+	void addTarget();
+	void addLabel();
 	//void startClock(const QString &label_name, const QString &target_name);
 };
 } // namespace lon

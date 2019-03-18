@@ -10,13 +10,17 @@
 #include "lon_widget/messagebox.hpp"
 #include "clock_subwidgets/addlabelwidget.h"
 #include "clock_subwidgets/targetwidget.h"
+#include "clock_subwidgets/addtargetwidget.h"
 #include "mainwindow.h"
 #include "tomatoclocktimer.h"
 #include <QApplication>
 #include <QDialog>
 
+class test{};
+
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+	test t;
 	//lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
 	//lon::clock_window::ClockSmallWindow *window =
 	//	new lon::clock_window::ClockSmallWindow();
@@ -31,9 +35,11 @@ int main(int argc, char *argv[]) {
 
  //    lon::ChartsWidget chartw;
  //    chartw.show();
-	lon::ClockMainWidget m;
-	m.show();
+	//lon::ClockMainWidget m;
+	//m.show();
 	//lon::TargetWidget t;
 	//t.show();
+	lon::AddTargetWidget aaaw(std::list<QString>(10), std::list<QString>(10));
+	aaaw.show();
 	return a.exec();
 }

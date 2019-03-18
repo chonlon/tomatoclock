@@ -2,6 +2,8 @@
 
 #include <QtSql>
 #include <exception>
+#include <list>
+#include <vector>
 
 #include "DataStructure.hpp"
 #include "LonTypeDefines.h"
@@ -229,7 +231,6 @@ class ClockSql {
         return result;
     }
 
-    std::vector<QString> getLabels() { return std::vector<QString>(); }
     std::vector<QString> getTargets(QString label_name) {
         return std::vector<QString>();
     }
@@ -261,8 +262,8 @@ class ClockSql {
 	/// <summary>
 	/// get all labels name, return by QString
 	/// </summary>
-	std::vector<QString> getAllLabels() {
-		std::vector<QString> result;
+	std::list<QString> getAllLabels() {
+		std::list<QString> result;
 		query_->exec("SELECT LabelName FROM labels");
 		while (query_->next()) {
 			result.emplace_back(query_->value(0).toString());

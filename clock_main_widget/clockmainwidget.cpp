@@ -56,11 +56,15 @@ void lon::ClockMainWidget::displayClock(const QString& label, const QString& tar
 
 void lon::ClockMainWidget::displayTarget()
 {
-	// 切换界面时, 操作不频繁, 故不保留原界面.
+	// 切换界面时, 操作不会很频繁, 故不保留原界面.
 	if (clock_running_widget_p_) {
 		main_layout_->removeWidget(clock_running_widget_p_);
 		delete clock_running_widget_p_;
 		clock_running_widget_p_ = nullptr;
+	} else if (chart_widget_p_) {
+		main_layout_->removeWidget(chart_widget_p_);
+		delete chart_widget_p_;
+		chart_widget_p_ = nullptr;
 	}
 
 	labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
