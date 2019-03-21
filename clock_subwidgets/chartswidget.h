@@ -11,13 +11,14 @@
 #include <QtCharts/QPieSeries>
 
 #include "clock_database/clocksql.hpp"
+#include "lon_widget/button.hpp"
 #include "lon_widget/listwidget.hpp"
 
 namespace lon {
 class ChartsWidget : public QWidget {
     Q_OBJECT
   private:
-    lon::ClockSql sql_;
+    lon::ClockSql *sql_;
 
     lon::tomato_clock::TodayData     todaydata_;
     lon::tomato_clock::LastWeekData  lastweekdata_;
@@ -25,8 +26,9 @@ class ChartsWidget : public QWidget {
     lon::tomato_clock::LastYearData  lastyeardata_;
 
     lon::ListWidget *list_widget_p_;
+    lon::Button *    close_button_p_;
 
-    QHBoxLayout *layout_p_;
+    QVBoxLayout *layout_p_;
 
     QtCharts::QChartView *finish_line_chart_view_p_;
     QtCharts::QChartView *finishedtime_line_chart_view_p_;
@@ -71,13 +73,8 @@ class ChartsWidget : public QWidget {
     /// <param name="title">series的标题.</param>
     /// <returns>生成的chart的指针.</returns>
     QtCharts::QChart *
-        initPieChartSeries(std::vector<std::pair<QString, int>> labels_data,
-                           QString title = QString());
-  public:
-    explicit ChartsWidget(QWidget *parent = nullptr);
-
-    ~ChartsWidget();
-
+         initPieChartSeries(std::vector<std::pair<QString, int>> labels_data,
+                            QString title = QString());
     void initFinishedLineChart();
     void initFinishedTimeLineChart();
 
@@ -87,8 +84,13 @@ class ChartsWidget : public QWidget {
 
     void initBestworkTimeChart();
 
-  signals:
+  public:
+    explicit ChartsWidget(lon::ClockSql *sql, QWidget *parent = nullptr);
 
+    ~ChartsWidget() = default;
+
+  signals:
+    void closeButtonClicked();
   public slots:
 };
 } // namespace lon

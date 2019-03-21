@@ -1,5 +1,6 @@
 // encoded with gbk, cause QString::fromUtf8 doesn't work.
 #include "chartswidget.h"
+#include <QMessageBox>
 #include <QValueAxis>
 #include <algorithm>
 
@@ -50,62 +51,6 @@ QtCharts::QChart *lon::ChartsWidget::initPieChartSeries(
     return chart;
 }
 
-lon::ChartsWidget::ChartsWidget(QWidget *parent)
-    : QWidget(parent)
-    , todaydata_(sql_.getTodayData())
-    , lastweekdata_(sql_.getLastWeekData())
-    , lastmonthdata_(sql_.getLastMonthData()) {
-    using namespace QtCharts;
-    layout_p_      = new QHBoxLayout(this);
-    list_widget_p_ = new lon::ListWidget(this);
-
-    finish_line_chart_view_p_     = nullptr;
-    day_labels_pie_chart_view_p_  = nullptr;
-    day_targets_pie_chart_view_p_ = nullptr;
-    bestworktime_chart_view_p_    = nullptr;
-
-    finished_day_line_chart_p_   = nullptr;
-    finished_week_line_chart_p_  = nullptr;
-    finished_month_line_chart_p_ = nullptr;
-
-    finishedtime_year_line_chart_p_  = nullptr;
-    finishedtime_week_line_chart_p_  = nullptr;
-    finishedtime_month_line_chart_p_ = nullptr;
-
-    day_labels_piechart_chart_p_    = nullptr;
-    week_labels_piechart_chart_p_   = nullptr;
-    month_labels_piechart_chart_p_  = nullptr;
-    day_targets_piechart_chart_p_   = nullptr;
-    week_targets_piechart_chart_p_  = nullptr;
-    month_targets_piechart_chart_p_ = nullptr;
-
-    initFinishedLineChart();
-    initFinishedTimeLineChart();
-    initLabelsPieChart();
-    initTargetsPieChart();
-
-    finish_line_chart_view_p_->setFixedHeight(500);
-    finishedtime_line_chart_view_p_->setFixedHeight(500);
-    day_labels_pie_chart_view_p_->setFixedHeight(500);
-    day_targets_pie_chart_view_p_->setFixedHeight(500);
-
-    list_widget_p_->addWidget(finish_line_chart_view_p_);
-    list_widget_p_->addWidget(finishedtime_line_chart_view_p_);
-    list_widget_p_->addWidget(day_labels_pie_chart_view_p_);
-    list_widget_p_->addWidget(day_targets_pie_chart_view_p_);
-    list_widget_p_->setHorizontalScrollBarVisible(true);
-    list_widget_p_->setVerticalScrollBarVisible(false);
-    layout_p_->addWidget(list_widget_p_);
-    this->setLayout(layout_p_);
-}
-
-lon::ChartsWidget::~ChartsWidget() {
-    delete finish_line_chart_view_p_;
-    delete day_labels_pie_chart_view_p_;
-    delete day_targets_pie_chart_view_p_;
-    delete bestworktime_chart_view_p_;
-}
-
 void lon::ChartsWidget::initFinishedLineChart() {
     using namespace QtCharts;
     finished_day_line_chart_p_ =
@@ -143,4 +88,62 @@ void lon::ChartsWidget::initTargetsPieChart() {
 void lon::ChartsWidget::initBestworkTimeChart() {
     using namespace QtCharts;
     QChart *chart = new QChart();
+}
+
+lon::ChartsWidget::ChartsWidget(lon::ClockSql *sql, QWidget *parent)
+    : QWidget(parent)
+    , sql_(sql)
+    , todaydata_(sql_->getTodayData())
+    , lastweekdata_(sql_->getLastWeekData())
+    , lastmonthdata_(sql_->getLastMonthData()) {
+    using namespace QtCharts;
+    layout_p_      = new QVBoxLayout(this);
+    list_widget_p_ = new lon::ListWidget(this);
+
+    finish_line_chart_view_p_     = nullptr;
+    day_labels_pie_chart_view_p_  = nullptr;
+    day_targets_pie_chart_view_p_ = nullptr;
+    bestworktime_chart_view_p_    = nullptr;
+
+    finished_day_line_chart_p_   = nullptr;
+    finished_week_line_chart_p_  = nullptr;
+    finished_month_line_chart_p_ = nullptr;
+
+    finishedtime_year_line_chart_p_  = nullptr;
+    finishedtime_week_line_chart_p_  = nullptr;
+    finishedtime_month_line_chart_p_ = nullptr;
+
+    day_labels_piechart_chart_p_    = nullptr;
+    week_labels_piechart_chart_p_   = nullptr;
+    month_labels_piechart_chart_p_  = nullptr;
+    day_targets_piechart_chart_p_   = nullptr;
+    week_targets_piechart_chart_p_  = nullptr;
+    month_targets_piechart_chart_p_ = nullptr;
+
+    initFinishedLineChart();
+    initFinishedTimeLineChart();
+    initLabelsPieChart();
+    initTargetsPieChart();
+
+    finish_line_chart_view_p_->setFixedHeight(500);
+    finishedtime_line_chart_view_p_->setFixedHeight(500);
+    day_labels_pie_chart_view_p_->setFixedHeight(500);
+    day_targets_pie_chart_view_p_->setFixedHeight(500);
+
+    close_button_p_ = new lon::Button(this);
+    close_button_p_->setFixedSize(30, 30);
+    close_button_p_->setToolTip("·µ»Ø");
+
+    list_widget_p_->addWidget(finish_line_chart_view_p_);
+    list_widget_p_->addWidget(finishedtime_line_chart_view_p_);
+    list_widget_p_->addWidget(day_labels_pie_chart_view_p_);
+    list_widget_p_->addWidget(day_targets_pie_chart_view_p_);
+    list_widget_p_->setHorizontalScrollBarVisible(true);
+    list_widget_p_->setVerticalScrollBarVisible(false);
+    layout_p_->addWidget(close_button_p_, 0, Qt::AlignRight);
+    layout_p_->addWidget(list_widget_p_);
+    this->setLayout(layout_p_);
+
+    connect(close_button_p_, SIGNAL(clicked()), this,
+            SIGNAL(closeButtonClicked()));
 }

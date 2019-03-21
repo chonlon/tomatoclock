@@ -1,45 +1,42 @@
+#include "clock_main_widget/clockmainwidget.h"
 #include "clock_small_window/clocksmallwindow.h"
 #include "clock_small_window/toolswidget.h"
+#include "clock_subwidgets/addlabelwidget.h"
+#include "clock_subwidgets/addtargetwidget.h"
 #include "clock_subwidgets/chartswidget.h"
 #include "clock_subwidgets/clockdisplaywidget.h"
 #include "clock_subwidgets/clockrunningwidget.h"
 #include "clock_subwidgets/labelsandtargetswidget.h"
 #include "clock_subwidgets/piecharttest.hpp"
-#include "clock_main_widget/clockmainwidget.h"
+#include "clock_subwidgets/targetwidget.h"
 #include "lon_widget/listwidget.hpp"
 #include "lon_widget/messagebox.hpp"
-#include "clock_subwidgets/addlabelwidget.h"
-#include "clock_subwidgets/targetwidget.h"
-#include "clock_subwidgets/addtargetwidget.h"
 #include "mainwindow.h"
 #include "tomatoclocktimer.h"
 #include <QApplication>
 #include <QDialog>
 
-class test{};
-
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-	test t;
-	//lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
-	//lon::clock_window::ClockSmallWindow *window =
-	//	new lon::clock_window::ClockSmallWindow();
-	//lon::ClockRunningWidget *c = new lon::ClockRunningWidget();
-	//lon::ClockDisplayWidget *w = new lon::ClockDisplayWidget();
+    // lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
+    // lon::clock_window::ClockSmallWindow *window =
+    //	new lon::clock_window::ClockSmallWindow();
+    // lon::ClockRunningWidget *c = new lon::ClockRunningWidget();
+    // lon::ClockDisplayWidget *w = new lon::ClockDisplayWidget();
 
-	////timer->setDisplayClockPointer(c->clock_display_widget_p_);
-	//timer->setDisplayClockPointer(window->progress_widget_);
-	//window->show();
+    ////timer->setDisplayClockPointer(c->clock_display_widget_p_);
+    // timer->setDisplayClockPointer(window->progress_widget_);
+    // window->show();
 
-	//c->show();
+    // c->show();
 
- //    lon::ChartsWidget chartw;
- //    chartw.show();
-	//lon::ClockMainWidget m;
-	//m.show();
-	//lon::TargetWidget t;
-	//t.show();
-	lon::AddTargetWidget aaaw(std::list<QString>(10), std::list<QString>(10));
-	aaaw.show();
-	return a.exec();
+    //    lon::ChartsWidget chartw;
+    //    chartw.show();
+    // lon::ClockMainWidget m;
+    // m.show();
+    // lon::TargetWidget t;
+    // t.show();
+    lon::ClockMainWidget c;
+    c.show();
+    return a.exec();
 }

@@ -4,39 +4,42 @@
 #include <QWidget>
 #include <list>
 
+#include "clock_database/clocksql.hpp"
 #include "lon_widget/widget.hpp"
 
 class QComboBox;
 class QLineEdit;
-//class QHBoxLayout;
-//class QVBoxLayout;
+// class QHBoxLayout;
+// class QVBoxLayout;
 class QGridLayout;
 class QLabel;
 
-namespace lon{
-class AddTargetWidget : public lon::Widget
-{
+namespace lon {
+class AddTargetWidget : public lon::Widget {
     Q_OBJECT
-private:
-	QComboBox *labels_combobox_p_;
-	QLineEdit *lineedit_p_;
-	QLabel *select_label_p_;
-	QLabel *label_p_;
-	/*QHBoxLayout *input_layout_p_;
-	QVBoxLayout *main_layout_p_;*/
-	QGridLayout *main_layout_p_;
-	std::list<QString> labels_;
-	std::list<QString> targets_;
-public:
-    explicit AddTargetWidget(std::list<QString> labels, std::list<QString> targets, QWidget *parent = nullptr);
+  private:
+    QComboBox *labels_combobox_p_;
+    QLineEdit *lineedit_p_;
+    QLabel *   select_label_p_;
+    QLabel *   label_p_;
 
-signals:
-	void targetAdded(QString label_name, QString target_name);
+    QGridLayout *      main_layout_p_;
+    std::list<QString> labels_;
 
-public slots:
-	void onOkButtonClicked();
-	void onCancelButtonClicked();
+    lon::ClockSql *sql_;
+
+  public:
+    explicit AddTargetWidget(std::list<QString> labels, lon::ClockSql *sql,
+                             QWidget *parent = nullptr);
+
+  signals:
+    void targetAdded(QString label_name, QString target_name);
+
+  public slots:
+    void onOkButtonClicked();
+
+    void showMessage(const QString &message);
 };
-}
+} // namespace lon
 
 #endif // ADDTARGETWIDGET_H

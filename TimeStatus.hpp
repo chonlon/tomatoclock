@@ -96,10 +96,10 @@ class TimerStatus {
         timeleft_->setMinutes(clock_options_->work_time()->minutes_);
         timeleft_->setSeconds(clock_options_->work_time()->seconds_);
     }
-	/// <summary>
-	/// 从剩余时间里面减去一秒.
-	/// </summary>
-	/// <returns> 下一段时间是否应为工作状态. </returns>
+    /// <summary>
+    /// 从剩余时间里面减去一秒.
+    /// </summary>
+    /// <returns> 下一段时间是否应为工作状态. </returns>
     bool subOneSecond() {
         int8_t status = timeleft_->subOneSecond();
         // 如果timeleft里面的时间不够, 设置下一段时间.
@@ -110,7 +110,7 @@ class TimerStatus {
                 timeleft_->setSeconds(clock_options_->work_time()->seconds_);
                 total_time_ = clock_options_->work_time();
                 is_break_   = false;
-				return true;
+                return true;
             } else {
                 if (next_status == NextStatus::s_ShortBreaking) {
                     timeleft_->setMinutes(clock_options_->sb_time()->minutes_);
@@ -131,7 +131,7 @@ class TimerStatus {
                 "In timer_status, left time is less than zero");
         }
 
-		return false;
+        return false;
     }
 
     TimeLeft const *timeleft() const { return timeleft_; }

@@ -4,9 +4,9 @@
 #include "button.hpp"
 #include "titlebar.hpp"
 #include <QHBoxLayout>
+#include <QSizeGrip>
 #include <QVBoxLayout>
 #include <QtWidgets>
-#include <QSizeGrip>
 #include <cassert>
 
 namespace lon {
@@ -26,17 +26,19 @@ class Widget : public QWidget {
   private:
     lon::TitleBar *title_bar_;
 
-	QSizeGrip	* size_grip_;
+    QSizeGrip *size_grip_;
 
     lon::Button *ok_button_;
     lon::Button *cancel_button_;
 
     QGridLayout *p_layout_;
 
-	bool size_girp_enabled;
-protected:
-	QWidget *      center_widget_;
-	QWidget *      bottom_bar_;
+    bool size_girp_enabled;
+
+  protected:
+    QWidget *center_widget_;
+    QWidget *bottom_bar_;
+
   private:
     // 禁用setlayout, 只允许操作centerWidget和botttomWidget.
     virtual void setLayout(QLayout *) {}
@@ -45,13 +47,13 @@ protected:
         p_layout_ = new QGridLayout(this);
         p_layout_->setSpacing(0);
         p_layout_->addWidget(title_bar_, 0, 0);
-        p_layout_->addWidget(center_widget_,1, 0);
-        p_layout_->addWidget(bottom_bar_,2, 0);
+        p_layout_->addWidget(center_widget_, 1, 0);
+        p_layout_->addWidget(bottom_bar_, 2, 0);
         p_layout_->setContentsMargins(0, 0, 0, 0);
     }
     void initBottomBar() {
         bottom_bar_->setFixedHeight(50);
-		bottom_bar_->setWindowFlags(Qt::SubWindow);
+        bottom_bar_->setWindowFlags(Qt::SubWindow);
 
         QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_bar_);
 
@@ -78,11 +80,11 @@ protected:
         cancel_button_->setFixedWidth(100);
         cancel_button_->setFlat(true);
 
-		bottom_layout->addStretch();
+        bottom_layout->addStretch();
         bottom_layout->addWidget(ok_button_);
-		bottom_layout->addStretch();
+        bottom_layout->addStretch();
         bottom_layout->addWidget(cancel_button_);
-		bottom_layout->addStretch();
+        bottom_layout->addStretch();
 
         bottom_bar_->setLayout(bottom_layout);
     }
@@ -91,28 +93,34 @@ protected:
         connect(ok_button_, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()));
         connect(cancel_button_, SIGNAL(clicked()), this,
                 SLOT(onCancelButtonClicked()));
+        connect(title_bar_, SIGNAL(minimizeButtonClicked()), this,
+                SIGNAL(minimizeButtonClicked()));
+        connect(title_bar_, SIGNAL(maximizeButtonClicked()), this,
+                SIGNAL(maximizeButtonClicked()));
+        connect(title_bar_, SIGNAL(closeButtonClicked()), this,
+                SIGNAL(closeButtonClicked()));
     }
-protected:
-	virtual void resizeEvent(QResizeEvent *event) {
-		this->resize(event->size());
-	}
+
+  protected:
+    virtual void resizeEvent(QResizeEvent *event) {
+        this->resize(event->size());
+    }
+
   public:
-    explicit Widget(QWidget *parent = nullptr, lon::TitleBar::Buttons status = TitleBar::ALL)
+    explicit Widget(QWidget *              parent = nullptr,
+                    lon::TitleBar::Buttons status = TitleBar::ALL)
         : QWidget(parent) {
         this->setWindowFlags(Qt::FramelessWindowHint |
                              Qt::WindowMinimizeButtonHint);
-        title_bar_     = new lon::TitleBar(this, status);
-        center_widget_ = new QWidget(this);
-		bottom_bar_ = new QWidget(this);
-		size_girp_enabled = false;
-
+        title_bar_        = new lon::TitleBar(this, status);
+        center_widget_    = new QWidget(this);
+        bottom_bar_       = new QWidget(this);
+        size_girp_enabled = false;
 
         initBottomBar();
         initLayout();
         initConnect();
-
     }
-
 
     explicit Widget(QWidget *center_widget, QWidget *bottom_bar,
                     QWidget *parent = nullptr)
@@ -145,7 +153,7 @@ protected:
         delete bottom_bar_;
 
         bottom_bar_ = widget;
-        p_layout_->addWidget(bottom_bar_,2, 0);
+        p_layout_->addWidget(bottom_bar_, 2, 0);
         return true;
     }
 
@@ -157,7 +165,7 @@ protected:
 
         delete center_widget_;
         center_widget_ = widget;
-		p_layout_->addWidget(center_widget_, 1, 0);
+        p_layout_->addWidget(center_widget_, 1, 0);
         return true;
     }
 
@@ -167,24 +175,26 @@ protected:
         title_bar_->setTitleIcon(icon);
     }
 
-    virtual void setTitleBack(const QIcon &icon) {
+    virtual void setTitleBackground(const QIcon &icon) {
         title_bar_->setBackground(icon);
     }
 
-	virtual void enabelSizeGrip() {
-		size_girp_enabled = true;
-		size_grip_ = new QSizeGrip(this);
-		size_grip_->setFixedSize(size_grip_->sizeHint());
-		p_layout_->addWidget(size_grip_, 2, 1, Qt::AlignRight | Qt::AlignBottom);
-	}
+    virtual void enabelSizeGrip() {
+        size_girp_enabled = true;
+        size_grip_        = new QSizeGrip(this);
+        size_grip_->setFixedSize(size_grip_->sizeHint());
+        p_layout_->addWidget(size_grip_, 2, 1,
+                             Qt::AlignRight | Qt::AlignBottom);
+    }
 
-	virtual bool sizeGripEnabled() {
-		return size_girp_enabled;
-	}
+    virtual bool sizeGripEnabled() { return size_girp_enabled; }
 
   signals:
     void okButtonClicked();
     void cancelButtonClicked();
+    void minimizeButtonClicked();
+    void maximizeButtonClicked();
+    void closeButtonClicked();
   private slots:
     void onOkButtonClicked() { emit okButtonClicked(); }
     void onCancelButtonClicked() { emit cancelButtonClicked(); }

@@ -48,5 +48,4 @@ lon::ClockRunningWidget::ClockRunningWidget(QWidget *parent)
     this->show();
 }
 
-lon::ClockRunningWidget::~ClockRunningWidget() {
-}
+lon::ClockRunningWidget::~ClockRunningWidget() {}

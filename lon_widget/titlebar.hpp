@@ -13,13 +13,13 @@
 #include <memory>
 
 namespace lon {
-static const int32_t BUTTON_HEIGHT    = 30;
-static const int32_t BUTTON_WIDTH     = 45;
-static const int32_t TITLE_BAR_HEIGHT = 50;
-
 class TitleBar : public QWidget {
     Q_OBJECT
   private:
+    static const int32_t BUTTON_HEIGHT    = 30;
+    static const int32_t BUTTON_WIDTH     = 45;
+    static const int32_t TITLE_BAR_HEIGHT = 50;
+
     QLabel *icon_label_;
     QLabel *title_label_;
 
@@ -61,7 +61,7 @@ class TitleBar : public QWidget {
                 pmaximize_button_->setFocus(max_normal_focus_);
                 pmaximize_button_->setPressed(max_normal_pressed_);
             }
-			//this->resize();
+            // this->resize();
             pmaximize_button_->setStyle(QApplication::style());
         }
     }
@@ -284,21 +284,27 @@ class TitleBar : public QWidget {
         max_normal_focus_   = nullptr;
         max_normal_pressed_ = nullptr;
     }
-
+  signals:
+    void minimizeButtonClicked();
+    void maximizeButtonClicked();
+    void closeButtonClicked();
   private slots:
     void onButtonClicked() {
         QPushButton *pButton = qobject_cast<QPushButton *>(sender());
         QWidget *    pWindow = this->window();
         if (pWindow->isTopLevel()) {
             if (pButton == pminimize_button_) {
+                emit minimizeButtonClicked();
                 pWindow->showMinimized();
             } else if (pButton == pmaximize_button_) {
+                emit maximizeButtonClicked();
                 pWindow->isMaximized() ? pWindow->showNormal()
                                        : pWindow->showMaximized();
 
                 this->updateMaximize();
             } else if (pButton == pclose_button_) {
                 pWindow->close();
+				emit closeButtonClicked();
             }
         }
     }

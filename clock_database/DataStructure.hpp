@@ -9,10 +9,10 @@
 
 namespace lon {
 namespace tomato_clock {
-
 template <unsigned int len_num> struct ChartDataBase {
-	// 在每个时间段完成的番茄个数(比如显示是天的话, 那就是每个小时完成的番茄的个数).
-    uint16_t *                           time_data_p;
+    // 在每个时间段完成的番茄个数(比如显示是天的话,
+    // 那就是每个小时完成的番茄的个数).
+    uint16_t *time_data_p;
 
     unsigned int                         length;
     std::vector<std::pair<QString, int>> target_data;
@@ -60,7 +60,7 @@ struct ChartDataWithTotalTime : public ChartDataBase<len_num> {
                   total_time_p);
     }
 
-    ChartDataWithTotalTime(ChartDataWithTotalTime &&data) noexcept{
+    ChartDataWithTotalTime(ChartDataWithTotalTime &&data) noexcept {
         ChartDataBase<len_num>::ChartDataBase(data);
         total_time_p      = data.total_time_p;
         data.total_time_p = nullptr;

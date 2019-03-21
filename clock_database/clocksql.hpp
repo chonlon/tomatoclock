@@ -78,11 +78,27 @@ class ClockSql {
         // getLastWeekData();
     }
 
-    ~ClockSql() { delete query_; }
+    // a tomato have just finished
+    void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
+        query_->exec(
+            "INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
+            "FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
+            "targets.TargetId,25, DateTime('now', 'localtime') from "
+            "finishedtomato , targets where TargetName = '7' and LabelName = "
+            "'化学'");
+    }
 
-	// a tomato have just finished
-	void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
-		query_->exec("INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, targets.TargetId,25, DateTime('now', 'localtime') from finishedtomato , targets where TargetName = '7' and LabelName = '化学'");
+    void addLabel(const QString &label_name) {
+        query_->prepare("INSERT INTO labels VALUES (:label)");
+        query_->bindValue(":label", label_name);
+        query_->exec();
+    }
+
+	void addTarget(const QString& label_name, const QString& target_name) {
+		query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 AS id, :label, :target FROM targets");
+		query_->bindValue(":label", label_name);
+		query_->bindValue(":target", target_name);
+		query_->exec();
 	}
 
     /// <summary> 获取过去一周的番茄完成的情况. </summary>
@@ -168,7 +184,7 @@ class ClockSql {
         using namespace lon::tomato_clock;
         LastMonthData data;
         // 获取本周的每天完成的番茄数量.
-		query_->exec("SELECT day,\
+        query_->exec("SELECT day,\
                          count(day) \
                     FROM (\
                              SELECT datetime(FinishTime) AS time,\
@@ -242,7 +258,7 @@ class ClockSql {
     /// <summary> 将某时间段的工作时段以降序的方式保存到数组中. </summary>
     /// <param name: duration> 以duration为单位查找. eg: 月: 'month',
     /// 天:'day'</param>
-    std::vector<int> getBestWorkTimeDesc(QString duration) {
+    std::vector<int> getBestWorkTimeDesc(const QString &duration) {
         std::vector<int> result;
         query_->exec("SELECT DuringTime,\
                            strftime('%H', FinishTime) AS hours\
@@ -259,38 +275,59 @@ class ClockSql {
         }
         return result;
     }
-	/// <summary>
-	/// get all labels name, return by QString
-	/// </summary>
-	std::list<QString> getAllLabels() {
-		std::list<QString> result;
-		query_->exec("SELECT LabelName FROM labels");
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toString());
-		}
-		return result;
-	}
+    /// <summary>
+    /// get all labels name order by name, return by QString
+    /// </summary>
+    std::list<QString> getAllLabels() {
+        std::list<QString> result;
+        query_->exec("SELECT LabelName FROM labels ORDER BY LabelName");
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toString());
+        }
+        return result;
+    }
 
-	QString getLabelByTarget() { return QString(); }
+    QString getLabelByTarget() { return QString(); }
 
-	// get targets by label name.
-	/// <summary>
-	/// get all targets belong to label.
-	/// </summary>
-	/// <param name="label">label名字, 每个标签唯一, 当label==""时, 获得的是全部targets, 不限label.</param>
-	/// <returns>all targets' name.</returns>
-    std::vector<QString> getTargetsByLabel(QString label) {
-		std::vector<QString> result;
-		if (label.isEmpty()) {
-			query_->exec("SELECT TargetName FROM targets");
-		}
-		else {
-			query_->exec("SELECT TargetName FROM targets WHERE LabelName =" + label);
-		}
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toString());
-		}
-		return result;
+    // get targets by label name.
+    /// <summary>
+    /// get all targets belong to label.
+    /// </summary>
+    /// <param name="label">label名字, 每个标签唯一, 当label可为空.</param>
+    /// <returns>all targets' name.</returns>
+    std::vector<QString> getTargetsByLabel(const QString &label) {
+        std::vector<QString> result;
+        if (label.isEmpty()) {
+            query_->exec("SELECT TargetName FROM targets");
+        } else {
+            query_->exec("SELECT TargetName FROM targets WHERE LabelName =" +
+                         label);
+        }
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toString());
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// get all labels name and target name pair order by label, return by
+    /// std::pair.
+    /// </summary>
+    std::list<std::pair<QString, QString>> getAllTargetsAndLabels() {
+        std::list<std::pair<QString, QString>> result;
+        query_->exec(
+            "select LabelName, TargetName from targets order by LabelName");
+        while (query_->next()) {
+            result.push_back(std::make_pair(query_->value(0).toString(),
+                                            query_->value(1).toString()));
+        }
+        return result;
+    }
+
+    bool targetExists(const QString &label, const QString &target) {
+        query_->exec("select count(*) from targets where LabelName = " + label +
+                     " and TargetName = " + target);
+        return query_->value(0).toInt();
     }
 };
 } // namespace lon

@@ -35,11 +35,12 @@ class DisplayClockBase : public QWidget {
         return static_cast<double>(current_passed_time) / total;
     }
 
-	/// <summary>
-	/// 计算剩余时间.
-	/// </summary>
-	/// <param name="timer_status"> 根据timer_status计算剩余时间. </param>
-	/// <returns> 剩余时间的QString类型的指针, 内存的所有权会被移交给调用者. </returns>
+    /// <summary>
+    /// 计算剩余时间.
+    /// </summary>
+    /// <param name="timer_status"> 根据timer_status计算剩余时间. </param>
+    /// <returns> 剩余时间的QString类型的指针, 内存的所有权会被移交给调用者.
+    /// </returns>
     std::unique_ptr<QString>
         leftTimeString(lon::TimerStatus const *timer_status) {
         std::unique_ptr<QString> result(new QString());
