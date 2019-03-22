@@ -2,4 +2,9 @@
     <qresource prefix="/background">
         <file>1111.png</file>
     </qresource>
+    <qresource prefix="/icon">
+        <file>Icons/add_label_custom.png</file>
+        <file>Icons/add_target_custom.png</file>
+        <file>Icons/history_custom.png</file>
+    </qresource>
 </RCC>

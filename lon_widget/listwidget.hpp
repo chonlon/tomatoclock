@@ -28,7 +28,68 @@ class ListWidget : public QWidget {
         int h = event->size().height();
         this->resize(w, h);
     }
-
+	virtual void setVerticalScrollBarStyle() {
+		scroll_area_p_->verticalScrollBar()->setStyleSheet(
+            "QScrollBar:vertical"
+            "{"
+            "border-radius:4px;"
+            "background: white;"
+            "width: 10px;"
+            "margin: 0px 0px 0px 0px;"
+            "}"
+            "QScrollBar:vertical:hover"
+            "{"
+            "border-radius:4px;"
+            "background: rgb(228,228,228);"
+            "width: 10px;"
+            "margin: 0px 0px 0 0px;"
+            "}"
+            "QScrollBar::handle:vertical "
+            "{"
+			"border-radius:3px;"
+            "background: rgb(202,202,202);"
+            "border-radius:4px;"
+            "min-height: 20px;"
+            "}"
+            "QScrollBar::handle:vertical:hover"
+            "{"
+            "background: rgb(113,113,113);"
+            "border-radius:4px;"
+            "min-height: 20px;"
+            "}"
+            "QScrollBar::add-line:vertical "
+            "{"
+            "background: none;"
+            "height: 10px;"
+            "subcontrol-position: bottom;"
+            "subcontrol-origin: margin;"
+            "}"
+            "QScrollBar::sub-line:vertical "
+            "{"
+            "background: none;"
+            "height: 10px;"
+            "subcontrol-position: top;"
+            "subcontrol-origin: margin;"
+            "}"
+            "QScrollBar::up-arrow:vertical"
+            "{"
+            "}"
+            "QScrollBar::up-arrow:vertical:hover"
+            "{"
+            "}"
+            "QScrollBar::up-arrow:vertical:pressed"
+            "{"
+            "}"
+            "QScrollBar::down-arrow:vertical "
+            "{"
+            "}"
+            "QScrollBar::down-arrow:vertical:hover"
+            "{"
+            "}"
+            "QScrollBar::down-arrow:vertical:pressed"
+            "{"
+            "}");
+	}
   public:
     explicit ListWidget(QWidget *parent = nullptr)
         : QWidget(parent) {
@@ -40,7 +101,10 @@ class ListWidget : public QWidget {
         widget_->setLayout(main_layout_);
         widget_->resize(this->window()->size());
         scroll_area_p_->setWidget(widget_);
+		setVerticalScrollBarStyle();
     }
+
+
 
     void addWidget(QWidget *widget) {
         widget_list_.emplace_back(widget);
@@ -67,10 +131,12 @@ class ListWidget : public QWidget {
 
     void setHorizontalScrollBarVisible(bool visible) {
         scroll_area_p_->horizontalScrollBar()->setVisible(visible);
+		scroll_area_p_->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     }
 
     void setVerticalScrollBarVisible(bool visible) {
         scroll_area_p_->verticalScrollBar()->setVisible(visible);
+		scroll_area_p_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
 };
 } // namespace lon

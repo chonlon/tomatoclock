@@ -1,4 +1,5 @@
 #include "clockmainwidget.h"
+#include "lon_widget/titlebar.hpp"
 
 #include "clock_database/clocksql.hpp"
 #include "clock_small_window/clocksmallwindow.h"
@@ -7,10 +8,9 @@
 #include "clock_subwidgets/labelsandtargetswidget.h"
 #include "lon_widget/messagebox.hpp"
 #include "tomatoclocktimer.h"
-using namespace lon;
 // PRIVATE
-void lon::ClockMainWidget::tomatoSaveToSql(QString label /*= QString("")*/,
-                                           QString target /*= QString("")*/) {
+void lon::ClockMainWidget::tomatoSaveToSql(const QString &label,
+                                           const QString &target) {
     auto duringtime =
         timer->timerStaus()->clock_options()->work_time()->minutes_;
     // if enabel break the tomato..
@@ -19,9 +19,12 @@ void lon::ClockMainWidget::tomatoSaveToSql(QString label /*= QString("")*/,
 }
 
 lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
-    : QWidget(parent)
+    : lon::Widget(parent)
     , keep_working_(false) {
     sql_p_ = new lon::ClockSql();
+    //this->setWindowFlags(Qt::FramelessWindowHint |
+                         //Qt::WindowMinimizeButtonHint);
+	//title_bar_p_ = new lon::TitleBar(this);
 
     labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
     clock_running_widget_p_  = nullptr;
@@ -39,7 +42,9 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
             SLOT(displaySetting()));
     connect(labels_targets_widget_p_, SIGNAL(showChart()), this,
             SLOT(displayChart()));
-    this->setLayout(main_layout_);
+	this->centerWidget()->setLayout(main_layout_);
+	this->setBottomBar(nullptr);
+	this->enabelSizeGrip();
 }
 
 void lon::ClockMainWidget::displayClock(const QString &label,
@@ -55,6 +60,9 @@ void lon::ClockMainWidget::displayClock(const QString &label,
         connect(timer, SIGNAL(tomatoFinished()), this, SLOT(clockFinished()));
     }
     timer->start();
+
+	running_clock_label_name_ = label;
+    running_clock_target_name_ = target;
 
     clock_running_widget_p_ = new lon::ClockRunningWidget(this);
     main_layout_->addWidget(clock_running_widget_p_);
@@ -77,7 +85,7 @@ void lon::ClockMainWidget::displayTarget() {
     labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
     main_layout_->addWidget(labels_targets_widget_p_);
     connect(labels_targets_widget_p_,
-            SIGNAL(startClock(const QString &, const QString &)), this,
+            SIGNAL(startClock(QString , QString)), this,
             SLOT(displayClock(const QString &, const QString &)));
     connect(labels_targets_widget_p_, SIGNAL(changeSetting()), this,
             SLOT(displaySetting()));
@@ -98,11 +106,11 @@ void lon::ClockMainWidget::displayChart() {
 }
 
 void lon::ClockMainWidget::clockFinished() {
-    tomatoSaveToSql();
+    tomatoSaveToSql(running_clock_label_name_, running_clock_target_name_);
     if (keep_working_) {
     } else {
-        lon::MessageBox *m =
-            new lon::MessageBox(QString::fromLocal8Bit("番茄完成"),
+        lon::MessageBoxWrapper *m =
+            new lon::MessageBoxWrapper(QString::fromLocal8Bit("番茄完成"),
                                 QString::fromLocal8Bit("番茄已完成."));
         displayTarget();
     }

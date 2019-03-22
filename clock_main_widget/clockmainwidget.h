@@ -6,21 +6,24 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "lon_widget/widget.hpp"
 namespace lon {
 class LabelsAndTargetsWidget;
 class ClockRunningWidget;
 class TomatoClockTimer;
 class ClockSql;
 class ChartsWidget;
+class TitleBar;
 namespace clock_window {
 class ClockSmallWindow;
 }
 } // namespace lon
 namespace lon {
+
 /// <summary>
 /// 这个类是番茄钟在主界面显示的总widget.
 /// </summary>
-class ClockMainWidget : public QWidget {
+class ClockMainWidget : public lon::Widget {
     Q_OBJECT
   private:
     bool keep_working_;
@@ -29,6 +32,7 @@ class ClockMainWidget : public QWidget {
     lon::ClockRunningWidget *            clock_running_widget_p_;
     lon::ChartsWidget *                  chart_widget_p_;
     lon::clock_window::ClockSmallWindow *clock_small_window_p_;
+	lon::TitleBar *title_bar_p_;
 
     lon::TomatoClockTimer *timer;
 
@@ -36,9 +40,11 @@ class ClockMainWidget : public QWidget {
 
     lon::ClockSql *sql_p_;
 
+	QString running_clock_label_name_;
+	QString running_clock_target_name_;
   private:
-    void tomatoSaveToSql(QString label  = QString(""),
-                         QString target = QString(""));
+    void tomatoSaveToSql(const QString &label,
+                         const QString &target);
 
   public:
     explicit ClockMainWidget(QWidget *parent = nullptr);

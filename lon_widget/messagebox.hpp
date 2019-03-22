@@ -62,9 +62,9 @@ class MessageBoxWrapper : QObject {
     }
 
   public:
-    MessageBoxWrapper(QObject *parent = nullptr)
+    MessageBoxWrapper(QString title, QString message, QObject *parent = nullptr)
         : QObject(parent) {
-        message_box_p_ = new lon::MessageBox();
+        message_box_p_ = new lon::MessageBox(title, message);
         connect(message_box_p_, SIGNAL(closeButtonClicked()), this,
                 SLOT(onCloseButtonClicked()));
         connect(message_box_p_, SIGNAL(okButtonClicked()), this,

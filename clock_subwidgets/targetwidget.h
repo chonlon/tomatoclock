@@ -27,7 +27,7 @@ class TargetWidget : public QWidget {
                           QWidget *parent = nullptr);
 
   signals:
-    void startButtonClicked(const QString &label, const QString &target);
+    void startButtonClicked(QString label, QString target);
   public slots:
     void emitButtonClicked() {
         emit startButtonClicked(label_name_, target_name_);

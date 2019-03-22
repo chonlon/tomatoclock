@@ -78,7 +78,7 @@ class TitleBar : public QWidget {
                 this);
             pminimize_button_->setFlat(true);
             pminimize_button_->setStyleSheet("border:none");
-            pminimize_button_->setFixedSize(BUTTON_WIDTH, BUTTON_WIDTH);
+            pminimize_button_->setFixedSize(BUTTON_WIDTH, BUTTON_HEIGHT);
             pminimize_button_->setObjectName("minimizeButton");
             pminimize_button_->setToolTip("最小化");
         }

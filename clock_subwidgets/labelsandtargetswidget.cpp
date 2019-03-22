@@ -17,7 +17,9 @@ static const int          button_width_height = 50;
 lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql,
                                                     QWidget *      parent)
     : QWidget(parent)
-    , sql_(sql) {
+    , sql_(sql)
+	, current_cloumn(0)
+	, current_row(0){
     main_layout_p_        = new QVBoxLayout(this);
     labels_and_targets_p_ = new std::list<std::pair<QString, QString>>(
         sql_->getAllTargetsAndLabels());
@@ -45,6 +47,8 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     add_label_button_layout_p_ = new QVBoxLayout(labels_widget_p_);
 
     add_label_button_p_ = new lon::Button(this);
+	add_label_button_p_->setFlat(true);
+	add_label_button_p_->setNormal(new QIcon(":/icon/Icons/add_label_custom.png"));
 
     labels_widget_p_->setFixedHeight(label_widget_height);
     add_label_button_p_->setFixedSize(button_width_height, button_width_height);
@@ -126,15 +130,13 @@ void lon::LabelsAndTargetsWidget::addTargetWidget(QString labelname,
 	else
 		targets_list_widget_p_->insertWidget(index, target_widget);
     connect(target_widget,
-            SIGNAL(startButtonClicked(const QString &, const QString &)), this,
-            SIGNAL(startClock(const QString &, const QString &)));
+            SIGNAL(startButtonClicked(QString , QString )), this,
+            SIGNAL(startClock(QString, QString)));
 }
 
 void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
                                             const QString &text) {
     const uint8_t  row_width      = 8;
-    static uint8_t current_cloumn = 0;
-    static uint8_t current_row    = 0;
 
     button->setFixedSize(60, 30);
     button->setText(text);

@@ -29,6 +29,9 @@ static std::vector<QString> GetFileList(QString dir) {
 #endif // DEBUG
 
 namespace lon {
+	/// <summary>
+	/// 默认的不是flat的,(因为如果图标设置失败, 而按钮已经时flat的会很尴尬) 所以添加icon后还是会有边框和背景, 如果不想要, 使用button->setFlat(true)即可.
+	/// </summary>
 class Button : public QPushButton {
     Q_OBJECT
   private:
@@ -91,6 +94,16 @@ class Button : public QPushButton {
         }
         QPushButton::mouseReleaseEvent(event);
     }
+
+	virtual void setIcon(const QIcon &icon) {
+		QPushButton::setIcon(icon);
+		this->setIconSize(QSize(this->width()*0.8, this->height()*0.8));
+	}
+
+	virtual void resizeEvent(QResizeEvent *event) {
+		QPushButton::resizeEvent(event);
+		this->setIconSize(QSize(this->width()*0.8, this->height()*0.8));
+	}
 
   public:
     /// <summary>

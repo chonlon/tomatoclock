@@ -127,6 +127,9 @@ class Widget : public QWidget {
         : QWidget(parent) {
         assert(center_widget && "pointer cannot be null");
         assert(bottom_bar && "pointer cannot be null");
+		this->setWindowFlags(Qt::FramelessWindowHint |
+			Qt::WindowMinimizeButtonHint);
+
         title_bar_ = new lon::TitleBar(this);
 
         center_widget_ = center_widget;
@@ -146,14 +149,13 @@ class Widget : public QWidget {
     /// <summary> 设置自定义的bottombar. </summary>
     /// 注意: 重新设置bottomBar会导致默认生成的按钮的信号与槽的失效.
     virtual bool setBottomBar(QWidget *widget) {
-        if (!widget) return false;
-
         p_layout_->removeWidget(bottom_bar_);
 
         delete bottom_bar_;
 
         bottom_bar_ = widget;
-        p_layout_->addWidget(bottom_bar_, 2, 0);
+		if(bottom_bar_)
+			p_layout_->addWidget(bottom_bar_, 2, 0);
         return true;
     }
 
@@ -165,7 +167,8 @@ class Widget : public QWidget {
 
         delete center_widget_;
         center_widget_ = widget;
-        p_layout_->addWidget(center_widget_, 1, 0);
+		if(center_widget_)
+			p_layout_->addWidget(center_widget_, 1, 0);
         return true;
     }
 

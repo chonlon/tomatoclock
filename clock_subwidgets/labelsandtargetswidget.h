@@ -53,6 +53,8 @@ class LabelsAndTargetsWidget : public QWidget {
                                             button_map_;
     std::list<std::pair<QString, QString>> *labels_and_targets_p_;
 
+	uint8_t current_cloumn;
+    uint8_t current_row;
   private: // functions
     // default construction are not allowed.
     LabelsAndTargetsWidget();
@@ -79,7 +81,7 @@ class LabelsAndTargetsWidget : public QWidget {
   signals:
     void showChart();
     void changeSetting();
-    void startClock(const QString &label_name, const QString &target_name);
+    void startClock(QString label_name, QString target_name);
   public slots:
     void onLabelButtonClicked();
     void addTarget();
