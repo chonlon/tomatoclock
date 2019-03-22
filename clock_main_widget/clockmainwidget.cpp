@@ -15,7 +15,7 @@ void lon::ClockMainWidget::tomatoSaveToSql(QString label /*= QString("")*/,
         timer->timerStaus()->clock_options()->work_time()->minutes_;
     // if enabel break the tomato..
     // duringtime -= timer->timerStaus()->timeleft()->minutes();
-    sql_p_->addAFinishedTomato(duringtime, "7", "»¯Ñ§");
+    sql_p_->addAFinishedTomato(duringtime, label, target);
 }
 
 lon::ClockMainWidget::ClockMainWidget(QWidget *parent)

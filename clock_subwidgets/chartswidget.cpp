@@ -54,16 +54,14 @@ QtCharts::QChart *lon::ChartsWidget::initPieChartSeries(
 void lon::ChartsWidget::initFinishedLineChart() {
     using namespace QtCharts;
     finished_day_line_chart_p_ =
-        initLineChartSeries(todaydata_.time_data_p, todaydata_.length,
-                            QString::fromLocal8Bit("今日完成番茄个数"));
+        initLineChartSeries(todaydata_.time_data_p, todaydata_.length);
     finish_line_chart_view_p_ = new QChartView(finished_day_line_chart_p_);
 }
 
 void lon::ChartsWidget::initFinishedTimeLineChart() {
     using namespace QtCharts;
     finishedtime_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_.total_time_p, lastweekdata_.length,
-                            QString::fromLocal8Bit("本周完成时间"));
+        initLineChartSeries(lastweekdata_.total_time_p, lastweekdata_.length);
     finishedtime_line_chart_view_p_ =
         new QChartView(finishedtime_week_line_chart_p_);
 }
@@ -71,7 +69,7 @@ void lon::ChartsWidget::initFinishedTimeLineChart() {
 void lon::ChartsWidget::initLabelsPieChart() {
     using namespace QtCharts;
     day_labels_piechart_chart_p_ = initPieChartSeries(
-        todaydata_.label_data, QString::fromLocal8Bit("今日标签"));
+        todaydata_.label_data);
 
     day_labels_pie_chart_view_p_ =
         new QtCharts::QChartView(day_labels_piechart_chart_p_);
@@ -80,7 +78,7 @@ void lon::ChartsWidget::initLabelsPieChart() {
 void lon::ChartsWidget::initTargetsPieChart() {
     using namespace QtCharts;
     day_targets_piechart_chart_p_ = initPieChartSeries(
-        todaydata_.target_data, QString::fromLocal8Bit("今日目标"));
+        todaydata_.target_data);
     day_targets_pie_chart_view_p_ =
         new QtCharts::QChartView(day_targets_piechart_chart_p_);
 }
@@ -89,6 +87,103 @@ void lon::ChartsWidget::initBestworkTimeChart() {
     using namespace QtCharts;
     QChart *chart = new QChart();
 }
+
+void lon::ChartsWidget::initFinishLineWidget() {
+    finish_line_widget_p_   = new QWidget(this);
+    finish_line_label_p_    = new QLabel(finish_line_widget_p_);
+    finish_line_combobox_p_ = new QComboBox(finish_line_widget_p_);
+    finish_line_layout_p_   = new QGridLayout(finish_line_widget_p_);
+
+    finish_line_combobox_p_->addItem(QString::fromLocal8Bit("今日"));
+    finish_line_combobox_p_->addItem((QString::fromLocal8Bit("过去七天")));
+    finish_line_combobox_p_->addItem((QString::fromLocal8Bit("过去三十天")));
+
+    finish_line_label_p_->setText(QString::fromLocal8Bit("完成番茄个数"));
+
+    initFinishedLineChart();
+    finish_line_chart_view_p_->setFixedHeight(500);
+
+    finish_line_layout_p_->addWidget(finish_line_combobox_p_, 0, 0, 1, 1,
+                                     Qt::AlignRight);
+    finish_line_layout_p_->addWidget(finish_line_label_p_, 0, 1, 1, 1,
+                                     Qt::AlignLeft);
+	finish_line_layout_p_->addWidget(finish_line_chart_view_p_, 1, 0, 1, 2);
+
+    list_widget_p_->addWidget(finish_line_widget_p_);
+}
+
+void lon::ChartsWidget::initFinishedTimeLineWidget() {
+    finishedtime_line_widget_p_  = new QWidget(this);
+    finishedtime_line_label_p_    = new QLabel(finishedtime_line_widget_p_);
+    finishedtime_line_combobox_p_ = new QComboBox(finishedtime_line_widget_p_);
+    finishedtime_line_layout_p_   = new QGridLayout(finishedtime_line_widget_p_);
+
+	finishedtime_line_combobox_p_->addItem((QString::fromLocal8Bit("过去七天")));
+	finishedtime_line_combobox_p_->addItem((QString::fromLocal8Bit("过去三十天")));
+	finishedtime_line_combobox_p_->addItem(QString::fromLocal8Bit("上一年"));
+
+	finishedtime_line_label_p_->setText(QString::fromLocal8Bit("完成时间"));
+
+	initFinishedTimeLineChart();
+	finishedtime_line_chart_view_p_->setFixedHeight(500);
+
+	finishedtime_line_layout_p_->addWidget(finishedtime_line_combobox_p_, 0, 0, 1, 1,
+                                     Qt::AlignRight);
+	finishedtime_line_layout_p_->addWidget(finishedtime_line_label_p_, 0, 1, 1, 1,
+                                     Qt::AlignLeft);
+	finishedtime_line_layout_p_->addWidget(finishedtime_line_chart_view_p_, 1, 0, 1, 2);
+
+    list_widget_p_->addWidget(finishedtime_line_widget_p_);
+}
+
+void lon::ChartsWidget::initLabelsPieWidget() {
+    label_pie_widget_p_   = new QWidget(this);
+    label_pie_label_p_    = new QLabel(label_pie_widget_p_);
+    label_pie_combobox_p_ = new QComboBox(label_pie_widget_p_);
+    label_pie_layout_p_ = new QGridLayout(label_pie_widget_p_);
+
+	label_pie_combobox_p_->addItem(
+        QString::fromLocal8Bit("过去七天"));
+	label_pie_combobox_p_->addItem(
+        QString::fromLocal8Bit("过去三十天"));
+	label_pie_combobox_p_->addItem(QString::fromLocal8Bit("上一年"));
+	label_pie_label_p_->setText(QString::fromLocal8Bit("标签"));
+
+	initLabelsPieChart();
+	day_labels_pie_chart_view_p_->setFixedHeight(500);
+
+	label_pie_layout_p_->addWidget(label_pie_combobox_p_, 0, 0, Qt::AlignRight);
+	label_pie_layout_p_->addWidget(label_pie_label_p_, 0, 1, Qt::AlignLeft);
+	label_pie_layout_p_->addWidget(day_labels_pie_chart_view_p_, 1, 0, 1, 2);
+
+	list_widget_p_->addWidget(label_pie_widget_p_);
+}
+
+void lon::ChartsWidget::initTargetsPieWidget() {
+	target_pie_widget_p_ = new QWidget(this);
+	target_pie_label_p_ = new QLabel(target_pie_widget_p_);
+	target_pie_combobox_p_ = new QComboBox(target_pie_widget_p_);
+	target_pie_layout_p_ = new QGridLayout(target_pie_widget_p_);
+
+	target_pie_combobox_p_->addItem(QString::fromLocal8Bit("过去七天"));
+	target_pie_combobox_p_->addItem(QString::fromLocal8Bit("过去30天"));
+	target_pie_combobox_p_->addItem(QString::fromLocal8Bit("上一年"));
+	target_pie_label_p_->setText(QString::fromLocal8Bit("完成的目标情况"));
+
+	initTargetsPieChart();
+	day_targets_pie_chart_view_p_->setFixedHeight(500);
+
+	target_pie_layout_p_->addWidget(target_pie_combobox_p_, 0, 0,
+                                           1, 1, Qt::AlignRight);
+	target_pie_layout_p_->addWidget(target_pie_label_p_, 0, 1, 1,
+                                           1, Qt::AlignLeft);
+	target_pie_layout_p_->addWidget(day_targets_pie_chart_view_p_, 1,
+                                           0, 1, 2);
+
+	list_widget_p_->addWidget(target_pie_widget_p_);
+}
+
+void lon::ChartsWidget::initBestworkTimeWidget() {}
 
 lon::ChartsWidget::ChartsWidget(lon::ClockSql *sql, QWidget *parent)
     : QWidget(parent)
@@ -120,24 +215,17 @@ lon::ChartsWidget::ChartsWidget(lon::ClockSql *sql, QWidget *parent)
     week_targets_piechart_chart_p_  = nullptr;
     month_targets_piechart_chart_p_ = nullptr;
 
-    initFinishedLineChart();
-    initFinishedTimeLineChart();
-    initLabelsPieChart();
-    initTargetsPieChart();
-
-    finish_line_chart_view_p_->setFixedHeight(500);
-    finishedtime_line_chart_view_p_->setFixedHeight(500);
-    day_labels_pie_chart_view_p_->setFixedHeight(500);
-    day_targets_pie_chart_view_p_->setFixedHeight(500);
 
     close_button_p_ = new lon::Button(this);
     close_button_p_->setFixedSize(30, 30);
-    close_button_p_->setToolTip("返回");
+    close_button_p_->setToolTip(QString::fromLocal8Bit("返回"));
 
-    list_widget_p_->addWidget(finish_line_chart_view_p_);
-    list_widget_p_->addWidget(finishedtime_line_chart_view_p_);
-    list_widget_p_->addWidget(day_labels_pie_chart_view_p_);
-    list_widget_p_->addWidget(day_targets_pie_chart_view_p_);
+    initFinishLineWidget();
+	initFinishedTimeLineWidget();
+	initLabelsPieWidget();
+	initTargetsPieWidget();
+
+
     list_widget_p_->setHorizontalScrollBarVisible(true);
     list_widget_p_->setVerticalScrollBarVisible(false);
     layout_p_->addWidget(close_button_p_, 0, Qt::AlignRight);

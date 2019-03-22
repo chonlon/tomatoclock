@@ -80,12 +80,14 @@ class ClockSql {
 
     // a tomato have just finished
     void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
-        query_->exec(
+        query_->prepare(
             "INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
             "FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
-            "targets.TargetId,25, DateTime('now', 'localtime') from "
-            "finishedtomato , targets where TargetName = '7' and LabelName = "
-            "'化学'");
+            "targets.TargetId, 25, DateTime('now', 'localtime') from "
+            "finishedtomato , targets where TargetName = :target and LabelName = :label");
+		query_->bindValue(":target", target);
+		query_->bindValue(":label", label);
+		query_->exec();
     }
 
     void addLabel(const QString &label_name) {
@@ -184,46 +186,46 @@ class ClockSql {
         using namespace lon::tomato_clock;
         LastMonthData data;
         // 获取本周的每天完成的番茄数量.
-        query_->exec("SELECT day,\
-                         count(day) \
-                    FROM (\
-                             SELECT datetime(FinishTime) AS time,\
-                                    strftime('%d', FinishTime) AS day\
-                               FROM finishedtomato\
-                              WHERE date('now', '-30 day') < date(FinishTime) \
-                         )\
-                   GROUP BY day\
-                   ORDER BY day;");
+        query_->exec("SELECT day,"
+                     "count(day) "
+                     "FROM ("
+                     "SELECT datetime(FinishTime) AS time,"
+                     "strftime('%d', FinishTime) AS day"
+                     "FROM finishedtomato"
+                     "WHERE date('now', '-30 day') < date(FinishTime) "
+                     ")"
+                     "GROUP BY day"
+                     "ORDER BY day;");
 
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
         //获取本周完成的番茄的target情况
-        query_->exec("SELECT targetname,\
-                         count(targetname),\
-                    FROM (\
-                             SELECT targets.TargetName AS targetname,\
-                               FROM finishedtomato,\
-                                    targets\
-                              WHERE date('now', '-30 day') < date(FinishTime) AND \
-                                    finishedtomato.TargetId = targets.TargetId\
-                         );");
+        query_->exec("SELECT targetname,"
+                     "count(targetname),"
+                     "FROM ("
+                     "SELECT targets.TargetName AS targetname,"
+                     "FROM finishedtomato,"
+                     "targets"
+                     "WHERE date('now', '-30 day') < date(FinishTime) AND "
+                     "finishedtomato.TargetId = targets.TargetId"
+                     ");");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
                 query_->value(0).toString(), query_->value(1).toInt()));
         }
         //获取本周完成的番茄的label数据
-        query_->exec("SELECT labelname,\
-                         count(labelname) \
-                    FROM (\
-                             SELECT targets.LabelName AS labelname\
-                               FROM finishedtomato,\
-                                    targets\
-                              WHERE date('now', '-30 day') < date(FinishTime) AND \
-                                    finishedtomato.TargetId = targets.TargetId\
-                         );");
+        query_->exec("SELECT labelname,"
+                     "count(labelname) "
+                     "FROM ("
+                     "SELECT targets.LabelName AS labelname"
+                     "FROM finishedtomato,"
+                     "targets"
+                     "WHERE date('now', '-30 day') < date(FinishTime) AND "
+                     "finishedtomato.TargetId = targets.TargetId"
+                     ");");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -247,9 +249,6 @@ class ClockSql {
         return result;
     }
 
-    std::vector<QString> getTargets(QString label_name) {
-        return std::vector<QString>();
-    }
 
     std::vector<int> getWorkTimeLastMouth() { return std::vector<int>(); }
 
@@ -260,21 +259,24 @@ class ClockSql {
     /// 天:'day'</param>
     std::vector<int> getBestWorkTimeDesc(const QString &duration) {
         std::vector<int> result;
-        query_->exec("SELECT DuringTime,\
-                           strftime('%H', FinishTime) AS hours\
-                      FROM (\
-                               SELECT *\
-                                 FROM finishedtomato \
-                                 GROUP BY strftime('%H', FinishTime)\
-                           )\
-                    WHERE date('now', '-1" +
-                     duration + "') < date(FinishTime)\
-                    ORDER BY DuringTime DESC;");
+        query_->prepare("SELECT DuringTime,"
+                     "strftime('%H', FinishTime) AS hours"
+                     "FROM ("
+                     "SELECT *"
+                     "FROM finishedtomato "
+                     "GROUP BY strftime('%H', FinishTime)"
+                     ")"
+                     "WHERE date('now', "
+                     ":duration) < date(FinishTime)"
+                     "ORDER BY DuringTime DESC;");
+		query_->bindValue(":duration", "-1" + duration);
+		query_->exec();
         while (query_->next()) {
             result.emplace_back(query_->value(0).toInt());
         }
         return result;
     }
+
     /// <summary>
     /// get all labels name order by name, return by QString
     /// </summary>
