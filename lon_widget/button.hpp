@@ -39,6 +39,7 @@ class Button : public QPushButton {
     std::shared_ptr<QIcon> focus_icon_;
     std::shared_ptr<QIcon> pressed_icon_;
 
+	double scaling_factor_;
   protected:
     /// <summary>
     /// 鼠标进入按钮事件, 改变图标为focus.
@@ -97,12 +98,12 @@ class Button : public QPushButton {
 
 	virtual void setIcon(const QIcon &icon) {
 		QPushButton::setIcon(icon);
-		this->setIconSize(QSize(this->width()*0.8, this->height()*0.8));
+		this->setIconSize(QSize(this->width() * scaling_factor_, this->height()*scaling_factor_));
 	}
 
 	virtual void resizeEvent(QResizeEvent *event) {
 		QPushButton::resizeEvent(event);
-		this->setIconSize(QSize(this->width()*0.8, this->height()*0.8));
+		this->setIconSize(QSize(this->width() * scaling_factor_, this->height()*scaling_factor_));
 	}
 
   public:
@@ -114,15 +115,7 @@ class Button : public QPushButton {
     /// </summary>
     /// <param name: parent> 用于设置当前Button的parent </param>
     Button(QWidget *parent = nullptr)
-        : QPushButton(parent) {
-        //            qDebug() << QDir::currentPath();
-
-        //            std::vector<QString> vv;
-        //            vv = GetFileList(QDir::currentPath());
-
-        //            for(auto i : vv) {
-        //                qDebug() << i;
-        //            }
+        : QPushButton(parent), scaling_factor_(0.8){
 
         normal_icon_.reset(new QIcon("normal.png"));
         focus_icon_.reset(new QIcon("focus.png"));
@@ -137,7 +130,7 @@ class Button : public QPushButton {
     /// <param name = "pnormal_icon"> </param>
     Button(QIcon *pnormal_icon, QIcon *pfocus_icon, QIcon *ppressed_icon,
            QWidget *parent = nullptr)
-        : QPushButton(parent) {
+        : QPushButton(parent), scaling_factor_(0.8) {
         if (pnormal_icon == nullptr) {
             normal_icon_.reset(new QIcon("./normal.png"));
         } else {
@@ -166,12 +159,17 @@ class Button : public QPushButton {
            const std::shared_ptr<QIcon> &focus_icon,
            const std::shared_ptr<QIcon> &pressed_icon,
            QWidget *                     parent = nullptr)
-        : QPushButton(parent) {
+        : QPushButton(parent), scaling_factor_(0.8) {
         normal_icon_  = normal_icon;
         focus_icon_   = focus_icon;
         pressed_icon_ = pressed_icon;
         this->setIcon(*normal_icon_);
     }
+
+	void setScalingFactor(double factor) {
+		scaling_factor_ = factor;
+		this->setIconSize(QSize(this->width() * scaling_factor_, this->height()*scaling_factor_));
+	}
 
     /// <summary> 设置normal图标, 接管指针所指内存管理权 </summary>
     virtual void setNormal(QIcon *normal) {

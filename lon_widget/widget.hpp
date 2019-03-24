@@ -3,6 +3,7 @@
 
 #include "button.hpp"
 #include "titlebar.hpp"
+#include <QGraphicsDropShadowEffect>
 #include <QHBoxLayout>
 #include <QSizeGrip>
 #include <QVBoxLayout>
@@ -35,6 +36,7 @@ class Widget : public QWidget {
 
     bool size_girp_enabled;
 
+	QPixmap *pixmap_;
   protected:
     QWidget *center_widget_;
     QWidget *bottom_bar_;
@@ -46,8 +48,8 @@ class Widget : public QWidget {
     void initLayout() {
         p_layout_ = new QGridLayout(this);
         p_layout_->setSpacing(0);
-        p_layout_->addWidget(title_bar_, 0, 0);
-        p_layout_->addWidget(center_widget_, 1, 0);
+        p_layout_->addWidget(title_bar_, 0, 0, 1, 2);
+        p_layout_->addWidget(center_widget_, 1, 0, 1, 2);
         p_layout_->addWidget(bottom_bar_, 2, 0);
         p_layout_->setContentsMargins(0, 0, 0, 0);
     }
@@ -101,9 +103,20 @@ class Widget : public QWidget {
                 SIGNAL(closeButtonClicked()));
     }
 
+	void initWidgets() {
+		pixmap_ = nullptr;
+        QPalette palette;
+		palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
+		title_bar_->setPalette(palette);
+	}
   protected:
     virtual void resizeEvent(QResizeEvent *event) {
-        this->resize(event->size());
+        QWidget::resizeEvent(event);
+		this->resize(event->size());
+		sizeChanged(event);
+        if (pixmap_ == nullptr) return;
+        if (pixmap_->isNull()) return;
+        this->setBackground(pixmap_);
     }
 
   public:
@@ -117,6 +130,7 @@ class Widget : public QWidget {
         bottom_bar_       = new QWidget(this);
         size_girp_enabled = false;
 
+		initWidgets();
         initBottomBar();
         initLayout();
         initConnect();
@@ -135,14 +149,15 @@ class Widget : public QWidget {
         center_widget_ = center_widget;
         bottom_bar_    = bottom_bar;
 
+		initWidgets();
         initLayout();
         initConnect();
     }
 
-    virtual ~Widget() {}
+    virtual ~Widget() {
+		delete pixmap_;
+	}
 
-    /// <summary> 返回底部栏的widget指针. </summary>
-    QWidget *bottomBar() const { return bottom_bar_; }
     /// <summary> 返回中间栏的widget指针. </summary>
     QWidget *centerWidget() const { return center_widget_; }
 
@@ -172,14 +187,16 @@ class Widget : public QWidget {
         return true;
     }
 
+    /// <summary> 返回底部栏的widget指针. </summary>
+    QWidget *bottomBar() const { return bottom_bar_; }
     virtual void setTitle(const QString &title) { title_bar_->setTitle(title); }
 
     virtual void setTitleIcon(const QIcon &icon) {
         title_bar_->setTitleIcon(icon);
     }
 
-    virtual void setTitleBackground(const QIcon &icon) {
-        title_bar_->setBackground(icon);
+    virtual void setTitleBackground(QPixmap *pixmap) {
+        title_bar_->setBackground(pixmap);
     }
 
     virtual void enabelSizeGrip() {
@@ -192,15 +209,64 @@ class Widget : public QWidget {
 
     virtual bool sizeGripEnabled() { return size_girp_enabled; }
 
+	virtual void setBackground(QPixmap *pixmap) {
+        this->setAutoFillBackground(true);
+        //判断图片是否为空
+        if (pixmap->isNull()) {
+            qDebug() << tr("illege arguments") << endl;
+            return;
+        }
+        //设置窗口的背景
+        QPalette palette = this->palette();
+        palette.setBrush(
+            this->backgroundRole(),
+            QBrush(pixmap->scaled(this->size(), Qt::IgnoreAspectRatio,
+                                  Qt::SmoothTransformation)));
+        this->setPalette(palette);
+        pixmap_ = pixmap;
+    }
+
+
   signals:
     void okButtonClicked();
     void cancelButtonClicked();
     void minimizeButtonClicked();
     void maximizeButtonClicked();
     void closeButtonClicked();
+	void sizeChanged(QResizeEvent *event);
   private slots:
     void onOkButtonClicked() { emit okButtonClicked(); }
     void onCancelButtonClicked() { emit cancelButtonClicked(); }
+};
+
+class ShadowWindow : public QWidget {
+    Q_OBJECT
+  public:
+	  explicit ShadowWindow(QWidget *contentWidget, QWidget *parent = nullptr) : QWidget(parent) {
+        setWindowFlags(Qt::FramelessWindowHint);    // 去掉边框
+        setAttribute(Qt::WA_TranslucentBackground); // 背景透明
+
+
+        // 添加阴影
+        QGraphicsDropShadowEffect *shadowEffect =
+            new QGraphicsDropShadowEffect(contentWidget);
+        shadowEffect->setColor(Qt::lightGray);
+        shadowEffect->setBlurRadius(6); // 阴影的大小
+        shadowEffect->setOffset(0, 0);
+        contentWidget->setGraphicsEffect(shadowEffect);
+
+        // 添加到窗口中
+        QVBoxLayout *layout = new QVBoxLayout();
+        layout->addWidget(contentWidget);
+        layout->setContentsMargins(4, 4, 4, 4); // 注意和阴影大小的协调
+        setLayout(layout);
+		connect(contentWidget, SIGNAL(sizeChanged(QResizeEvent*)), this,
+		            SLOT(sizeChanged(QResizeEvent*)));
+	}
+public slots:
+	void sizeChanged(QResizeEvent *event) {
+		this->resize(event->size().width() + 8, event->size().height() + 8);
+	}
 };
 } // namespace lon
 

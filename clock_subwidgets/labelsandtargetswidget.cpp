@@ -11,7 +11,7 @@
 #include <list>
 
 static const unsigned int duration            = 600000;
-static const unsigned int label_widget_height = 100;
+static const unsigned int label_widget_height = 110;
 static const int          button_width_height = 50;
 
 lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql,
@@ -49,6 +49,7 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     add_label_button_p_ = new lon::Button(this);
 	add_label_button_p_->setFlat(true);
 	add_label_button_p_->setNormal(new QIcon(":/icon/Icons/add_label_custom.png"));
+	add_label_button_p_->setScalingFactor(0.7);
 
     labels_widget_p_->setFixedHeight(label_widget_height);
     add_label_button_p_->setFixedSize(button_width_height, button_width_height);
@@ -64,6 +65,7 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     QSpacerItem *item_copy = new QSpacerItem(*label_widget_spacer_p_);
 
     labels_widget_p_->setLayout(labels_layout_p_);
+	labels_layout_p_->setContentsMargins(0, 0, 0, 0);
 
     add_label_button_layout_p_->addSpacerItem(label_widget_spacer_p_);
     add_label_button_layout_p_->addWidget(add_label_button_p_);
@@ -71,6 +73,7 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
 
     labels_main_layout_p_->addWidget(labels_widget_p_);
     labels_main_layout_p_->addLayout(add_label_button_layout_p_);
+
     // labels_main_layout_p_->setAlignment(add_label_button_layout_p_,
     //                                         Qt::AlignRight);
 
@@ -91,6 +94,11 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     target_main_layout_p_   = new QHBoxLayout(this);
     target_button_layout_p_ = new QVBoxLayout(this);
     targets_list_widget_p_  = new lon::ListWidget(this);
+	QPalette palette;
+    palette.setBrush(this->backgroundRole(),
+                     QBrush(QColor(255, 255, 255, 30)));
+	targets_list_widget_p_->setPalette(palette);
+
     button_map_[ all_button_ ] =
         new lon::AutoDeleteWidgetPointer(duration, targets_list_widget_p_);
     current_widget_pointer_ = button_map_[ all_button_ ];
@@ -104,6 +112,14 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     add_target_button_p_ = new lon::Button(this);
     history_button_p_    = new lon::Button(this);
     setting_button_p_    = new lon::Button(this);
+
+	add_target_button_p_->setFlat(true);
+	history_button_p_->setFlat(true);
+	add_target_button_p_->setNormal(new QIcon(":/icon/Icons/add_target_custom.png"));
+	history_button_p_->setNormal(new QIcon(":/icon/Icons/history_custom.png"));
+	add_target_button_p_->setScalingFactor(0.9);
+	history_button_p_->setScalingFactor(0.6);
+
 
     add_target_button_p_->setFixedSize(button_width_height,
                                        button_width_height);
@@ -138,7 +154,7 @@ void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
                                             const QString &text) {
     const uint8_t  row_width      = 8;
 
-    button->setFixedSize(60, 30);
+    button->setFixedSize(45, 45);
     button->setText(text);
     button->setToolTip(text);
     labels_layout_p_->addWidget(button, current_row, current_cloumn);
@@ -147,6 +163,7 @@ void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
         ++current_row;
     }
     button_map_[ button ] = nullptr;
+	button->setStyleSheet("QPushButton{border-image: url(:/icon/Icons/label.png);}");
     connect(button, SIGNAL(clicked()), this, SLOT(onLabelButtonClicked()));
 }
 

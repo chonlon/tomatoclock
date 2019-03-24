@@ -35,6 +35,8 @@ class TitleBar : public QWidget {
     std::shared_ptr<QIcon> max_normal_focus_;
     std::shared_ptr<QIcon> max_normal_pressed_;
 
+    QPixmap *pixmap_;
+
     QHBoxLayout *title_bar_layout_;
 
     bool   is_pressed_;
@@ -244,6 +246,7 @@ class TitleBar : public QWidget {
         assert(parent && "the parent of titlebar cannot be empty");
 
         is_pressed_ = false;
+		pixmap_ = nullptr;
 
         this->resize(parent->width(), TITLE_BAR_HEIGHT);
         this->setFixedHeight(TITLE_BAR_HEIGHT);
@@ -264,13 +267,28 @@ class TitleBar : public QWidget {
     }
 
     /// <summary> 以传入的icon设置TitleBar的背景</summary>
-    virtual void setBackground(const QIcon &icon) {
+    virtual void setBackground(QPixmap *pixmap) {
         this->setAutoFillBackground(true);
-        QPalette palette;
-
-        palette.setBrush(backgroundRole(), QBrush(icon.pixmap(this->size())));
-
+        //判断图片是否为空
+        if (pixmap->isNull()) {
+            qDebug() << tr("illege arguments") << endl;
+            return;
+        }
+        //设置窗口的背景
+        QPalette palette = this->palette();
+        palette.setBrush(
+            this->backgroundRole(),
+            QBrush(pixmap->scaled(this->size(), Qt::IgnoreAspectRatio,
+                                  Qt::SmoothTransformation)));
         this->setPalette(palette);
+        pixmap_ = pixmap;
+    }
+
+    void resizeEvent(QResizeEvent *event) {
+		QWidget::resizeEvent(event);
+		if (pixmap_ == nullptr) return;
+        if (pixmap_->isNull()) return;
+        this->setBackground(pixmap_);
     }
 
     virtual ~TitleBar() {
@@ -283,6 +301,8 @@ class TitleBar : public QWidget {
         max_normal_normal_  = nullptr;
         max_normal_focus_   = nullptr;
         max_normal_pressed_ = nullptr;
+
+		delete pixmap_;
     }
   signals:
     void minimizeButtonClicked();
@@ -304,7 +324,7 @@ class TitleBar : public QWidget {
                 this->updateMaximize();
             } else if (pButton == pclose_button_) {
                 pWindow->close();
-				emit closeButtonClicked();
+                emit closeButtonClicked();
             }
         }
     }

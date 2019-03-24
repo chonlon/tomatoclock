@@ -45,6 +45,11 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
 	this->centerWidget()->setLayout(main_layout_);
 	this->setBottomBar(nullptr);
 	this->enabelSizeGrip();
+	// 设置标题栏的背景图.
+	this->setTitleBackground(new QPixmap(":/background/Res/Img/titlebarbackground.png"));
+	// 设置程序背景
+	this->setBackground(new QPixmap(":/background/Res/Img/background.png"));
+	this->setMinimumSize(900, 650);
 }
 
 void lon::ClockMainWidget::displayClock(const QString &label,

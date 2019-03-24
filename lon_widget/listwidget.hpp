@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include <QGraphicsEffect>
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QScrollBar>
@@ -29,6 +30,9 @@ class ListWidget : public QWidget {
         this->resize(w, h);
     }
 	virtual void setVerticalScrollBarStyle() {
+        QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect;
+		scroll_area_p_->verticalScrollBar()->setGraphicsEffect(opacityEffect);
+        opacityEffect->setOpacity(0.4);
 		scroll_area_p_->verticalScrollBar()->setStyleSheet(
             "QScrollBar:vertical"
             "{"

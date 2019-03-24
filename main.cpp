@@ -36,7 +36,8 @@ int main(int argc, char *argv[]) {
     // m.show();
     // lon::TargetWidget t;
     // t.show();
-    lon::ClockMainWidget c;
-    c.show();
+	lon::ClockMainWidget *c = new lon::ClockMainWidget();
+	lon::ShadowWindow cc(c);
+	cc.show();
     return a.exec();
 }
