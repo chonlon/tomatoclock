@@ -11,7 +11,7 @@ lon::TomatoClockTimer::TomatoClockTimer(QObject *parent)
     : QObject(parent)
     , started_(false) {
     timer_ = new QTimer(this);
-    timer_->start(10);
+    timer_->start(1000);
     std::unique_ptr<lon::ClockOptions> clock(new lon::ClockOptions());
     timer_status_ = new lon::TimerStatus(clock);
     connect(timer_, SIGNAL(timeout()), this, SLOT(oneSecondPassed()));

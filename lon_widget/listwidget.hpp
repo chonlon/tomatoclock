@@ -4,13 +4,13 @@
 #include <memory>
 #include <vector>
 
+
 #include <QGraphicsEffect>
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QWidget>
-
 namespace lon {
 /// 这是一个list显示widget的简单封装.
 /// 这个类会获得添加的widget的所有权.
@@ -29,11 +29,12 @@ class ListWidget : public QWidget {
         int h = event->size().height();
         this->resize(w, h);
     }
-	virtual void setVerticalScrollBarStyle() {
+    virtual void setVerticalScrollBarStyle() {
         QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect;
-		scroll_area_p_->verticalScrollBar()->setGraphicsEffect(opacityEffect);
+		//QWidget takes ownership of effect.
+        scroll_area_p_->verticalScrollBar()->setGraphicsEffect(opacityEffect);
         opacityEffect->setOpacity(0.4);
-		scroll_area_p_->verticalScrollBar()->setStyleSheet(
+        scroll_area_p_->verticalScrollBar()->setStyleSheet(
             "QScrollBar:vertical"
             "{"
             "border-radius:4px;"
@@ -50,7 +51,7 @@ class ListWidget : public QWidget {
             "}"
             "QScrollBar::handle:vertical "
             "{"
-			"border-radius:3px;"
+            "border-radius:3px;"
             "background: rgb(202,202,202);"
             "border-radius:4px;"
             "min-height: 20px;"
@@ -93,7 +94,8 @@ class ListWidget : public QWidget {
             "QScrollBar::down-arrow:vertical:pressed"
             "{"
             "}");
-	}
+    }
+
   public:
     explicit ListWidget(QWidget *parent = nullptr)
         : QWidget(parent) {
@@ -104,11 +106,10 @@ class ListWidget : public QWidget {
         scroll_area_p_->setWidgetResizable(true);
         widget_->setLayout(main_layout_);
         widget_->resize(this->window()->size());
+		//The widget becomes a child of the scroll area, and will be destroyed when the scroll area is deleted or when a new widget is set.
         scroll_area_p_->setWidget(widget_);
-		setVerticalScrollBarStyle();
+        setVerticalScrollBarStyle();
     }
-
-
 
     void addWidget(QWidget *widget) {
         widget_list_.emplace_back(widget);
@@ -116,17 +117,17 @@ class ListWidget : public QWidget {
         main_layout_->addWidget(widget);
     }
 
-	void insertWidget(int index, QWidget *widget) {
+    void insertWidget(int index, QWidget *widget) {
         widget_list_.emplace_back(widget);
         main_layout_->addSpacing(20);
-		main_layout_->insertWidget(index, widget);
-	}
+        main_layout_->insertWidget(index, widget);
+    }
 
-	//void removeWidget(int index);
+    // void removeWidget(int index);
 
-	std::shared_ptr<QWidget> indexOf(int index) {
-		return widget_list_[index];
-	}
+    std::shared_ptr<QWidget> indexOf(int index) {
+        return widget_list_[ index ];
+    }
 
     void resize(int w, int h) {
         QWidget::resize(w, h);
@@ -135,12 +136,13 @@ class ListWidget : public QWidget {
 
     void setHorizontalScrollBarVisible(bool visible) {
         scroll_area_p_->horizontalScrollBar()->setVisible(visible);
-		scroll_area_p_->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+        scroll_area_p_->setHorizontalScrollBarPolicy(
+            Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     }
 
     void setVerticalScrollBarVisible(bool visible) {
         scroll_area_p_->verticalScrollBar()->setVisible(visible);
-		scroll_area_p_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll_area_p_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
 };
 } // namespace lon

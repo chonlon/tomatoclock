@@ -36,7 +36,7 @@ class ClockSmallWindow : public QWidget {
   public:
     explicit ClockSmallWindow(QWidget *parent = nullptr);
 
-    ~ClockSmallWindow();
+	~ClockSmallWindow();
 
     const uint16_t fixed_height_;
     const uint16_t fixed_width_;

@@ -5,7 +5,6 @@
 #include "clock_subwidgets/targetwidget.h"
 #include "lon_widget/button.hpp"
 #include "lon_widget/listwidget.hpp"
-#include "clock_subwidgets/addtargetwidget.h"
 
 #include <iostream>
 #include <list>
@@ -18,13 +17,13 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql,
                                                     QWidget *      parent)
     : QWidget(parent)
     , sql_(sql)
-	, current_cloumn(0)
-	, current_row(0){
+    , current_cloumn(0)
+    , current_row(0) {
     main_layout_p_        = new QVBoxLayout(this);
     labels_and_targets_p_ = new std::list<std::pair<QString, QString>>(
         sql_->getAllTargetsAndLabels());
-	addlabelwidget_p_ = nullptr;
-	addtargetwidget_p_ = nullptr;
+    addlabelwidget_p_  = nullptr;
+    addtargetwidget_p_ = nullptr;
 
     // labels ..
     initLabelsLayout();
@@ -47,9 +46,10 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     add_label_button_layout_p_ = new QVBoxLayout(labels_widget_p_);
 
     add_label_button_p_ = new lon::Button(this);
-	add_label_button_p_->setFlat(true);
-	add_label_button_p_->setNormal(new QIcon(":/icon/Icons/add_label_custom.png"));
-	add_label_button_p_->setScalingFactor(0.7);
+    add_label_button_p_->setFlat(true);
+    add_label_button_p_->setNormal(
+        new QIcon(":/icon/Icons/add_label_custom.png"));
+    add_label_button_p_->setScalingFactor(0.7);
 
     labels_widget_p_->setFixedHeight(label_widget_height);
     add_label_button_p_->setFixedSize(button_width_height, button_width_height);
@@ -65,7 +65,7 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     QSpacerItem *item_copy = new QSpacerItem(*label_widget_spacer_p_);
 
     labels_widget_p_->setLayout(labels_layout_p_);
-	labels_layout_p_->setContentsMargins(0, 0, 0, 0);
+    labels_layout_p_->setContentsMargins(0, 0, 0, 0);
 
     add_label_button_layout_p_->addSpacerItem(label_widget_spacer_p_);
     add_label_button_layout_p_->addWidget(add_label_button_p_);
@@ -94,10 +94,9 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     target_main_layout_p_   = new QHBoxLayout(this);
     target_button_layout_p_ = new QVBoxLayout(this);
     targets_list_widget_p_  = new lon::ListWidget(this);
-	QPalette palette;
-    palette.setBrush(this->backgroundRole(),
-                     QBrush(QColor(255, 255, 255, 30)));
-	targets_list_widget_p_->setPalette(palette);
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
+    targets_list_widget_p_->setPalette(palette);
 
     button_map_[ all_button_ ] =
         new lon::AutoDeleteWidgetPointer(duration, targets_list_widget_p_);
@@ -113,13 +112,13 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     history_button_p_    = new lon::Button(this);
     setting_button_p_    = new lon::Button(this);
 
-	add_target_button_p_->setFlat(true);
-	history_button_p_->setFlat(true);
-	add_target_button_p_->setNormal(new QIcon(":/icon/Icons/add_target_custom.png"));
-	history_button_p_->setNormal(new QIcon(":/icon/Icons/history_custom.png"));
-	add_target_button_p_->setScalingFactor(0.9);
-	history_button_p_->setScalingFactor(0.6);
-
+    add_target_button_p_->setFlat(true);
+    history_button_p_->setFlat(true);
+    add_target_button_p_->setNormal(
+        new QIcon(":/icon/Icons/add_target_custom.png"));
+    history_button_p_->setNormal(new QIcon(":/icon/Icons/history_custom.png"));
+    add_target_button_p_->setScalingFactor(0.9);
+    history_button_p_->setScalingFactor(0.6);
 
     add_target_button_p_->setFixedSize(button_width_height,
                                        button_width_height);
@@ -138,21 +137,21 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
 }
 
 void lon::LabelsAndTargetsWidget::addTargetWidget(QString labelname,
-                                                  QString targetname, int index) {
+                                                  QString targetname,
+                                                  int     index) {
     lon::TargetWidget *target_widget =
         new lon::TargetWidget(labelname, targetname, this);
-	if (index == -1)
-		targets_list_widget_p_->addWidget(target_widget);
-	else
-		targets_list_widget_p_->insertWidget(index, target_widget);
-    connect(target_widget,
-            SIGNAL(startButtonClicked(QString , QString )), this,
+    if (index == -1)
+        targets_list_widget_p_->addWidget(target_widget);
+    else
+        targets_list_widget_p_->insertWidget(index, target_widget);
+    connect(target_widget, SIGNAL(startButtonClicked(QString, QString)), this,
             SIGNAL(startClock(QString, QString)));
 }
 
 void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
                                             const QString &text) {
-    const uint8_t  row_width      = 8;
+    const uint8_t row_width = 8;
 
     button->setFixedSize(45, 45);
     button->setText(text);
@@ -163,7 +162,8 @@ void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
         ++current_row;
     }
     button_map_[ button ] = nullptr;
-	button->setStyleSheet("QPushButton{border-image: url(:/icon/Icons/label.png);}");
+    button->setStyleSheet(
+        "QPushButton{border-image: url(:/icon/Icons/label.png);}");
     connect(button, SIGNAL(clicked()), this, SLOT(onLabelButtonClicked()));
 }
 
@@ -173,7 +173,7 @@ void lon::LabelsAndTargetsWidget::saveLabelToSql(const QString &label_name) {
 
 void lon::LabelsAndTargetsWidget::saveTargetToSql(const QString &label_name,
                                                   const QString &target_name) {
-	sql_->addTarget(label_name, target_name);
+    sql_->addTarget(label_name, target_name);
 }
 
 void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
@@ -213,27 +213,27 @@ void lon::LabelsAndTargetsWidget::closeAddLabelWidget() {
 }
 
 void lon::LabelsAndTargetsWidget::closeAddTargetWidget() {
-	if (addtargetwidget_p_) {
-		addtargetwidget_p_->window()->close();
-		delete addtargetwidget_p_;
-		addtargetwidget_p_ = nullptr;
-	}
+    if (addtargetwidget_p_) {
+        addtargetwidget_p_->window()->close();
+        delete addtargetwidget_p_;
+        addtargetwidget_p_ = nullptr;
+    }
 }
 
 void lon::LabelsAndTargetsWidget::addTarget() {
-	auto labels = sql_->getAllLabels();
-	auto addtargetwidget_p_ = new lon::AddTargetWidget(labels, sql_);
-	addtargetwidget_p_->show();
-	connect(addtargetwidget_p_, SIGNAL(targetAdded(QString, QString)), this,
-	            SLOT(targetAdded(QString, QString)));
-	connect(addtargetwidget_p_, SIGNAL(closeButtonClicked()), this,
-	            SLOT(closeAddTargetWidget()));
-	connect(addtargetwidget_p_, SIGNAL(cancelButtonClicked()), this,
-		SLOT(closeAddTargetWidget()));
+    auto labels             = sql_->getAllLabels();
+    auto addtargetwidget_p_ = new lon::AddTargetWidget(labels, sql_);
+    addtargetwidget_p_->show();
+    connect(addtargetwidget_p_, SIGNAL(targetAdded(QString, QString)), this,
+            SLOT(targetAdded(QString, QString)));
+    connect(addtargetwidget_p_, SIGNAL(closeButtonClicked()), this,
+            SLOT(closeAddTargetWidget()));
+    connect(addtargetwidget_p_, SIGNAL(cancelButtonClicked()), this,
+            SLOT(closeAddTargetWidget()));
 }
 
 void lon::LabelsAndTargetsWidget::addLabel() {
-    auto                 labels            = sql_->getAllLabels();
+    auto labels       = sql_->getAllLabels();
     addlabelwidget_p_ = new lon::AddLabelWidget(labels);
     addlabelwidget_p_->show();
     connect(addlabelwidget_p_, SIGNAL(labelAdded(QString)), this,
@@ -252,9 +252,9 @@ void lon::LabelsAndTargetsWidget::labelAdded(QString text) {
 }
 
 void lon::LabelsAndTargetsWidget::targetAdded(QString label, QString target) {
-	addTargetWidget(label, target, 0);
-	saveTargetToSql(label, target);
-	closeAddTargetWidget();
+    addTargetWidget(label, target, 0);
+    saveTargetToSql(label, target);
+    closeAddTargetWidget();
 }
 
 void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
@@ -262,6 +262,7 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
     // 如果点击的现在的widget对应的button
     // 这么写应该不会有多少影响, 下面执行很快, 刚好使计时少10ms的概率很低,
     // 而且发生了影响不大.
+	current_widget_pointer_->getWidgetPointer()->setVisible(false);
     current_widget_pointer_->setShouldDelete(true);
 
     auto iter = button_map_.find(button);
@@ -278,6 +279,10 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
         // label.
         target_main_layout_p_->removeWidget(targets_list_widget_p_);
         targets_list_widget_p_ = new lon::ListWidget(this);
+        QPalette palette;
+        palette.setBrush(this->backgroundRole(),
+                         QBrush(QColor(255, 255, 255, 30)));
+        targets_list_widget_p_->setPalette(palette);
         iter->second =
             new lon::AutoDeleteWidgetPointer(duration, targets_list_widget_p_);
         current_widget_pointer_ = iter->second;
@@ -285,6 +290,7 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
         target_main_layout_p_->insertWidget(0, targets_list_widget_p_);
     }
     current_widget_pointer_->setShouldDelete(false);
+	current_widget_pointer_->getWidgetPointer()->setVisible(true);
 }
 
 // void lon::LabelsAndTargetsWidget::startClock(const QString &label_name,const

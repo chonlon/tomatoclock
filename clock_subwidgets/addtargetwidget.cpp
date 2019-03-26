@@ -43,7 +43,6 @@ void lon::AddTargetWidget::onOkButtonClicked() {
     }
 }
 
-
 void lon::AddTargetWidget::showMessage(const QString &message) {
-    lon::MessageBox *mb = new lon::MessageBox("", message);
+    new lon::MessageBoxWrapper("", message);
 }

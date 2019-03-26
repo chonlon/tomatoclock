@@ -11,7 +11,6 @@
 #include <QWidget>
 #include <cassert>
 #include <memory>
-
 namespace lon {
 class TitleBar : public QWidget {
     Q_OBJECT
@@ -246,7 +245,7 @@ class TitleBar : public QWidget {
         assert(parent && "the parent of titlebar cannot be empty");
 
         is_pressed_ = false;
-		pixmap_ = nullptr;
+        pixmap_     = nullptr;
 
         this->resize(parent->width(), TITLE_BAR_HEIGHT);
         this->setFixedHeight(TITLE_BAR_HEIGHT);
@@ -285,8 +284,8 @@ class TitleBar : public QWidget {
     }
 
     void resizeEvent(QResizeEvent *event) {
-		QWidget::resizeEvent(event);
-		if (pixmap_ == nullptr) return;
+        QWidget::resizeEvent(event);
+        if (pixmap_ == nullptr) return;
         if (pixmap_->isNull()) return;
         this->setBackground(pixmap_);
     }
@@ -302,7 +301,7 @@ class TitleBar : public QWidget {
         max_normal_focus_   = nullptr;
         max_normal_pressed_ = nullptr;
 
-		delete pixmap_;
+        delete pixmap_;
     }
   signals:
     void minimizeButtonClicked();

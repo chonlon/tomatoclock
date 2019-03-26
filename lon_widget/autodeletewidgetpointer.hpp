@@ -1,9 +1,9 @@
 #ifndef AUTODELETEWIDGETPOINTER_H
 #define AUTODELETEWIDGETPOINTER_H
 
+
 #include <mutex>
 #include <thread>
-
 class QWidget;
 static void deleteAfterMs(unsigned int duration, QWidget **w_pointer,
                           std::mutex &mutex, bool &should_delete) {
@@ -58,7 +58,7 @@ class AutoDeleteWidgetPointer {
         std::lock_guard<std::mutex> lm(pointer_mutex_);
         should_delete_ = should_delete;
     }
-    const QWidget *getWidgetPointer() {
+    QWidget *getWidgetPointer() {
         std::lock_guard<std::mutex> lm(pointer_mutex_);
         return widget_p_;
     }

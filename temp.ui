@@ -15,44 +15,113 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item alignment="Qt::AlignRight">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QScrollArea" name="scrollArea">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>1003</width>
-            <height>554</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QWidget" name="widget_2" native="true"/>
-           </item>
-           <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-            <widget class="QWidget" name="widget" native="true"/>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/background/1111.png);</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollBar" name="verticalScrollBar">
+     <property name="styleSheet">
+      <string notr="true">QScrollBar:vertical
+{
+    border-radius:4px;
+    background: white;
+    width: 10px;
+    margin: 0px 0px 0 0px;
+}
+QScrollBar:vertical:hover
+{
+    border-radius:4px;
+    background: rgb(228,228,228);
+    width: 10px;
+    margin: 0px 0px 0 0px;
+}
+ 
+QScrollBar::handle:vertical 
+{
+    background: rgb(202,202,202);
+    border-radius:4px;
+    min-height: 20px;
+}
+QScrollBar::handle:vertical:hover
+{
+    background: rgb(113,113,113);
+    border-radius:4px;
+    min-height: 20px;
+}
+ 
+QScrollBar::add-line:vertical 
+{
+    background: none;
+    height: 10px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+ 
+QScrollBar::sub-line:vertical 
+{
+    background: none;
+    height: 10px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+ 
+QScrollBar::up-arrow:vertical
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowup_normal.png);
+}
+QScrollBar::up-arrow:vertical:hover
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowup_highlight.png);
+}
+QScrollBar::up-arrow:vertical:pressed
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowup_down.png);
+}
+ 
+QScrollBar::down-arrow:vertical 
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowdown_normal.png);
+}
+QScrollBar::down-arrow:vertical:hover
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowdown_highlight.png);
+}
+QScrollBar::down-arrow:vertical:pressed
+{
+    width: 10px;
+    height: 10px;
+    background: url(:/ScrollBar/ScrollBar/scrollbar_arrowdown_down.png);
+}
+ 
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical 
+{
+    background: none;
+}</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

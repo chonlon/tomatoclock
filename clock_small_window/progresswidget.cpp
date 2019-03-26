@@ -51,6 +51,7 @@ lon::clock_window::ProgressWidget::~ProgressWidget() {
     delete working_foreground_brush_;
     delete shortbreaking_foreground_brush_;
     delete longbreaking_foreground_brush_;
+	delete pen_;
 }
 
 void lon::clock_window::ProgressWidget::updateTimeDisplay(

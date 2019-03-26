@@ -22,9 +22,9 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     : lon::Widget(parent)
     , keep_working_(false) {
     sql_p_ = new lon::ClockSql();
-    //this->setWindowFlags(Qt::FramelessWindowHint |
-                         //Qt::WindowMinimizeButtonHint);
-	//title_bar_p_ = new lon::TitleBar(this);
+    // this->setWindowFlags(Qt::FramelessWindowHint |
+    // Qt::WindowMinimizeButtonHint);
+    // title_bar_p_ = new lon::TitleBar(this);
 
     labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
     clock_running_widget_p_  = nullptr;
@@ -42,14 +42,18 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
             SLOT(displaySetting()));
     connect(labels_targets_widget_p_, SIGNAL(showChart()), this,
             SLOT(displayChart()));
-	this->centerWidget()->setLayout(main_layout_);
-	this->setBottomBar(nullptr);
-	this->enabelSizeGrip();
-	// 设置标题栏的背景图.
-	this->setTitleBackground(new QPixmap(":/background/Res/Img/titlebarbackground.png"));
-	// 设置程序背景
-	this->setBackground(new QPixmap(":/background/Res/Img/background.png"));
-	this->setMinimumSize(900, 650);
+    this->centerWidget()->setLayout(main_layout_);
+	QWidget *temp = new QWidget(this);
+	temp->setMaximumHeight(50);
+	this->setBottomBar(temp);
+
+    this->enabelSizeGrip();
+    // 设置标题栏的背景图.
+    this->setTitleBackground(
+        new QPixmap(":/background/Res/Img/titlebarbackground.png"));
+    // 设置程序背景
+    this->setBackground(new QPixmap(":/background/Res/Img/background.png"));
+    this->setMinimumSize(900, 650);
 }
 
 void lon::ClockMainWidget::displayClock(const QString &label,
@@ -66,7 +70,7 @@ void lon::ClockMainWidget::displayClock(const QString &label,
     }
     timer->start();
 
-	running_clock_label_name_ = label;
+    running_clock_label_name_  = label;
     running_clock_target_name_ = target;
 
     clock_running_widget_p_ = new lon::ClockRunningWidget(this);
@@ -89,9 +93,8 @@ void lon::ClockMainWidget::displayTarget() {
 
     labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_, this);
     main_layout_->addWidget(labels_targets_widget_p_);
-    connect(labels_targets_widget_p_,
-            SIGNAL(startClock(QString , QString)), this,
-            SLOT(displayClock(const QString &, const QString &)));
+    connect(labels_targets_widget_p_, SIGNAL(startClock(QString, QString)),
+            this, SLOT(displayClock(const QString &, const QString &)));
     connect(labels_targets_widget_p_, SIGNAL(changeSetting()), this,
             SLOT(displaySetting()));
     connect(labels_targets_widget_p_, SIGNAL(showChart()), this,
@@ -105,6 +108,10 @@ void lon::ClockMainWidget::displayChart() {
         labels_targets_widget_p_ = nullptr;
     }
     chart_widget_p_ = new lon::ChartsWidget(sql_p_, this);
+	//# background
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
+	chart_widget_p_->setPalette(palette);
     main_layout_->addWidget(chart_widget_p_);
     connect(chart_widget_p_, SIGNAL(closeButtonClicked()), this,
             SLOT(displayTarget()));
@@ -116,7 +123,7 @@ void lon::ClockMainWidget::clockFinished() {
     } else {
         lon::MessageBoxWrapper *m =
             new lon::MessageBoxWrapper(QString::fromLocal8Bit("番茄完成"),
-                                QString::fromLocal8Bit("番茄已完成."));
+                                       QString::fromLocal8Bit("番茄已完成."));
         displayTarget();
     }
 }

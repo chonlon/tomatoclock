@@ -40,11 +40,11 @@ void lon::AddLabelWidget::closeMessagebox() {
         delete messagebox_p_;
         messagebox_p_ = nullptr;
     }
-	setLineEditFocus();
+    setLineEditFocus();
 }
 
 void lon::AddLabelWidget::setLineEditFocus() {
-	line_edit_p_->setFocus(Qt::OtherFocusReason);
+    line_edit_p_->setFocus(Qt::OtherFocusReason);
     line_edit_p_->selectAll();
 }
 

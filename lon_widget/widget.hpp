@@ -9,7 +9,6 @@
 #include <QVBoxLayout>
 #include <QtWidgets>
 #include <cassert>
-
 namespace lon {
 /// 统一样式的widget订制.
 /// 其实也只是一个简单的封装.
@@ -36,7 +35,8 @@ class Widget : public QWidget {
 
     bool size_girp_enabled;
 
-	QPixmap *pixmap_;
+    QPixmap *pixmap_;
+
   protected:
     QWidget *center_widget_;
     QWidget *bottom_bar_;
@@ -50,7 +50,7 @@ class Widget : public QWidget {
         p_layout_->setSpacing(0);
         p_layout_->addWidget(title_bar_, 0, 0, 1, 2);
         p_layout_->addWidget(center_widget_, 1, 0, 1, 2);
-        p_layout_->addWidget(bottom_bar_, 2, 0);
+        p_layout_->addWidget(bottom_bar_, 2, 0, 1, 1);
         p_layout_->setContentsMargins(0, 0, 0, 0);
     }
     void initBottomBar() {
@@ -103,17 +103,18 @@ class Widget : public QWidget {
                 SIGNAL(closeButtonClicked()));
     }
 
-	void initWidgets() {
-		pixmap_ = nullptr;
+    void initWidgets() {
+        pixmap_ = nullptr;
         QPalette palette;
-		palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
-		title_bar_->setPalette(palette);
-	}
+        palette.setBrush(this->backgroundRole(),
+                         QBrush(QColor(255, 255, 255, 30)));
+        title_bar_->setPalette(palette);
+    }
+
   protected:
     virtual void resizeEvent(QResizeEvent *event) {
         QWidget::resizeEvent(event);
-		this->resize(event->size());
-		sizeChanged(event);
+        sizeChanged(event);
         if (pixmap_ == nullptr) return;
         if (pixmap_->isNull()) return;
         this->setBackground(pixmap_);
@@ -130,7 +131,7 @@ class Widget : public QWidget {
         bottom_bar_       = new QWidget(this);
         size_girp_enabled = false;
 
-		initWidgets();
+        initWidgets();
         initBottomBar();
         initLayout();
         initConnect();
@@ -141,22 +142,20 @@ class Widget : public QWidget {
         : QWidget(parent) {
         assert(center_widget && "pointer cannot be null");
         assert(bottom_bar && "pointer cannot be null");
-		this->setWindowFlags(Qt::FramelessWindowHint |
-			Qt::WindowMinimizeButtonHint);
+        this->setWindowFlags(Qt::FramelessWindowHint |
+                             Qt::WindowMinimizeButtonHint);
 
         title_bar_ = new lon::TitleBar(this);
 
         center_widget_ = center_widget;
         bottom_bar_    = bottom_bar;
 
-		initWidgets();
+        initWidgets();
         initLayout();
         initConnect();
     }
 
-    virtual ~Widget() {
-		delete pixmap_;
-	}
+    virtual ~Widget() { delete pixmap_; }
 
     /// <summary> 返回中间栏的widget指针. </summary>
     QWidget *centerWidget() const { return center_widget_; }
@@ -169,8 +168,7 @@ class Widget : public QWidget {
         delete bottom_bar_;
 
         bottom_bar_ = widget;
-		if(bottom_bar_)
-			p_layout_->addWidget(bottom_bar_, 2, 0);
+        if (bottom_bar_) p_layout_->addWidget(bottom_bar_, 2, 0, 1, 1);
         return true;
     }
 
@@ -182,19 +180,19 @@ class Widget : public QWidget {
 
         delete center_widget_;
         center_widget_ = widget;
-		if(center_widget_)
-			p_layout_->addWidget(center_widget_, 1, 0);
+        if (center_widget_) p_layout_->addWidget(center_widget_, 1, 0);
         return true;
     }
 
     /// <summary> 返回底部栏的widget指针. </summary>
-    QWidget *bottomBar() const { return bottom_bar_; }
+    QWidget *    bottomBar() const { return bottom_bar_; }
     virtual void setTitle(const QString &title) { title_bar_->setTitle(title); }
 
     virtual void setTitleIcon(const QIcon &icon) {
         title_bar_->setTitleIcon(icon);
     }
 
+	// this class will take pixmap's ownship
     virtual void setTitleBackground(QPixmap *pixmap) {
         title_bar_->setBackground(pixmap);
     }
@@ -209,7 +207,8 @@ class Widget : public QWidget {
 
     virtual bool sizeGripEnabled() { return size_girp_enabled; }
 
-	virtual void setBackground(QPixmap *pixmap) {
+	// this class will take pixmap's ownship
+    virtual void setBackground(QPixmap *pixmap) {
         this->setAutoFillBackground(true);
         //判断图片是否为空
         if (pixmap->isNull()) {
@@ -226,14 +225,13 @@ class Widget : public QWidget {
         pixmap_ = pixmap;
     }
 
-
   signals:
     void okButtonClicked();
     void cancelButtonClicked();
     void minimizeButtonClicked();
     void maximizeButtonClicked();
     void closeButtonClicked();
-	void sizeChanged(QResizeEvent *event);
+    void sizeChanged(QResizeEvent *event);
   private slots:
     void onOkButtonClicked() { emit okButtonClicked(); }
     void onCancelButtonClicked() { emit cancelButtonClicked(); }
@@ -242,10 +240,10 @@ class Widget : public QWidget {
 class ShadowWindow : public QWidget {
     Q_OBJECT
   public:
-	  explicit ShadowWindow(QWidget *contentWidget, QWidget *parent = nullptr) : QWidget(parent) {
+    explicit ShadowWindow(QWidget *contentWidget, QWidget *parent = nullptr)
+        : QWidget(parent) {
         setWindowFlags(Qt::FramelessWindowHint);    // 去掉边框
         setAttribute(Qt::WA_TranslucentBackground); // 背景透明
-
 
         // 添加阴影
         QGraphicsDropShadowEffect *shadowEffect =
@@ -256,17 +254,17 @@ class ShadowWindow : public QWidget {
         contentWidget->setGraphicsEffect(shadowEffect);
 
         // 添加到窗口中
-        QVBoxLayout *layout = new QVBoxLayout();
+        QVBoxLayout *layout = new QVBoxLayout(this);
         layout->addWidget(contentWidget);
         layout->setContentsMargins(4, 4, 4, 4); // 注意和阴影大小的协调
         setLayout(layout);
-		connect(contentWidget, SIGNAL(sizeChanged(QResizeEvent*)), this,
-		            SLOT(sizeChanged(QResizeEvent*)));
-	}
-public slots:
-	void sizeChanged(QResizeEvent *event) {
-		this->resize(event->size().width() + 8, event->size().height() + 8);
-	}
+        connect(contentWidget, SIGNAL(sizeChanged(QResizeEvent *)), this,
+                SLOT(sizeChanged(QResizeEvent *)));
+    }
+  public slots:
+    void sizeChanged(QResizeEvent *event) {
+        this->resize(event->size().width() + 8, event->size().height() + 8);
+    }
 };
 } // namespace lon
 

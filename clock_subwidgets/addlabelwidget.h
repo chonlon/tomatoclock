@@ -8,6 +8,7 @@
 
 #include "lon_widget/messagebox.hpp"
 #include "lon_widget/widget.hpp"
+
 namespace lon {
 class AddLabelWidget : public lon::Widget {
     Q_OBJECT
@@ -31,7 +32,7 @@ class AddLabelWidget : public lon::Widget {
   public slots:
     void onOkButtonClicked();
     void closeMessagebox();
-	void setLineEditFocus();
+    void setLineEditFocus();
 
     void showMessage(const QString &message);
 };

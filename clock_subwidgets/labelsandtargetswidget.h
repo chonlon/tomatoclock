@@ -42,8 +42,8 @@ class LabelsAndTargetsWidget : public QWidget {
     Button *setting_button_p_;
     Button *all_button_;
 
-    lon::AddLabelWidget *addlabelwidget_p_;
-	lon::AddTargetWidget *addtargetwidget_p_;
+    lon::AddLabelWidget * addlabelwidget_p_;
+    lon::AddTargetWidget *addtargetwidget_p_;
 
     ListWidget *all_targets_widget_p_;
     //开关数据库的开销大, 所以还是使用指针更好.
@@ -53,8 +53,9 @@ class LabelsAndTargetsWidget : public QWidget {
                                             button_map_;
     std::list<std::pair<QString, QString>> *labels_and_targets_p_;
 
-	uint8_t current_cloumn;
+    uint8_t current_cloumn;
     uint8_t current_row;
+
   private: // functions
     // default construction are not allowed.
     LabelsAndTargetsWidget();
@@ -64,8 +65,9 @@ class LabelsAndTargetsWidget : public QWidget {
     void addTargetWidget(QString labelname, QString targetname, int index = -1);
     void addButton(lon::Button *button, const QString &text);
     void saveLabelToSql(const QString &label_name);
-	void saveTargetToSql(const QString &label_name, const QString &target_name);
+    void saveTargetToSql(const QString &label_name, const QString &target_name);
     void initTargets(QString label_name, bool getAllTargets = false);
+    void initTargetsList();
     void initConnect();
 
   public:
@@ -87,10 +89,10 @@ class LabelsAndTargetsWidget : public QWidget {
     void addTarget();
     void addLabel();
     void labelAdded(QString text);
-	void targetAdded(QString label, QString target);
+    void targetAdded(QString label, QString target);
 
     void closeAddLabelWidget();
-	void closeAddTargetWidget();
+    void closeAddTargetWidget();
     // void startClock(const QString &label_name, const QString &target_name);
 };
 } // namespace lon

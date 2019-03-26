@@ -9,6 +9,7 @@
 #include <QWidget>
 
 #include "lon_widget/button.hpp"
+
 namespace lon {
 class TargetWidget : public QWidget {
     Q_OBJECT

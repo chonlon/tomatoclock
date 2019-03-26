@@ -12,7 +12,9 @@
 #include "lon_widget/listwidget.hpp"
 #include "lon_widget/messagebox.hpp"
 #include "mainwindow.h"
+#include "settingfileoperations.h"
 #include "tomatoclocktimer.h"
+#include "settingwidget.h"
 #include <QApplication>
 #include <QDialog>
 
@@ -36,8 +38,11 @@ int main(int argc, char *argv[]) {
     // m.show();
     // lon::TargetWidget t;
     // t.show();
-	lon::ClockMainWidget *c = new lon::ClockMainWidget();
-	lon::ShadowWindow cc(c);
-	cc.show();
-    return a.exec();
+//    lon::ClockMainWidget *c = new lon::ClockMainWidget();
+//	c->show();
+//	SettingWidget s;
+//	s.show();
+    SettingFileOperations o;
+	o.saveClockOptionToFile(o.readClockOptionFromFile());
+	return	a.exec();
 }

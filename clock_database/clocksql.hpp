@@ -7,6 +7,7 @@
 
 #include "DataStructure.hpp"
 #include "LonTypeDefines.h"
+
 namespace lon {
 class ClockSql {
   private:
@@ -78,16 +79,20 @@ class ClockSql {
         // getLastWeekData();
     }
 
+	~ClockSql() {
+		delete query_;
+	}
     // a tomato have just finished
     void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
         query_->prepare(
             "INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
             "FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
             "targets.TargetId, 25, DateTime('now', 'localtime') from "
-            "finishedtomato , targets where TargetName = :target and LabelName = :label");
-		query_->bindValue(":target", target);
-		query_->bindValue(":label", label);
-		query_->exec();
+            "finishedtomato , targets where TargetName = :target and LabelName "
+            "= :label");
+        query_->bindValue(":target", target);
+        query_->bindValue(":label", label);
+        query_->exec();
     }
 
     void addLabel(const QString &label_name) {
@@ -96,12 +101,13 @@ class ClockSql {
         query_->exec();
     }
 
-	void addTarget(const QString& label_name, const QString& target_name) {
-		query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 AS id, :label, :target FROM targets");
-		query_->bindValue(":label", label_name);
-		query_->bindValue(":target", target_name);
-		query_->exec();
-	}
+    void addTarget(const QString &label_name, const QString &target_name) {
+        query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 "
+                        "AS id, :label, :target FROM targets");
+        query_->bindValue(":label", label_name);
+        query_->bindValue(":target", target_name);
+        query_->exec();
+    }
 
     /// <summary> 获取过去一周的番茄完成的情况. </summary>
     /// <returns> 以TodayData返回结果, 包括时间分布,将target分布, label分布
@@ -249,7 +255,6 @@ class ClockSql {
         return result;
     }
 
-
     std::vector<int> getWorkTimeLastMouth() { return std::vector<int>(); }
 
     std::vector<int> getWorkTimeLastYear() { return std::vector<int>(); }
@@ -260,17 +265,17 @@ class ClockSql {
     std::vector<int> getBestWorkTimeDesc(const QString &duration) {
         std::vector<int> result;
         query_->prepare("SELECT DuringTime,"
-                     "strftime('%H', FinishTime) AS hours"
-                     "FROM ("
-                     "SELECT *"
-                     "FROM finishedtomato "
-                     "GROUP BY strftime('%H', FinishTime)"
-                     ")"
-                     "WHERE date('now', "
-                     ":duration) < date(FinishTime)"
-                     "ORDER BY DuringTime DESC;");
-		query_->bindValue(":duration", "-1" + duration);
-		query_->exec();
+                        "strftime('%H', FinishTime) AS hours"
+                        "FROM ("
+                        "SELECT *"
+                        "FROM finishedtomato "
+                        "GROUP BY strftime('%H', FinishTime)"
+                        ")"
+                        "WHERE date('now', "
+                        ":duration) < date(FinishTime)"
+                        "ORDER BY DuringTime DESC;");
+        query_->bindValue(":duration", "-1" + duration);
+        query_->exec();
         while (query_->next()) {
             result.emplace_back(query_->value(0).toInt());
         }

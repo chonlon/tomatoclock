@@ -44,7 +44,9 @@ SOURCES += \
     clock_subwidgets/labelsandtargetswidget.cpp \
     clock_subwidgets/targetwidget.cpp \
     clock_subwidgets/addlabelwidget.cpp \
-    clock_subwidgets/addtargetwidget.cpp
+    clock_subwidgets/addtargetwidget.cpp \
+    settingwidget.cpp \
+    settingfileoperations.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -74,7 +76,9 @@ HEADERS += \
     clock_subwidgets/targetwidget.h \
     clock_subwidgets/addlabelwidget.h \
     clock_subwidgets/addtargetwidget.h \
-    qstringhash.h
+    qstringhash.h \
+    settingwidget.h \
+    settingfileoperations.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -85,7 +89,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 include(./lon_widget/lon_widget.pri)
 
 FORMS += \
-    temp.ui
+    temp.ui \
+    settingwidget.ui
 
 RESOURCES += \
     img.qrc

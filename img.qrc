@@ -1,9 +1,10 @@
 <RCC>
-    <qresource prefix="/background">
+    <qresource prefix="/all">
         <file>1111.png</file>
         <file>Res/Img/background.jpg</file>
         <file>Res/Img/background.png</file>
         <file>Res/Img/titlebarbackground.png</file>
+        <file>user/setting.json</file>
     </qresource>
     <qresource prefix="/icon">
         <file>Icons/add_label_custom.png</file>

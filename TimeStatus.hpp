@@ -96,6 +96,10 @@ class TimerStatus {
         timeleft_->setMinutes(clock_options_->work_time()->minutes_);
         timeleft_->setSeconds(clock_options_->work_time()->seconds_);
     }
+
+	~TimerStatus() {
+		delete timeleft_;
+	}
     /// <summary>
     /// 从剩余时间里面减去一秒.
     /// </summary>

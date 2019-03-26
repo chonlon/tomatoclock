@@ -2,6 +2,7 @@
 #define LON_MESSAGEBOX
 
 #include "lon_widget/widget.hpp"
+
 #include <QMessageBox>
 //////////////////////////////////////////////////////////////////////////
 /// 如果想要实现点击某个按钮就自动把这个类释放的话, 只在此类中是无法做到的,

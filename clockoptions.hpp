@@ -13,6 +13,7 @@ break is.
 #include <QTime>
 #include <QTimer>
 
+
 namespace lon {
 /////////////////////////////
 // clock times
@@ -55,6 +56,19 @@ class ClockOptions {
         , sb_time_(new ShortBreakTime(short_break_min, short_break_sec))
         , lb_time_(new LongBreakTime(long_break_min, long_break_sec))
         , sbtimes_between_lb_(sbtimes_between_lb) {}
+
+	ClockOptions(ClockOptions &&clock_option) {
+		work_time_ = const_cast<ClockTime*>(clock_option.work_time());
+		sb_time_ = const_cast<ClockTime*>(clock_option.sb_time());
+		lb_time_ = const_cast<ClockTime*>(clock_option.lb_time());
+		sbtimes_between_lb_ = clock_option.sbtimes_between_lb();
+	}
+
+	~ClockOptions() {
+        delete work_time_;
+        delete sb_time_;
+        delete lb_time_;
+	}
 
     bool setWorkTime(int8_t clock_time_min, int8_t clock_time_sec) {
         if (clock_time_sec > 60 || clock_time_min > 100) return false;

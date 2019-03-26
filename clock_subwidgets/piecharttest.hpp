@@ -7,6 +7,8 @@
 #include <QtCharts/QPieSlice>
 #include <QtCharts/QtCharts>
 
+
+
 class PieChartTest : public QWidget {
     Q_OBJECT
   public:

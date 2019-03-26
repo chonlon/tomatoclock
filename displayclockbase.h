@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "TimeStatus.hpp"
+
 namespace lon {
 /// <summary>
 /// 显示番茄钟的widget的基类, 主要提供timer的更新和time数据.
@@ -62,6 +63,12 @@ class DisplayClockBase : public QWidget {
         shortbreaking_foreground_brush_ = new QBrush(QColor(30, 239, 61, 50));
         longbreaking_foreground_brush_  = new QBrush(QColor(163, 66, 222, 50));
     }
+
+	virtual ~DisplayClockBase() {
+		delete working_foreground_brush_;
+		delete shortbreaking_foreground_brush_;
+		delete longbreaking_foreground_brush_;
+	}
   signals:
 
   public slots:
