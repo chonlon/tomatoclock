@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/all">
         <file>1111.png</file>
-        <file>Res/Img/background.jpg</file>
         <file>Res/Img/background.png</file>
         <file>Res/Img/titlebarbackground.png</file>
         <file>user/setting.json</file>
@@ -12,5 +11,20 @@
         <file>Icons/history_custom.png</file>
         <file>Icons/label.png</file>
         <file>Icons/titlebarbackground.png</file>
+        <file>Icons/add_label_focus.png</file>
+        <file>Icons/add_target_focus.png</file>
+        <file>Icons/add_target_pressed.png</file>
+        <file>Icons/close_focus.png</file>
+        <file>Icons/close_normal.png</file>
+        <file>Icons/close_pressed.png</file>
+        <file>Icons/history_focus.png</file>
+        <file>Icons/history_pressed.png</file>
+        <file>Icons/label_focus.png</file>
+        <file>Icons/label_normal.png</file>
+        <file>Icons/label_pressed.png</file>
+        <file>Icons/label_pressed_.png</file>
+        <file>Icons/setting_focus.png</file>
+        <file>Icons/setting_normal.png</file>
+        <file>Icons/setting_pressed.png</file>
     </qresource>
 </RCC>

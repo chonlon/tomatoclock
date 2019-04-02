@@ -1,24 +1,22 @@
 #ifndef TOOLSWIDGET_H
 #define TOOLSWIDGET_H
 
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QVBoxLayout>
 #include <QWidget>
 
-#include "lon_widget/button.hpp"
+class QLabel;
+class QGridLayout;
 
 namespace lon {
+class Button;
 class ToolsWidget : public QWidget {
     Q_OBJECT
   private:
-    QLabel *     tomato_label_;
-    QHBoxLayout *main_layout_;
-    QVBoxLayout *window_operation_group_;
+    QGridLayout *main_layout_;
+
+    QLabel *label_label_;
+    QLabel *target_label_;
 
     lon::Button *close_;
-    lon::Button *restore_;
-    lon::Button *volume_;
     lon::Button *stop_;
 
   private:
@@ -26,10 +24,12 @@ class ToolsWidget : public QWidget {
     void onCloseClicked();
 
   public:
-    explicit ToolsWidget(QWidget *parent = nullptr);
+    explicit ToolsWidget(const QString &label_name, const QString &target_name,
+                         QWidget *parent = nullptr);
 
   signals:
-
+    void stopButtonClicked();
+    void closeButtonClicked();
   public slots:
 };
 } // namespace lon

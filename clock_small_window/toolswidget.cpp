@@ -1,27 +1,39 @@
 #include "toolswidget.h"
+#include "lon_widget/button.hpp"
+
+#include <QGridLayout>
+#include <QLabel>
 
 void lon::ToolsWidget::onCloseClicked() { this->window()->close(); }
 
-lon::ToolsWidget::ToolsWidget(QWidget *parent)
+lon::ToolsWidget::ToolsWidget(const QString &label_name,
+                              const QString &target_name, QWidget *parent)
     : QWidget(parent) {
-    tomato_label_           = new QLabel(this);
-    main_layout_            = new QHBoxLayout(this);
-    window_operation_group_ = new QVBoxLayout(this);
-
+    main_layout_ = new QGridLayout(this);
     main_layout_->setContentsMargins(5, 0, 0, 0);
-    window_operation_group_->setContentsMargins(0, 0, 0, 0);
-
-    close_   = new lon::Button(this);
-    restore_ = new lon::Button(this);
-    volume_  = new lon::Button(this);
-    stop_    = new lon::Button(this);
-
-    window_operation_group_->addWidget(close_);
-    window_operation_group_->addWidget(restore_);
-    main_layout_->addWidget(tomato_label_);
-    main_layout_->addWidget(stop_);
-    main_layout_->addWidget(volume_);
-    main_layout_->addLayout(window_operation_group_);
-
-    connect(close_, SIGNAL(clicked(bool)), this, SLOT(onCloseClicked()));
+    stop_ = new lon::Button(this);
+    stop_->setFixedSize(QSize(45, 45));
+    main_layout_->addWidget(stop_, 0, 1, 2, 1);
+    label_label_ = new QLabel(this);
+    label_label_->setText(label_name);
+    QFont font;
+    font.setFamily(QString::fromUtf8("Microsoft YaHei UI"));
+    font.setPointSize(10);
+    font.setBold(true);
+    font.setWeight(75);
+    label_label_->setFont(font);
+    label_label_->setAlignment(Qt::AlignCenter);
+    main_layout_->addWidget(label_label_, 0, 0, 1, 1);
+    close_ = new lon::Button(this);
+    close_->setFixedSize(QSize(45, 45));
+    main_layout_->addWidget(close_, 0, 2, 2, 1);
+    target_label_ = new QLabel(this);
+    target_label_->setText(target_name);
+    QFont font1;
+    font1.setFamily(QString::fromUtf8("Microsoft YaHei UI"));
+    target_label_->setFont(font1);
+    target_label_->setAlignment(Qt::AlignCenter);
+    main_layout_->addWidget(target_label_, 1, 0, 1, 1);
+    connect(stop_, SIGNAL(clicked()), this, SIGNAL(stopButtonClicked()));
+    connect(close_, SIGNAL(clicked()), this, SIGNAL(closeButtonClicked()));
 }

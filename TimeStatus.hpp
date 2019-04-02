@@ -14,6 +14,11 @@ class TimeLeft : public ClockTime {
         : ClockTime(0, 0) {}
     TimeLeft(int8_t minutes, int8_t seconds)
         : ClockTime(minutes, seconds) {}
+
+    void clear() {
+        minutes_ = 0;
+        seconds_ = 0;
+    }
     /// <summary>
     /// 剩余时间减一秒
     /// </summary>
@@ -97,9 +102,7 @@ class TimerStatus {
         timeleft_->setSeconds(clock_options_->work_time()->seconds_);
     }
 
-	~TimerStatus() {
-		delete timeleft_;
-	}
+    ~TimerStatus() { delete timeleft_; }
     /// <summary>
     /// 从剩余时间里面减去一秒.
     /// </summary>
@@ -137,6 +140,8 @@ class TimerStatus {
 
         return false;
     }
+
+    void clear() { timeleft_->clear(); }
 
     TimeLeft const *timeleft() const { return timeleft_; }
     bool            is_break() const { return is_break_; }

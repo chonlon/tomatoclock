@@ -1,49 +1,55 @@
 #ifndef CLOCKRUNNINGWIDGET_H
 #define CLOCKRUNNINGWIDGET_H
 
-#include <QHBoxLayout>
-#include <QSpacerItem>
-#include <QVBoxLayout>
-#include <QWidget>
-
+#include "clock_small_window/clocksmallwindow.h"
 #include "clockdisplaywidget.h"
-#include "lon_widget/button.hpp"
 
+class QLabel;
+class QGridLayout;
+class QComboBox;
 namespace lon {
+class TomatoClockTimer;
+class Button;
+namespace clock_window {
+class ClockSmallWindow;
+}
 /// <summary>
 /// 显示时钟的控件.
 /// 用于嵌入到ClockMainWidget中.
 /// </summary>
 class ClockRunningWidget : public QWidget {
     Q_OBJECT
-    // private:
-  public:
-    QHBoxLayout *main_layout_p_;
-    QVBoxLayout *center_layout_p_;
-    QHBoxLayout *bottom_button_layout_p_;
-    QVBoxLayout *left_button_layout_p_;
+  private:
+    QGridLayout *                        main_layout_p_;
+    QLabel *                             label_label_p_;
+    QLabel *                             target_label_p_;
+    lon::Button *                        stop_button_p_;
+    lon::Button *                        small_window_switch_button_p_;
+    lon::TomatoClockTimer *              timer_p_;
+    lon::clock_window::ClockSmallWindow *small_window_p_;
+    lon::ClockDisplayWidget *            main_display_widget_p_;
+    lon::DisplayClockBase *              current_display_widget_p_;
 
-    lon::Button *volume_button_p_;
-    lon::Button *pause_button_p_;
-    lon::Button *stop_button_p_;
-    lon::Button *history_button_p_;
-    lon::Button *setting_button_p_;
-
-    lon::ClockDisplayWidget *clock_display_widget_p_;
-
-    QSpacerItem *left_spacer_p_;
-    QSpacerItem *right_spacer_p_;
-
-    // center_layout到两边的边距
-    const int8_t side_width;
+  private:
+    void setDisplayWidget(lon::DisplayClockBase *displaye_p);
 
   public:
-    explicit ClockRunningWidget(QWidget *parent = nullptr);
+    void setTimer(lon::TomatoClockTimer *timer);
+
+  public:
+    explicit ClockRunningWidget(const QString label_name,
+                                const QString target_name,
+                                QWidget *     parent = nullptr);
     ~ClockRunningWidget();
 
   signals:
-
+    void clockStoped();
   public slots:
+    void onStopButtonClicked();
+    void onSmallWindowButtonClicked();
+
+    // back to current widget from small widget.
+    void backToCurrentWidget();
 };
 } // namespace lon
 

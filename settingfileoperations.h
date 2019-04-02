@@ -3,18 +3,18 @@
 #include <QFile>
 
 namespace lon {
-    class ClockOptions;
+class ClockOptions;
 }
 
-class SettingFileOperations
-{
-public:
+class SettingFileOperations {
+  public:
     SettingFileOperations();
     ~SettingFileOperations() {}
 
-    void saveClockOptionToFile(const lon::ClockOptions& option);
+    void              saveClockOptionToFile(const lon::ClockOptions &option);
     lon::ClockOptions readClockOptionFromFile();
-private:
+
+  private:
     QFile file_;
 };
 

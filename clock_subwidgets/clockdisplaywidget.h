@@ -6,7 +6,6 @@
 
 #include "displayclockbase.h"
 
-
 namespace lon {
 class ClockDisplayWidget : public DisplayClockBase {
     Q_OBJECT

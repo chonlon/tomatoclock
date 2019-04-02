@@ -127,8 +127,8 @@ class Widget : public QWidget {
         this->setWindowFlags(Qt::FramelessWindowHint |
                              Qt::WindowMinimizeButtonHint);
         title_bar_        = new lon::TitleBar(this, status);
-        center_widget_    = new QWidget(this);
-        bottom_bar_       = new QWidget(this);
+        center_widget_    = new QWidget();
+        bottom_bar_       = new QWidget();
         size_girp_enabled = false;
 
         initWidgets();
@@ -155,13 +155,18 @@ class Widget : public QWidget {
         initConnect();
     }
 
-    virtual ~Widget() { delete pixmap_; }
+    virtual ~Widget() {
+		delete pixmap_;
+		delete center_widget_;
+		delete bottom_bar_;
+	}
 
     /// <summary> 返回中间栏的widget指针. </summary>
     QWidget *centerWidget() const { return center_widget_; }
 
     /// <summary> 设置自定义的bottombar. </summary>
     /// 注意: 重新设置bottomBar会导致默认生成的按钮的信号与槽的失效.
+    /// 此类会获取次widget的所有权.
     virtual bool setBottomBar(QWidget *widget) {
         p_layout_->removeWidget(bottom_bar_);
 
@@ -173,6 +178,7 @@ class Widget : public QWidget {
     }
 
     /// <summary> 设置自定义的centerwidget. </summary>
+    /// 此类会获得widget的所有权.
     virtual bool setCenterWidget(QWidget *widget) {
         if (!widget) return false;
 
@@ -192,7 +198,7 @@ class Widget : public QWidget {
         title_bar_->setTitleIcon(icon);
     }
 
-	// this class will take pixmap's ownship
+    // this class will take pixmap's ownship
     virtual void setTitleBackground(QPixmap *pixmap) {
         title_bar_->setBackground(pixmap);
     }
@@ -207,7 +213,7 @@ class Widget : public QWidget {
 
     virtual bool sizeGripEnabled() { return size_girp_enabled; }
 
-	// this class will take pixmap's ownship
+    // this class will take pixmap's ownship
     virtual void setBackground(QPixmap *pixmap) {
         this->setAutoFillBackground(true);
         //判断图片是否为空

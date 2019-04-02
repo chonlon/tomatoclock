@@ -39,7 +39,7 @@ class ProgressWidget : public DisplayClockBase {
     explicit ProgressWidget(uint16_t height, uint16_t width,
                             QWidget *parent = nullptr);
 
-	~ProgressWidget();
+    ~ProgressWidget();
 
     virtual void updateTimeDisplay(lon::TimerStatus const *timer_status);
   signals:

@@ -49,7 +49,12 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     add_label_button_p_->setFlat(true);
     add_label_button_p_->setNormal(
         new QIcon(":/icon/Icons/add_label_custom.png"));
-    add_label_button_p_->setScalingFactor(0.7);
+    add_label_button_p_->setFocus(
+        new QIcon(":/icon/Icons/add_label_focus.png"));
+    add_label_button_p_->setPressed(
+        new QIcon(":/icon/Icons/add_label_focus.png"));
+    add_label_button_p_->setStyleSheet("border:none");
+    add_label_button_p_->setScalingFactor(0.9);
 
     labels_widget_p_->setFixedHeight(label_widget_height);
     add_label_button_p_->setFixedSize(button_width_height, button_width_height);
@@ -116,9 +121,18 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     history_button_p_->setFlat(true);
     add_target_button_p_->setNormal(
         new QIcon(":/icon/Icons/add_target_custom.png"));
+    add_target_button_p_->setFocus(
+        new QIcon(":/icon/Icons/add_target_focus.png"));
+    add_target_button_p_->setPressed(
+        new QIcon(":/icon/Icons/add_target_pressed.png"));
+    add_target_button_p_->setStyleSheet("border:none");
     history_button_p_->setNormal(new QIcon(":/icon/Icons/history_custom.png"));
+    history_button_p_->setFocus(new QIcon(":/icon/Icons/history_focus.png"));
+    history_button_p_->setPressed(
+        new QIcon(":/icon/Icons/history_pressed.png"));
+    history_button_p_->setStyleSheet("border:none");
     add_target_button_p_->setScalingFactor(0.9);
-    history_button_p_->setScalingFactor(0.6);
+    history_button_p_->setScalingFactor(0.9);
 
     add_target_button_p_->setFixedSize(button_width_height,
                                        button_width_height);
@@ -127,6 +141,12 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     history_button_p_->setToolTip(QString::fromLocal8Bit("查看历史番茄"));
     setting_button_p_->setFixedSize(button_width_height, button_width_height);
     setting_button_p_->setToolTip(QString::fromLocal8Bit("设置"));
+    setting_button_p_->setFlat(true);
+    setting_button_p_->setNormal(new QIcon(":/icon/Icons/setting_normal.png"));
+    setting_button_p_->setFocus(new QIcon(":/icon/Icons/setting_focus.png"));
+    setting_button_p_->setPressed(
+        new QIcon(":/icon/Icons/setting_pressed.png"));
+    setting_button_p_->setStyleSheet("border:none");
 
     target_button_layout_p_->addWidget(add_target_button_p_);
     target_button_layout_p_->addWidget(history_button_p_);
@@ -153,7 +173,7 @@ void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
                                             const QString &text) {
     const uint8_t row_width = 8;
 
-    button->setFixedSize(45, 45);
+    button->setFixedSize(60, 30);
     button->setText(text);
     button->setToolTip(text);
     labels_layout_p_->addWidget(button, current_row, current_cloumn);
@@ -163,7 +183,11 @@ void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
     }
     button_map_[ button ] = nullptr;
     button->setStyleSheet(
-        "QPushButton{border-image: url(:/icon/Icons/label.png);}");
+        "QPushButton{border-image: url(:/icon/Icons/label_normal.png);}"
+        "QPushButton:hover{border-image: url(:/icon/Icons/label_focus.png);}"
+        "QPushButton:pressed{border-image: "
+        "url(:/icon/Icons/label_pressed.png);}"
+        "QPushButton{text-align : left;}");
     connect(button, SIGNAL(clicked()), this, SLOT(onLabelButtonClicked()));
 }
 
@@ -262,7 +286,7 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
     // 如果点击的现在的widget对应的button
     // 这么写应该不会有多少影响, 下面执行很快, 刚好使计时少10ms的概率很低,
     // 而且发生了影响不大.
-	current_widget_pointer_->getWidgetPointer()->setVisible(false);
+    current_widget_pointer_->getWidgetPointer()->setVisible(false);
     current_widget_pointer_->setShouldDelete(true);
 
     auto iter = button_map_.find(button);
@@ -288,9 +312,15 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
         current_widget_pointer_ = iter->second;
         initTargets(button->text());
         target_main_layout_p_->insertWidget(0, targets_list_widget_p_);
+    } else {
+        target_main_layout_p_->removeWidget(targets_list_widget_p_);
+        targets_list_widget_p_ =
+            dynamic_cast<lon::ListWidget *>(iter->second->getWidgetPointer());
+        target_main_layout_p_->insertWidget(0, targets_list_widget_p_);
+        current_widget_pointer_ = iter->second;
     }
     current_widget_pointer_->setShouldDelete(false);
-	current_widget_pointer_->getWidgetPointer()->setVisible(true);
+    current_widget_pointer_->getWidgetPointer()->setVisible(true);
 }
 
 // void lon::LabelsAndTargetsWidget::startClock(const QString &label_name,const

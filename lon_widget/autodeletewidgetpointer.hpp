@@ -1,7 +1,6 @@
 #ifndef AUTODELETEWIDGETPOINTER_H
 #define AUTODELETEWIDGETPOINTER_H
 
-
 #include <mutex>
 #include <thread>
 class QWidget;

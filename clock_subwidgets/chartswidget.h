@@ -16,7 +16,6 @@
 #include "lon_widget/button.hpp"
 #include "lon_widget/listwidget.hpp"
 
-
 namespace lon {
 class ChartsWidget : public QWidget {
     Q_OBJECT
@@ -53,8 +52,12 @@ class ChartsWidget : public QWidget {
 
     QVBoxLayout *layout_p_;
 
-    QtCharts::QChartView *finish_line_chart_view_p_;
-    QtCharts::QChartView *finishedtime_line_chart_view_p_;
+    QtCharts::QChartView *day_finish_line_chart_view_p_;
+    QtCharts::QChartView *week_finish_line_chart_view_p_;
+    QtCharts::QChartView *month_finish_line_chart_view_p_;
+    QtCharts::QChartView *week_finishedtime_line_chart_view_p_;
+    QtCharts::QChartView *month_finishedtime_line_chart_view_p_;
+    QtCharts::QChartView *day_finishedtime_line_chart_view_p_;
     QtCharts::QChartView *day_labels_pie_chart_view_p_;
     QtCharts::QChartView *week_labels_pie_chart_view_p_;
     QtCharts::QChartView *month_labels_pie_chart_view_p_;
@@ -69,7 +72,7 @@ class ChartsWidget : public QWidget {
 
     QtCharts::QChart *finishedtime_week_line_chart_p_;
     QtCharts::QChart *finishedtime_month_line_chart_p_;
-    QtCharts::QChart *finishedtime_year_line_chart_p_;
+    QtCharts::QChart *finishedtime_day_line_chart_p_;
 
     QtCharts::QChart *day_labels_piechart_chart_p_;
     QtCharts::QChart *week_labels_piechart_chart_p_;
@@ -100,10 +103,19 @@ class ChartsWidget : public QWidget {
                            QString title = QString());
 
     // init charts
-    void initFinishedLineChart();
+    void initDayFinishedLineChart();
+    void initWeekFinishedLineChart();
+    void initMonthFinishedLineChart();
+    void initWeekFinishedTimeLineChart();
+    void initMonthFinishedTimeLineChart();
+    void initDayFinishedTimeLineChart();
     void initFinishedTimeLineChart();
-    void initLabelsPieChart();
-    void initTargetsPieChart();
+    void initDayLabelsPieChart();
+    void initWeekLabelsPieChart();
+    void initMonthLabelsPieChart();
+    void initDayTargetsPieChart();
+    void initWeekTargetsPieChart();
+    void initMonthTargetsPieChart();
     void initBestworkTimeChart();
 
     // init widgets.
@@ -121,6 +133,11 @@ class ChartsWidget : public QWidget {
   signals:
     void closeButtonClicked();
   public slots:
+    // switch to other chartwidgets
+    void finishLineWidgetSwitchEvent(int index);
+    void finishedTimeLineWidgetSwitchEvent(int index);
+    void labelsPieWidgetSwitchEvent(int index);
+    void targetsPieWidgetSwitchEvent(int index);
 };
 } // namespace lon
 

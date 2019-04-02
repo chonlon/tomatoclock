@@ -13,22 +13,25 @@
 #include "lon_widget/messagebox.hpp"
 #include "mainwindow.h"
 #include "settingfileoperations.h"
-#include "tomatoclocktimer.h"
 #include "settingwidget.h"
+#include "tomatoclocktimer.h"
 #include <QApplication>
 #include <QDialog>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    // lon::TomatoClockTimer *              timer = new lon::TomatoClockTimer();
-    // lon::clock_window::ClockSmallWindow *window =
-    //	new lon::clock_window::ClockSmallWindow();
+    //   lon::TomatoClockTimer *              timer = new
+    //   lon::TomatoClockTimer();
+    // lon::clock_window::ClockSmallWindow *s = new
+    // lon::clock_window::ClockSmallWindow();
+    // timer->setDisplayClockPointer(s->progress_widget_);
+    // timer->start();
+    // s->show();
     // lon::ClockRunningWidget *c = new lon::ClockRunningWidget();
     // lon::ClockDisplayWidget *w = new lon::ClockDisplayWidget();
 
     ////timer->setDisplayClockPointer(c->clock_display_widget_p_);
     // timer->setDisplayClockPointer(window->progress_widget_);
-    // window->show();
 
     // c->show();
 
@@ -38,11 +41,7 @@ int main(int argc, char *argv[]) {
     // m.show();
     // lon::TargetWidget t;
     // t.show();
-//    lon::ClockMainWidget *c = new lon::ClockMainWidget();
-//	c->show();
-//	SettingWidget s;
-//	s.show();
-    SettingFileOperations o;
-	o.saveClockOptionToFile(o.readClockOptionFromFile());
-	return	a.exec();
+    lon::ClockMainWidget *c = new lon::ClockMainWidget();
+    c->show();
+    return a.exec();
 }

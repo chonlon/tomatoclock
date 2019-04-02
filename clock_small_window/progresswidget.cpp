@@ -16,7 +16,7 @@ lon::clock_window::ProgressWidget::ProgressWidget(uint16_t height,
     scene_            = new QGraphicsScene(this);
     view_             = new QGraphicsView(scene_, this);
     current_progress_ = nullptr;
-    time_label_       = new QLabel(view_);
+    time_label_       = new QLabel(this);
 
     layout_      = new QHBoxLayout(this);
     view_layout_ = new QHBoxLayout(view_);
@@ -47,18 +47,12 @@ lon::clock_window::ProgressWidget::ProgressWidget(uint16_t height,
     // layout_->addWidget(view_);
 }
 
-lon::clock_window::ProgressWidget::~ProgressWidget() {
-    delete working_foreground_brush_;
-    delete shortbreaking_foreground_brush_;
-    delete longbreaking_foreground_brush_;
-	delete pen_;
-}
+lon::clock_window::ProgressWidget::~ProgressWidget() { delete pen_; }
 
 void lon::clock_window::ProgressWidget::updateTimeDisplay(
     lon::TimerStatus const *timer_status) {
     lon::ClockTime const *total_time = timer_status->getTotalTime();
-    qDebug() << currentPersent(timer_status);
-    int current_progress_width =
+    int                   current_progress_width =
         static_cast<int>(currentPersent(timer_status) * width_);
 
     if (total_time_ != total_time) {

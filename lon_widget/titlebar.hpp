@@ -15,7 +15,7 @@ namespace lon {
 class TitleBar : public QWidget {
     Q_OBJECT
   private:
-    static const int32_t BUTTON_HEIGHT    = 30;
+    static const int32_t BUTTON_HEIGHT    = 45;
     static const int32_t BUTTON_WIDTH     = 45;
     static const int32_t TITLE_BAR_HEIGHT = 50;
 

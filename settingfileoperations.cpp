@@ -1,8 +1,9 @@
 #include "settingfileoperations.h"
 #include "clockoptions.hpp"
 #include <QDebug>
-#include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <fstream>
 
 SettingFileOperations::SettingFileOperations()
     : file_(":/all/user/setting.json") {}
@@ -13,27 +14,25 @@ void SettingFileOperations::saveClockOptionToFile(
     clock_page.insert("WorkTime", option.work_time()->minutes_);
     clock_page.insert("ShortbreakTime", option.sb_time()->minutes_);
     clock_page.insert("LongbreakTime", option.lb_time()->minutes_);
-	clock_page.insert("TimesBetweenLong", option.sbtimes_between_lb());
-	QJsonObject json;
-	json.insert("ClockSetting", QJsonValue(clock_page));
+    clock_page.insert("TimesBetweenLong", option.sbtimes_between_lb());
+    QJsonObject json;
+    json.insert("ClockSetting", QJsonValue(clock_page));
     QJsonDocument document;
     document.setObject(json);
     QByteArray byteArray = document.toJson(QJsonDocument::Indented);
 
-	if (!file_.open(QFile::WriteOnly)) {
-        qDebug() << "could not open file in " << __FILE__ << __LINE__;
-        return;
-    }
-
-	file_.write(byteArray);
-	file_.close();
+    // 这里用QFile 使用WriteOnly打开总是出错, 不知道原因, 暂时先用ofstream代替.
+    std::string filename = "./user/setting.json";
+    std::ofstream(filename, std::ios::binary)
+        .write(byteArray, byteArray.size());
 }
 
 lon::ClockOptions SettingFileOperations::readClockOptionFromFile() {
     int8_t work = 25, shortbreak = 5, longbreak = 15, shortbreak_times = 3;
     if (!file_.open(QFile::ReadOnly | QFile::Text)) {
         qDebug() << "could not open file in " << __FILE__ << __LINE__;
-		return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0, shortbreak_times);
+        return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0,
+                                 shortbreak_times);
     }
     QTextStream in(&file_);
     QString     in_string = in.readAll();
@@ -72,6 +71,7 @@ lon::ClockOptions SettingFileOperations::readClockOptionFromFile() {
     } else {
         qDebug() << "Error String : " << error.errorString();
     }
-	file_.close();
-    return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0, shortbreak_times);
+    file_.close();
+    return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0,
+                             shortbreak_times);
 }

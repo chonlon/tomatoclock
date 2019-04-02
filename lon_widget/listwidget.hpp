@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 
-
 #include <QGraphicsEffect>
 #include <QResizeEvent>
 #include <QScrollArea>
@@ -31,7 +30,7 @@ class ListWidget : public QWidget {
     }
     virtual void setVerticalScrollBarStyle() {
         QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect;
-		//QWidget takes ownership of effect.
+        // QWidget takes ownership of effect.
         scroll_area_p_->verticalScrollBar()->setGraphicsEffect(opacityEffect);
         opacityEffect->setOpacity(0.4);
         scroll_area_p_->verticalScrollBar()->setStyleSheet(
@@ -103,10 +102,12 @@ class ListWidget : public QWidget {
         widget_      = new QWidget();
         main_layout_->setContentsMargins(0, 0, 0, 0);
         scroll_area_p_ = new QScrollArea(this);
+		scroll_area_p_->setFrameShape(QFrame::NoFrame);
         scroll_area_p_->setWidgetResizable(true);
         widget_->setLayout(main_layout_);
         widget_->resize(this->window()->size());
-		//The widget becomes a child of the scroll area, and will be destroyed when the scroll area is deleted or when a new widget is set.
+        // The widget becomes a child of the scroll area, and will be destroyed
+        // when the scroll area is deleted or when a new widget is set.
         scroll_area_p_->setWidget(widget_);
         setVerticalScrollBarStyle();
     }
@@ -114,13 +115,13 @@ class ListWidget : public QWidget {
     void addWidget(QWidget *widget) {
         widget_list_.emplace_back(widget);
         main_layout_->addSpacing(20);
-        main_layout_->addWidget(widget);
+        main_layout_->addWidget(widget, Qt::AlignCenter);
     }
 
     void insertWidget(int index, QWidget *widget) {
         widget_list_.emplace_back(widget);
         main_layout_->addSpacing(20);
-        main_layout_->insertWidget(index, widget);
+        main_layout_->insertWidget(index, widget, Qt::AlignCenter);
     }
 
     // void removeWidget(int index);

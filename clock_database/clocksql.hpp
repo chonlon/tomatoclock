@@ -79,9 +79,7 @@ class ClockSql {
         // getLastWeekData();
     }
 
-	~ClockSql() {
-		delete query_;
-	}
+    ~ClockSql() { delete query_; }
     // a tomato have just finished
     void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
         query_->prepare(
@@ -116,20 +114,48 @@ class ClockSql {
         using namespace lon::tomato_clock;
         TodayData data;
         // 获取今天的每个小时完成的番茄数量.
-        query_->exec("SELECT hour, count(hour) FROM (SELECT "
-                     "datetime(FinishTime) AS time, strftime('%H', FinishTime) "
-                     "AS hour FROM finishedtomato WHERE date('now', '-1 day') "
-                     "< date(FinishTime)) GROUP BY hour order by hour");
+        query_->exec("SELECT hour, "
+                     "count(hour)  "
+                     "FROM ( "
+                     "SELECT strftime('%H', FinishTime) AS hour "
+                     "FROM finishedtomato "
+                     "WHERE date('now', '-1 day') < date(FinishTime)  "
+                     ") "
+                     "GROUP BY hour "
+                     "ORDER BY hour; ");
 
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
+
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ( "
+            "SELECT strftime('%H', FinishTime) AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-1 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.total_time_p[ query_->value(0).toInt() ] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
         //获取今天完成的番茄的target情况
-        query_->exec("SELECT targetname, count(targetname), FROM ( SELECT "
-                     "targets.TargetName AS targetname, FROM finishedtomato, "
-                     "targets WHERE date('now', '-1 day') < date(FinishTime) "
-                     "AND finishedtomato.TargetId = targets.TargetId);");
+        query_->exec(
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-1 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
@@ -137,10 +163,17 @@ class ClockSql {
         }
         //获取今天完成的番茄的label数据
         query_->exec(
-            "SELECT labelname, count(labelname) FROM ( SELECT "
-            "targets.LabelName AS labelname FROM finishedtomato,targets WHERE "
-            "date('now', '-1 day') < date(FinishTime) AND "
-            "finishedtomato.TargetId = targets.TargetId);");
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-1 day','localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -152,31 +185,70 @@ class ClockSql {
     lon::tomato_clock::LastWeekData getLastWeekData() {
         using namespace lon::tomato_clock;
         LastWeekData data;
-        // 获取本周的每天完成的番茄数量.
-        query_->exec("SELECT day, count(day) FROM ( SELECT "
-                     "datetime(FinishTime) AS time, strftime('%d', FinishTime) "
-                     "AS dayFROM finishedtomato WHERE date('now', '-7 day') < "
-                     "date(FinishTime)) GROUP BY day ORDER BY day;");
+        // 获取过去七天的每天完成的番茄数量.
+        query_->exec(
+            "SELECT time, "
+            "count(time) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time "
+            "FROM finishedtomato "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
+
+        // 获取过去七天每天完成的总时间
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ( "
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.total_time_p[ query_->value(0).toInt() ] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
         //获取本周完成的番茄的target情况
         query_->exec(
-            "SELECT targetname,count(targetname),FROM (SELECT "
-            "targets.TargetName AS targetname,FROM finishedtomato,targets "
-            "WHERE date('now', '-7 day') < date(FinishTime) AND "
-            "finishedtomato.TargetId = targets.TargetId);");
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
                 query_->value(0).toString(), query_->value(1).toInt()));
         }
         //获取本周完成的番茄的label数据
-        query_->exec("SELECT labelname, count(labelname) FROM ( SELECT "
-                     "targets.LabelName AS labelname FROM finishedtomato, "
-                     "targets WHERE date('now', '-7 day') < date(FinishTime) "
-                     "AND finishedtomato.TargetId = targets.TargetId );");
+        query_->exec(
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -191,47 +263,72 @@ class ClockSql {
     lon::tomato_clock::LastMonthData getLastMonthData() {
         using namespace lon::tomato_clock;
         LastMonthData data;
-        // 获取本周的每天完成的番茄数量.
-        query_->exec("SELECT day,"
-                     "count(day) "
-                     "FROM ("
-                     "SELECT datetime(FinishTime) AS time,"
-                     "strftime('%d', FinishTime) AS day"
-                     "FROM finishedtomato"
-                     "WHERE date('now', '-30 day') < date(FinishTime) "
-                     ")"
-                     "GROUP BY day"
-                     "ORDER BY day;");
+        // 获取本月的每天完成的番茄数量.
+        query_->exec(
+            "SELECT time, "
+            "count(time) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time "
+            "FROM finishedtomato "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
 
         while (query_->next()) {
             data.time_data_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());
         }
-        //获取本周完成的番茄的target情况
-        query_->exec("SELECT targetname,"
-                     "count(targetname),"
-                     "FROM ("
-                     "SELECT targets.TargetName AS targetname,"
-                     "FROM finishedtomato,"
-                     "targets"
-                     "WHERE date('now', '-30 day') < date(FinishTime) AND "
-                     "finishedtomato.TargetId = targets.TargetId"
-                     ");");
+
+        // 获取过去七天每天完成的总时间
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.total_time_p[ query_->value(0).toInt() ] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
+
+        //获取本月完成的番茄的target情况
+        query_->exec(
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
         while (query_->next()) {
             data.target_data.push_back(std::make_pair(
                 query_->value(0).toString(), query_->value(1).toInt()));
         }
-        //获取本周完成的番茄的label数据
-        query_->exec("SELECT labelname,"
-                     "count(labelname) "
-                     "FROM ("
-                     "SELECT targets.LabelName AS labelname"
-                     "FROM finishedtomato,"
-                     "targets"
-                     "WHERE date('now', '-30 day') < date(FinishTime) AND "
-                     "finishedtomato.TargetId = targets.TargetId"
-                     ");");
+        //获取本月完成的番茄的label数据
+        query_->exec(
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-30 day','localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
         while (query_->next()) {
             data.label_data.push_back(std::make_pair(
@@ -265,9 +362,9 @@ class ClockSql {
     std::vector<int> getBestWorkTimeDesc(const QString &duration) {
         std::vector<int> result;
         query_->prepare("SELECT DuringTime,"
-                        "strftime('%H', FinishTime) AS hours"
+                        "strftime('%H', FinishTime) AS hours "
                         "FROM ("
-                        "SELECT *"
+                        "SELECT * "
                         "FROM finishedtomato "
                         "GROUP BY strftime('%H', FinishTime)"
                         ")"

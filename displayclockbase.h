@@ -64,11 +64,11 @@ class DisplayClockBase : public QWidget {
         longbreaking_foreground_brush_  = new QBrush(QColor(163, 66, 222, 50));
     }
 
-	virtual ~DisplayClockBase() {
-		delete working_foreground_brush_;
-		delete shortbreaking_foreground_brush_;
-		delete longbreaking_foreground_brush_;
-	}
+    virtual ~DisplayClockBase() {
+        delete working_foreground_brush_;
+        delete shortbreaking_foreground_brush_;
+        delete longbreaking_foreground_brush_;
+    }
   signals:
 
   public slots:

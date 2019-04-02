@@ -20,13 +20,13 @@ class TomatoClockTimer : public QObject {
     QTimer *          timer_;
     DisplayClockBase *display_clock_;
 
-    void stop() { started_ = false; }
-
   public:
     explicit TomatoClockTimer(QObject *parent = nullptr);
 
     void setDisplayClockPointer(DisplayClockBase *display_clock);
 
+    void               clear() { timer_status_->clear(); }
+    void               stop() { started_ = false; }
     void               start() { started_ = true; }
     TimerStatus const *timerStaus() { return timer_status_; }
 

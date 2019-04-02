@@ -1,15 +1,18 @@
 ﻿#include "clocksmallwindow.h"
 
 // TODO 添加此窗口的设置透明度(ctrl + 滑轮).
-lon::clock_window::ClockSmallWindow::ClockSmallWindow(QWidget *parent)
+lon::clock_window::ClockSmallWindow::ClockSmallWindow(
+    const QString &label_name, const QString &target_name, QWidget *parent)
     : QWidget(parent)
     , fixed_height_(70)
     , fixed_width_(300) {
     layout_            = new QHBoxLayout(this);
-    window_background_ = new QPixmap(":/background/1111.png");
+    window_background_ = new QPixmap(":/all/1111.png");
 
     progress_widget_ = new ProgressWidget(fixed_height_, fixed_width_, this);
-
+    tools_widget_    = new lon::ToolsWidget(label_name, target_name, this);
+    tools_widget_->resize(fixed_width_, fixed_height_);
+    tools_widget_->setVisible(false);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
                          Qt::WindowMinimizeButtonHint);
 
@@ -22,6 +25,25 @@ lon::clock_window::ClockSmallWindow::ClockSmallWindow(QWidget *parent)
     this->setPalette(palette);
     this->setFixedSize(fixed_width_, fixed_height_);
     this->setLayout(layout_);
+
+    connect(tools_widget_, SIGNAL(stopButtonClicked()), this,
+            SIGNAL(clockStoped()));
+    connect(tools_widget_, SIGNAL(closeButtonClicked()), this,
+            SIGNAL(smallWindowClosing()));
+}
+
+void lon::clock_window::ClockSmallWindow::enterEvent(QEvent *event) {
+    layout_->removeWidget(progress_widget_);
+    progress_widget_->setVisible(false);
+    layout_->addWidget(tools_widget_);
+    tools_widget_->setVisible(true);
+}
+
+void lon::clock_window::ClockSmallWindow::leaveEvent(QEvent *event) {
+    layout_->removeWidget(tools_widget_);
+    tools_widget_->setVisible(false);
+    layout_->addWidget(progress_widget_);
+    progress_widget_->setVisible(true);
 }
 
 void lon::clock_window::ClockSmallWindow::mousePressEvent(QMouseEvent *event) {
