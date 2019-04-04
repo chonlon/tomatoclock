@@ -30,6 +30,7 @@ class ClockSmallWindow : public QWidget {
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
 
   public:
     ProgressWidget *progress_widget_;

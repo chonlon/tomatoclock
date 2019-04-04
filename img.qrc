@@ -26,5 +26,8 @@
         <file>Icons/setting_focus.png</file>
         <file>Icons/setting_normal.png</file>
         <file>Icons/setting_pressed.png</file>
+        <file>Icons/play_focus.png</file>
+        <file>Icons/play_normal.png</file>
+        <file>Icons/play_pressed.png</file>
     </qresource>
 </RCC>

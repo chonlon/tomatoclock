@@ -99,6 +99,12 @@ class ClockSql {
         query_->exec();
     }
 
+	void deleteLabel(const QString &label_name) {
+		query_->prepare("DELETE FROM labels WHERE LabelName = :label ");
+		query_->bindValue(":label", label_name);
+		query_->exec();
+	}
+
     void addTarget(const QString &label_name, const QString &target_name) {
         query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 "
                         "AS id, :label, :target FROM targets");
@@ -293,6 +299,7 @@ class ClockSql {
             ")"
             "GROUP BY time "
             "ORDER BY time;");
+		// 此处如果数据库中存了超过当前时间的值, 会导致超过数据访问范围.
         while (query_->next()) {
             data.total_time_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());

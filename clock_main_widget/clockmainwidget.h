@@ -5,10 +5,12 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <memory>
 
 #include "clock_database/clocksql.hpp"
 #include "clockoptions.hpp"
 #include "lon_widget/widget.hpp"
+#include "clock_database/DataStructure.hpp"
 
 namespace lon {
 class LabelsAndTargetsWidget;
@@ -34,10 +36,10 @@ class ClockMainWidget : public lon::Widget {
     // 由于qt设计的是子控件会继承父控件的pattle,
     // 所以所有mainwidget的控件不可以作为mainwidget的子控件,
     // 不然如果使用了一个不大的图片作为背景, 内存都会飙升.
-    lon::LabelsAndTargetsWidget *        labels_targets_widget_p_;
-    lon::ClockRunningWidget *            clock_running_widget_p_;
-    lon::ChartsWidget *                  chart_widget_p_;
-    lon::TitleBar *                      title_bar_p_;
+    lon::LabelsAndTargetsWidget *labels_targets_widget_p_;
+    lon::ClockRunningWidget *    clock_running_widget_p_;
+    lon::ChartsWidget *          chart_widget_p_;
+    lon::TitleBar *              title_bar_p_;
 
     SettingWidget *setting_widget_p_;
 
@@ -50,6 +52,9 @@ class ClockMainWidget : public lon::Widget {
     QString running_clock_label_name_;
     QString running_clock_target_name_;
 
+	std::shared_ptr<lon::tomato_clock::TodayData> today_data_p_;
+	std::shared_ptr<lon::tomato_clock::LastWeekData> lastweek_data_p_;
+	std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonth_data_p_;
   private:
     void tomatoSaveToSql(int duringtime, QString &label, const QString &target);
 
@@ -57,7 +62,7 @@ class ClockMainWidget : public lon::Widget {
     explicit ClockMainWidget(QWidget *parent = nullptr);
 
     virtual ~ClockMainWidget();
-  signals:
+signals:
 
   public slots:
     // 是否切换显示计时

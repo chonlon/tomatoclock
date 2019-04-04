@@ -156,10 +156,10 @@ class Widget : public QWidget {
     }
 
     virtual ~Widget() {
-		delete pixmap_;
-		delete center_widget_;
-		delete bottom_bar_;
-	}
+        delete pixmap_;
+        delete center_widget_;
+        delete bottom_bar_;
+    }
 
     /// <summary> 返回中间栏的widget指针. </summary>
     QWidget *centerWidget() const { return center_widget_; }

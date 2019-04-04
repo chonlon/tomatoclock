@@ -91,7 +91,7 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
             all_button_ = button;
             count       = 2;
         }
-        addButton(button, i);
+        addLabelButton(button, i);
     }
 }
 
@@ -99,6 +99,7 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     target_main_layout_p_   = new QHBoxLayout(this);
     target_button_layout_p_ = new QVBoxLayout(this);
     targets_list_widget_p_  = new lon::ListWidget(this);
+
     QPalette palette;
     palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
     targets_list_widget_p_->setPalette(palette);
@@ -169,7 +170,8 @@ void lon::LabelsAndTargetsWidget::addTargetWidget(QString labelname,
             SIGNAL(startClock(QString, QString)));
 }
 
-void lon::LabelsAndTargetsWidget::addButton(lon::Button *  button,
+
+void lon::LabelsAndTargetsWidget::addLabelButton(lon::Button *  button,
                                             const QString &text) {
     const uint8_t row_width = 8;
 
@@ -207,7 +209,9 @@ void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
             addTargetWidget(i.first, i.second);
         }
     } else {
+		// 查找所有label为label_name的target
         auto iter = labels_and_targets_p_->begin();
+		// 遍历到第一个label名字等于label_name的地方.
         for (; iter != labels_and_targets_p_->end(); ++iter) {
             if (iter->first == label_name) break;
         }
@@ -218,6 +222,14 @@ void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
             addTargetWidget(label_name, iter->second);
         }
     }
+
+	if (targets_list_widget_p_->count() == 0) {
+		lon::Button *delete_label_button = new lon::Button(targets_list_widget_p_);
+		delete_label_button->setFixedSize(100, 50);
+		delete_label_button->setText(QString("%1%2").arg(QString::fromLocal8Bit("删除 ")).arg(label_name));
+		connect(delete_label_button, SIGNAL(clicked()), this,
+		            SLOT(deleteLabel()));
+	}
 }
 
 void lon::LabelsAndTargetsWidget::initConnect() {
@@ -226,6 +238,14 @@ void lon::LabelsAndTargetsWidget::initConnect() {
     connect(setting_button_p_, SIGNAL(clicked()), this,
             SIGNAL(changeSetting()));
     connect(history_button_p_, SIGNAL(clicked()), this, SIGNAL(showChart()));
+}
+
+void lon::LabelsAndTargetsWidget::deleteLabel() {
+	QPushButton *button = qobject_cast<QPushButton *>(sender());
+	auto i = button->text();
+	auto label_name = i.right(i.length() - 3);
+	sql_->deleteLabel(label_name);
+	emit redrawWidget();
 }
 
 void lon::LabelsAndTargetsWidget::closeAddLabelWidget() {
@@ -270,7 +290,7 @@ void lon::LabelsAndTargetsWidget::addLabel() {
 
 void lon::LabelsAndTargetsWidget::labelAdded(QString text) {
     lon::Button *button = new lon::Button(this);
-    addButton(button, text);
+    addLabelButton(button, text);
     saveLabelToSql(text);
     closeAddLabelWidget();
 }

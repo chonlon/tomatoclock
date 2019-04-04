@@ -46,7 +46,8 @@ SOURCES += \
     clock_subwidgets/addlabelwidget.cpp \
     clock_subwidgets/addtargetwidget.cpp \
     settingwidget.cpp \
-    settingfileoperations.cpp
+    settingfileoperations.cpp \
+    clock_subwidgets/customslicewithvalue.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -78,7 +79,8 @@ HEADERS += \
     clock_subwidgets/addtargetwidget.h \
     qstringhash.h \
     settingwidget.h \
-    settingfileoperations.h
+    settingfileoperations.h \
+    clock_subwidgets/customslicewithvalue.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -29,8 +29,12 @@ void lon::ClockMainWidget::saveSettingToFile(lon::ClockOptions options) {
 
 lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     : lon::Widget(parent)
-    , keep_working_(false) {
-    sql_p_ = new lon::ClockSql();
+    , keep_working_(false)
+	, sql_p_(new lon::ClockSql())
+	, today_data_p_(new lon::tomato_clock::TodayData(sql_p_->getTodayData()))
+	, lastweek_data_p_(new lon::tomato_clock::LastWeekData(sql_p_->getLastWeekData()))
+	, lastmonth_data_p_(new lon::tomato_clock::LastMonthData(sql_p_->getLastMonthData())) {
+
     // this->setWindowFlags(Qt::FramelessWindowHint |
     // Qt::WindowMinimizeButtonHint);
     // title_bar_p_ = new lon::TitleBar(this);
@@ -50,6 +54,8 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
             SLOT(displaySetting()));
     connect(labels_targets_widget_p_, SIGNAL(showChart()), this,
             SLOT(displayChart()));
+    connect(labels_targets_widget_p_, SIGNAL(redrawWidget()), this,
+            SLOT(displayTarget()));
     this->centerWidget()->setLayout(main_layout_);
     QWidget *temp = new QWidget(this);
     temp->setMaximumHeight(50);
@@ -61,16 +67,17 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
         new QPixmap(":/all/Res/Img/titlebarbackground.png"));
     // ÉèÖÃ³ÌÐò±³¾°
     this->setBackground(new QPixmap(":/all/Res/Img/background.png"));
-    this->setMinimumSize(1050, 700);
+    //this->resize(1050, 700);
+	this->setMinimumSize(950, 650);
 }
 
- lon::ClockMainWidget::~ClockMainWidget() {
-	 delete sql_p_;
-     delete labels_targets_widget_p_;
-     delete clock_running_widget_p_;
-     delete chart_widget_p_;
-     delete title_bar_p_;
- }
+lon::ClockMainWidget::~ClockMainWidget() {
+    delete sql_p_;
+    delete labels_targets_widget_p_;
+    delete clock_running_widget_p_;
+    delete chart_widget_p_;
+    delete title_bar_p_;
+}
 
 void lon::ClockMainWidget::displayClock(const QString &label,
                                         const QString &target) {
@@ -110,7 +117,12 @@ void lon::ClockMainWidget::displayTarget() {
         main_layout_->removeWidget(chart_widget_p_);
         delete chart_widget_p_;
         chart_widget_p_ = nullptr;
-    }
+	}
+	else if (labels_targets_widget_p_) {
+        main_layout_->removeWidget(labels_targets_widget_p_);
+        delete labels_targets_widget_p_;
+        labels_targets_widget_p_ = nullptr;
+	}
 
     labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(sql_p_);
     main_layout_->addWidget(labels_targets_widget_p_);
@@ -120,6 +132,8 @@ void lon::ClockMainWidget::displayTarget() {
             SLOT(displaySetting()));
     connect(labels_targets_widget_p_, SIGNAL(showChart()), this,
             SLOT(displayChart()));
+    connect(labels_targets_widget_p_, SIGNAL(redrawWidget()), this,
+            SLOT(displayTarget()));
 }
 
 void lon::ClockMainWidget::displayChart() {
@@ -128,7 +142,7 @@ void lon::ClockMainWidget::displayChart() {
         delete labels_targets_widget_p_;
         labels_targets_widget_p_ = nullptr;
     }
-    chart_widget_p_ = new lon::ChartsWidget(sql_p_);
+    chart_widget_p_ = new lon::ChartsWidget(today_data_p_, lastweek_data_p_, lastmonth_data_p_);
     //# background
     QPalette palette;
     palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));

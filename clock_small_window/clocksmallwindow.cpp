@@ -14,7 +14,7 @@ lon::clock_window::ClockSmallWindow::ClockSmallWindow(
     tools_widget_->resize(fixed_width_, fixed_height_);
     tools_widget_->setVisible(false);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-                         Qt::WindowMinimizeButtonHint);
+                         Qt::WindowMinimizeButtonHint | Qt::WindowStaysOnTopHint);
 
     layout_->setContentsMargins(0, 0, 0, 0);
     layout_->addWidget(progress_widget_);
@@ -68,6 +68,16 @@ void lon::clock_window::ClockSmallWindow::mouseReleaseEvent(
     QMouseEvent *event) {
     is_pressed_ = false;
     return QWidget::mouseReleaseEvent(event);
+}
+
+void lon::clock_window::ClockSmallWindow::wheelEvent(QWheelEvent *event) {
+	auto delta = event->delta();
+	if (delta > 0) {
+		this->setWindowOpacity(this->windowOpacity() + 0.05);
+	}
+	else {
+		this->setWindowOpacity(this->windowOpacity() - 0.05);
+	}
 }
 
 lon::clock_window::ClockSmallWindow::~ClockSmallWindow() {

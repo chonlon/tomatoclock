@@ -43,5 +43,11 @@ int main(int argc, char *argv[]) {
     // t.show();
     lon::ClockMainWidget *c = new lon::ClockMainWidget();
     c->show();
+
+	lon::ListWidget w;
+	QPushButton *button = new QPushButton();
+	button->setFixedSize(100, 100);
+	w.addWidget(button);
+	w.show();
     return a.exec();
 }

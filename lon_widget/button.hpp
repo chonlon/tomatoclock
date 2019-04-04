@@ -172,6 +172,10 @@ class Button : public QPushButton {
         this->setIcon(*normal_icon_);
     }
 
+    /// <summary>
+    /// 设置button中的图标缩放比例
+    /// </summary>
+    /// <param name="factor">缩放比例, 范围 0 - 1</param>
     void setScalingFactor(double factor) {
         scaling_factor_ = factor;
         this->setIconSize(QSize(this->width() * scaling_factor_,

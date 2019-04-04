@@ -1,8 +1,8 @@
 {
-    "ClockSetting" :{
-		"WorkTime" : 25,
-		"ShortbreakTime" : 5,
-		"LongbreakTime" : 15,
-		"TimesBetweenLong" : 3
-    }
+  "ClockSetting": {
+    "LongbreakTime": 15,
+    "ShortbreakTime": 5,
+    "TimesBetweenLong": 3,
+    "WorkTime": 25
+  }
 }

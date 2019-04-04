@@ -60,15 +60,15 @@ class LabelsAndTargetsWidget : public QWidget {
     // default construction are not allowed.
     LabelsAndTargetsWidget();
 
-    void initLabelsLayout();
-    void initTargetsLayout();
+    void addLabelButton(lon::Button *button, const QString &text);
     void addTargetWidget(QString labelname, QString targetname, int index = -1);
-    void addButton(lon::Button *button, const QString &text);
+    void initConnect();
+    void initLabelsLayout();
+    void initTargets(QString label_name, bool getAllTargets = false);
+    void initTargetsLayout();
     void saveLabelToSql(const QString &label_name);
     void saveTargetToSql(const QString &label_name, const QString &target_name);
-    void initTargets(QString label_name, bool getAllTargets = false);
-    void initTargetsList();
-    void initConnect();
+
 
   public:
     /// <summary>
@@ -81,18 +81,19 @@ class LabelsAndTargetsWidget : public QWidget {
                                     QWidget *      parent = nullptr);
 
   signals:
-    void showChart();
     void changeSetting();
+    void showChart();
     void startClock(QString label_name, QString target_name);
+    void redrawWidget();
   public slots:
-    void onLabelButtonClicked();
-    void addTarget();
     void addLabel();
-    void labelAdded(QString text);
-    void targetAdded(QString label, QString target);
-
+    void addTarget();
     void closeAddLabelWidget();
     void closeAddTargetWidget();
+    void labelAdded(QString text);
+    void onLabelButtonClicked();
+    void targetAdded(QString label, QString target);
+	void deleteLabel();
     // void startClock(const QString &label_name, const QString &target_name);
 };
 } // namespace lon

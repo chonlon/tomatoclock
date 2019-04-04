@@ -11,6 +11,7 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QPieSeries>
+#include <memory>
 
 #include "clock_database/clocksql.hpp"
 #include "lon_widget/button.hpp"
@@ -42,10 +43,10 @@ class ChartsWidget : public QWidget {
 
     lon::ClockSql *sql_;
 
-    lon::tomato_clock::TodayData     todaydata_;
-    lon::tomato_clock::LastWeekData  lastweekdata_;
-    lon::tomato_clock::LastMonthData lastmonthdata_;
-    lon::tomato_clock::LastYearData  lastyeardata_;
+    std::shared_ptr<lon::tomato_clock::TodayData> todaydata_p_;
+	std::shared_ptr < lon::tomato_clock::LastWeekData>  lastweekdata_p_;
+	std::shared_ptr < lon::tomato_clock::LastMonthData> lastmonthdata_p_;
+	std::shared_ptr < lon::tomato_clock::LastYearData> lastyeardata_p_;
 
     lon::ListWidget *list_widget_p_;
     lon::Button *    close_button_p_;
@@ -126,9 +127,9 @@ class ChartsWidget : public QWidget {
     void initBestworkTimeWidget();
 
   public:
-    explicit ChartsWidget(lon::ClockSql *sql, QWidget *parent = nullptr);
 
-    ~ChartsWidget();
+	explicit ChartsWidget(std::shared_ptr<lon::tomato_clock::TodayData> todaydata_p, std::shared_ptr<lon::tomato_clock::LastWeekData> lastweekdata_p, std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonthdata_p, QWidget * parent = nullptr);
+	~ChartsWidget();
 
   signals:
     void closeButtonClicked();
