@@ -10,6 +10,14 @@
 #include "lon_widget/widget.hpp"
 
 namespace lon {
+/*!
+ * \class AddLabelWidget
+ *
+ * \brief 添加Label弹窗widget, 添加Label成功返回主界面, 添加失败弹出一个MessageBox提示添加失败.
+ *
+ * \author LON
+ */
+
 class AddLabelWidget : public lon::Widget {
     Q_OBJECT
   private:

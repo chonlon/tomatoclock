@@ -3,6 +3,7 @@
 
 #include "clockoptions.hpp"
 #include "lon_widget/widget.hpp"
+#include "settingfileoperations.h"
 #include "ui_settingwidget.h"
 #include <QWidget>
 
@@ -17,11 +18,13 @@ class SettingWidgetPrivate : public QWidget {
         : QWidget(parent)
         , ui(new Ui::SettingWidgetPrivate) {
         ui->setupUi(this);
-        clock_option_setted_p_ = new lon::ClockOptions();
+        clock_option_setted_p_ = new lon::ClockOptions(
+            SettingFileOperations().readClockOptionFromFile());
         setSliderQss(ui->work_slider_p_, "#E8EDF2", "#1ABC9C", "#1ABC9C");
         setSliderQss(ui->shortbreak_slider_p_, "#E8EDF2", "#1ABC9C", "#1ABC9C");
         setSliderQss(ui->long_break_slider_p_, "#E8EDF2", "#1ABC9C", "#1ABC9C");
         setSliderQss(ui->break_time_slider_p_, "#E8EDF2", "#1ABC9C", "#1ABC9C");
+
         // ÉèÖÃtextedit±³¾°Í¸Ã÷.
         ui->plainTextEdit->setStyleSheet(
             "background:transparent;border-width:0;border-style:outset");
@@ -32,6 +35,24 @@ class SettingWidgetPrivate : public QWidget {
                 SLOT(setShortbreakLabel(int)));
         connect(ui->long_break_slider_p_, SIGNAL(valueChanged(int)), this,
                 SLOT(setLongbreakLabel(int)));
+        connect(ui->break_time_slider_p_, SIGNAL(valueChanged(int)), this,
+                SLOT(setBreakTimeLabel(int)));
+        connect(ui->check_box_p_, SIGNAL(stateChanged(int)), this,
+                SLOT(setKeepWorking(int)));
+        ui->work_slider_p_->setValue(
+            clock_option_setted_p_->work_time()->minutes_);
+        ui->shortbreak_slider_p_->setValue(
+            clock_option_setted_p_->sb_time()->minutes_);
+        ui->long_break_slider_p_->setValue(
+            clock_option_setted_p_->lb_time()->minutes_);
+        ui->break_time_slider_p_->setValue(
+            clock_option_setted_p_->sbtimes_between_lb());
+        ui->check_box_p_->setCheckState(clock_option_setted_p_->keepWorking()
+                                        ? Qt::Checked
+                                        : Qt::Unchecked);
+        // setWorkTimeLabel(clock_option_setted_p_->work_time()->minutes_);
+        // setShortbreakLabel(clock_option_setted_p_->sb_time()->minutes_);
+        // setLongbreakLabel(clock_option_setted_p_->lb_time()->minutes_);
     }
 
     ~SettingWidgetPrivate() { delete ui; }
@@ -57,6 +78,13 @@ class SettingWidgetPrivate : public QWidget {
         num.append(" : 00");
         ui->long_break_label_p_->setText(num);
         clock_option_setted_p_->setLongBreakTime(value, 0);
+    }
+    void setBreakTimeLabel(int value) {
+        ui->break_time_label_p_->setText(QString::number(value));
+        clock_option_setted_p_->set_sbtimes_between_lb(value);
+    }
+    void setKeepWorking(int val) {
+        clock_option_setted_p_->setKeepWorking(static_cast<bool>(val));
     }
 
   private:

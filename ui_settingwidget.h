@@ -69,7 +69,7 @@ public:
     QGridLayout *gridLayout_2;
     QSpacerItem *spacer_bottom_right_p_;
     QPlainTextEdit *plainTextEdit;
-    QCheckBox *checkBox;
+    QCheckBox *check_box_p_;
 
     void setupUi(QWidget *SettingWidgetPrivate)
     {
@@ -349,11 +349,11 @@ public:
 
         gridLayout_2->addWidget(plainTextEdit, 1, 1, 1, 1);
 
-        checkBox = new QCheckBox(SettingWidgetPrivate);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setFont(font1);
+        check_box_p_ = new QCheckBox(SettingWidgetPrivate);
+        check_box_p_->setObjectName(QString::fromUtf8("check_box_p_"));
+        check_box_p_->setFont(font1);
 
-        gridLayout_2->addWidget(checkBox, 0, 0, 1, 2);
+        gridLayout_2->addWidget(check_box_p_, 0, 0, 1, 2);
 
 
         gridLayout_3->addLayout(gridLayout_2, 2, 1, 1, 1);
@@ -384,7 +384,7 @@ public:
         break_time_label_p_->setText(QApplication::translate("SettingWidgetPrivate", "3", nullptr));
         other_setting_label_p_->setText(QApplication::translate("SettingWidgetPrivate", "\345\205\266\344\273\226\350\256\276\347\275\256", nullptr));
         plainTextEdit->setPlainText(QApplication::translate("SettingWidgetPrivate", "\350\256\276\347\275\256\350\277\236\347\273\255\345\267\245\344\275\234\346\204\217\345\221\263\347\235\200\346\257\217\344\270\252\347\225\252\350\214\204\351\222\237\347\273\223\346\235\237\344\274\232\350\207\252\345\212\250\345\274\200\345\247\213\344\270\213\344\270\200\344\270\252\347\225\252\350\214\204\351\222\237\343\200\202\345\274\200\345\220\257\346\255\244\351\241\271\345\220\216\357\274\214\345\246\202\346\236\234\345\234\250\346\237\220\344\270\252\347\225\252\350\214\204\351\222\237\347\273\223\346\235\237\345\220\216\346\203\263\345\201\234\346\255\242\345\267\245\344\275\234\357\274\214\345\217\252\350\203\275\346\217\220\345\211\215\347\273\223\346\235\237\350\207\252\345\212\250\345\274\200\345\247\213\347\232\204\347\225\252\350\214\204\357\274\214\344\270\215\350\277\207\357\274\214\346\234\252\346\273\2412\345\210\206\351\222\237\347\232\204\347\225\252\350\214\204\346\230\257\344\270\215\344\274\232\350\256\260\345\275\225\347\232\204\343\200\202", nullptr));
-        checkBox->setText(QApplication::translate("SettingWidgetPrivate", "\346\230\257\345\220\246\350\277\236\347\273\255\345\267\245\344\275\234", nullptr));
+        check_box_p_->setText(QApplication::translate("SettingWidgetPrivate", "\346\230\257\345\220\246\350\277\236\347\273\255\345\267\245\344\275\234", nullptr));
     } // retranslateUi
 
 };

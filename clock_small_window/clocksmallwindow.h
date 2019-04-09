@@ -25,12 +25,17 @@ class ClockSmallWindow : public QWidget {
     lon::ToolsWidget *tools_widget_;
 
   protected:
+	// 鼠标移入移除事件.
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
+
+	// 三个函数实现窗口的拖动.
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-	void wheelEvent(QWheelEvent *event);
+
+	// 鼠标滚轮事件, 滚轮改变窗口透明度.
+    void wheelEvent(QWheelEvent *event);
 
   public:
     ProgressWidget *progress_widget_;
@@ -44,8 +49,15 @@ class ClockSmallWindow : public QWidget {
 
     const uint16_t fixed_height_;
     const uint16_t fixed_width_;
-  signals:
+signals:
+	  /// <summary>
+	  /// 提前终止番茄钟.
+	  /// </summary>
     void clockStoped();
+
+	/// <summary>
+	/// 小窗正在关闭.
+	/// </summary>
     void smallWindowClosing();
 
   public slots:

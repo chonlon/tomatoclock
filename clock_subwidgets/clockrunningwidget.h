@@ -13,10 +13,14 @@ class Button;
 namespace clock_window {
 class ClockSmallWindow;
 }
-/// <summary>
-/// 显示时钟的控件.
-/// 用于嵌入到ClockMainWidget中.
-/// </summary>
+
+/*!
+ * \class ClockRunningWidget
+ *
+ * \brief 显示时钟的widget, 包含一个显示计时组件, 以及一些控制按钮.
+ *
+ * \author LON
+ */
 class ClockRunningWidget : public QWidget {
     Q_OBJECT
   private:
@@ -31,9 +35,19 @@ class ClockRunningWidget : public QWidget {
     lon::DisplayClockBase *              current_display_widget_p_;
 
   private:
-    void setDisplayWidget(lon::DisplayClockBase *displaye_p);
+
+	/// <summary>
+	/// 设置此类中接管计时器的DisplayClockBase.
+	/// </summary>
+	/// <param name="displaye_p">接管计时器者.</param>
+    void setReceiveTimerWidget(lon::DisplayClockBase *displaye_p);
 
   public:
+
+	/// <summary>
+	/// 设置番茄钟计时器.
+	/// </summary>
+	/// <param name="timer">计时器指针.</param>
     void setTimer(lon::TomatoClockTimer *timer);
 
   public:
@@ -42,13 +56,24 @@ class ClockRunningWidget : public QWidget {
                                 QWidget *     parent = nullptr);
     ~ClockRunningWidget();
 
-  signals:
+signals:
+	  /// <summary>
+	  /// 提前中断番茄钟.
+	  /// </summary>
     void clockStoped();
   public slots:
+	/// <summary>
+	/// 按下了stopbutton, 将会提前中断计时.
+	/// </summary>
     void onStopButtonClicked();
+	/// <summary>
+	/// 按下了小窗口显示按钮, 将会切换小窗显示.
+	/// </summary>
     void onSmallWindowButtonClicked();
 
-    // back to current widget from small widget.
+    /// <summary>
+    /// 从小窗显示返回主界面.
+    /// </summary>
     void backToCurrentWidget();
 };
 } // namespace lon

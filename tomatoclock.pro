@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql charts
+QT       += core gui sql charts network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,17 +26,11 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     tomatoclocktimer.cpp \
-    temp.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    temp.cpp \
     tomatoclocktimer.cpp \
     clock_small_window/clocksmallwindow.cpp \
     clock_small_window/progresswidget.cpp \
     clock_small_window/toolswidget.cpp \
-    clock_main_widget/clockmainwidget.cpp \
     clock_main_widget/clockmainwidget.cpp \
     clock_subwidgets/clockdisplaywidget.cpp \
     clock_subwidgets/clockrunningwidget.cpp \
@@ -46,24 +40,19 @@ SOURCES += \
     clock_subwidgets/addlabelwidget.cpp \
     clock_subwidgets/addtargetwidget.cpp \
     settingwidget.cpp \
-    settingfileoperations.cpp \
-    clock_subwidgets/customslicewithvalue.cpp
+    settingfileoperations.cpp
 
 HEADERS += \
-        mainwindow.h \
     clockoptions.hpp \
     tomatoclocktimer.h \
-    temp.h \
     clockoptions.hpp \
     mainwindow.h \
-    temp.h \
     tomatoclocktimer.h \
     clock_small_window/clocksmallwindow.h \
     clock_small_window/progresswidget.h \
     clock_small_window/toolswidget.h \
     TimeStatus.hpp \
     LonTypeDefines.h \
-    clock_main_widget/clockmainwidget.h \
     clock_main_widget/clockmainwidget.h \
     clock_subwidgets/clockdisplaywidget.h \
     displayclockbase.h \
@@ -80,7 +69,6 @@ HEADERS += \
     qstringhash.h \
     settingwidget.h \
     settingfileoperations.h \
-    clock_subwidgets/customslicewithvalue.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -89,9 +77,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 # Sub projects.
 include(./lon_widget/lon_widget.pri)
+include(./translate/translate.pri)
 
 FORMS += \
-    temp.ui \
     settingwidget.ui
 
 RESOURCES += \

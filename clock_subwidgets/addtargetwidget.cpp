@@ -1,15 +1,15 @@
 #include "addtargetwidget.h"
 #include "lon_widget/messagebox.hpp"
+#include "clock_database/clocksql.hpp"
 #include <QComboBox>
 #include <QGridLayout>
 static const int window_height = 300;
 static const int window_width  = 500;
 
 lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels,
-                                      lon::ClockSql *    sql,
-                                      QWidget *          parent /*= nullptr*/)
-    : lon::Widget(parent, lon::TitleBar::CLOSE_MIN)
-    , sql_(sql) {
+	QWidget *          parent /*= nullptr*/)
+	: lon::Widget(parent, lon::TitleBar::CLOSE_MIN)
+	, sql_(lon::ClockSql::Get()) {
     labels_combobox_p_ = new QComboBox(this);
     lineedit_p_        = new QLineEdit(this);
     label_p_           = new QLabel(this);

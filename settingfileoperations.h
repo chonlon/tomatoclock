@@ -13,9 +13,6 @@ class SettingFileOperations {
 
     void              saveClockOptionToFile(const lon::ClockOptions &option);
     lon::ClockOptions readClockOptionFromFile();
-
-  private:
-    QFile file_;
 };
 
 #endif // SETTINGFILEOPERATIONS_H

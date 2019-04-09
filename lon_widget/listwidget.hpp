@@ -4,22 +4,22 @@
 #include <memory>
 #include <vector>
 
+#include <QDebug>
 #include <QGraphicsEffect>
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QDebug>
 namespace lon {
 /// 这是一个list显示widget的简单封装.
 /// 这个类会获得添加的widget的所有权.
 class ListWidget : public QWidget {
     Q_OBJECT
-  //private:
-public:
+    // private:
+  public:
     QVBoxLayout *                         main_layout_;
-	QVBoxLayout *						  inner_layout_;
+    QVBoxLayout *                         inner_layout_;
     std::vector<std::shared_ptr<QWidget>> widget_list_;
     QWidget *                             widget_;
 
@@ -101,20 +101,20 @@ public:
   public:
     explicit ListWidget(QWidget *parent = nullptr)
         : QWidget(parent) {
-		main_layout_ = new QVBoxLayout(this);
-        widget_      = new QWidget();
-		inner_layout_ = new QVBoxLayout(widget_);
+        main_layout_  = new QVBoxLayout(this);
+        widget_       = new QWidget();
+        inner_layout_ = new QVBoxLayout(widget_);
         main_layout_->setContentsMargins(0, 0, 0, 0);
-		inner_layout_->setContentsMargins(5, 5, 0, 0);
+        inner_layout_->setContentsMargins(5, 5, 0, 0);
         scroll_area_p_ = new QScrollArea(this);
         scroll_area_p_->setFrameShape(QFrame::NoFrame);
-		scroll_area_p_->setAlignment(Qt::AlignVCenter);
+        scroll_area_p_->setAlignment(Qt::AlignVCenter);
         scroll_area_p_->setWidgetResizable(true);
-		widget_->setLayout(inner_layout_);
+        widget_->setLayout(inner_layout_);
         // The widget becomes a child of the scroll area, and will be destroyed
         // when the scroll area is deleted or when a new widget is set.
         scroll_area_p_->setWidget(widget_);
-		main_layout_->addWidget(scroll_area_p_);
+        main_layout_->addWidget(scroll_area_p_);
         setVerticalScrollBarStyle();
     }
 
@@ -133,19 +133,16 @@ public:
     // void removeWidget(int index);
 
     std::shared_ptr<QWidget> indexOf(int index) {
-		if (index < 0 || index > widget_list_.size()) return std::shared_ptr<QWidget>();
+        if (index < 0 || index > widget_list_.size())
+            return std::shared_ptr<QWidget>();
         return widget_list_[ index ];
     }
 
-	int count() {
-		return widget_list_.size();
-	}
+    int count() { return widget_list_.size(); }
 
     void resize(int w, int h) {
-		qDebug() << "++++++" << w << "+++" << h << "++++++";
-		QWidget::resize(w, h);
+        QWidget::resize(w, h);
         scroll_area_p_->resize(w, h);
-		qDebug() << "++++++" << widget_->width() << "---" << widget_->height() << "++++++";
     }
 
     void setHorizontalScrollBarVisible(bool visible) {

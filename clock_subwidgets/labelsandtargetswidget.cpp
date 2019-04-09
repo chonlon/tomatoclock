@@ -13,12 +13,16 @@ static const unsigned int duration            = 600000;
 static const unsigned int label_widget_height = 110;
 static const int          button_width_height = 50;
 
-lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql,
-                                                    QWidget *      parent)
+lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(
+    std::shared_ptr<lon::tomato_clock::LastWeekData> week_data,
+    std::shared_ptr<lon::tomato_clock::LastMonthData> month_data,
+    QWidget *                                         parent)
     : QWidget(parent)
-    , sql_(sql)
+    , sql_(lon::ClockSql::Get())
     , current_cloumn(0)
-    , current_row(0) {
+    , current_row(0)
+    , last_week_data_p_(week_data)
+    , last_month_data_p_(month_data) {
     main_layout_p_        = new QVBoxLayout(this);
     labels_and_targets_p_ = new std::list<std::pair<QString, QString>>(
         sql_->getAllTargetsAndLabels());
@@ -37,6 +41,16 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(lon::ClockSql *sql,
     main_layout_p_->addLayout(labels_main_layout_p_);
     main_layout_p_->addLayout(target_main_layout_p_);
     this->setLayout(main_layout_p_);
+}
+
+void lon::LabelsAndTargetsWidget::setLastWeekData(
+    std::shared_ptr<lon::tomato_clock::LastWeekData> ptr) {
+    last_week_data_p_ = ptr;
+}
+
+void lon::LabelsAndTargetsWidget::setLastMonthData(
+    std::shared_ptr<lon::tomato_clock::LastMonthData> ptr) {
+    last_month_data_p_ = ptr;
 }
 
 void lon::LabelsAndTargetsWidget::initLabelsLayout() {
@@ -162,17 +176,20 @@ void lon::LabelsAndTargetsWidget::addTargetWidget(QString labelname,
                                                   int     index) {
     lon::TargetWidget *target_widget =
         new lon::TargetWidget(labelname, targetname, this);
+    target_widget->setLastWeekData(last_week_data_p_);
+    target_widget->setLastMonthData(last_month_data_p_);
     if (index == -1)
         targets_list_widget_p_->addWidget(target_widget);
     else
         targets_list_widget_p_->insertWidget(index, target_widget);
     connect(target_widget, SIGNAL(startButtonClicked(QString, QString)), this,
             SIGNAL(startClock(QString, QString)));
+    connect(target_widget, SIGNAL(targetFinished(const QString&)), this,
+            SLOT(targetFinished(const QString &)));
 }
 
-
 void lon::LabelsAndTargetsWidget::addLabelButton(lon::Button *  button,
-                                            const QString &text) {
+                                                 const QString &text) {
     const uint8_t row_width = 8;
 
     button->setFixedSize(60, 30);
@@ -209,9 +226,9 @@ void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
             addTargetWidget(i.first, i.second);
         }
     } else {
-		// 查找所有label为label_name的target
+        // 查找所有label为label_name的target
         auto iter = labels_and_targets_p_->begin();
-		// 遍历到第一个label名字等于label_name的地方.
+        // 遍历到第一个label名字等于label_name的地方.
         for (; iter != labels_and_targets_p_->end(); ++iter) {
             if (iter->first == label_name) break;
         }
@@ -223,13 +240,16 @@ void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
         }
     }
 
-	if (targets_list_widget_p_->count() == 0) {
-		lon::Button *delete_label_button = new lon::Button(targets_list_widget_p_);
-		delete_label_button->setFixedSize(100, 50);
-		delete_label_button->setText(QString("%1%2").arg(QString::fromLocal8Bit("删除 ")).arg(label_name));
-		connect(delete_label_button, SIGNAL(clicked()), this,
-		            SLOT(deleteLabel()));
-	}
+    if (targets_list_widget_p_->count() == 0 && label_name.size()) {
+        lon::Button *delete_label_button =
+            new lon::Button(targets_list_widget_p_);
+        delete_label_button->setFixedSize(100, 50);
+        delete_label_button->setText(QString("%1%2")
+                                         .arg(QString::fromLocal8Bit("删除 "))
+                                         .arg(label_name));
+        connect(delete_label_button, SIGNAL(clicked()), this,
+                SLOT(deleteLabel()));
+    }
 }
 
 void lon::LabelsAndTargetsWidget::initConnect() {
@@ -241,11 +261,11 @@ void lon::LabelsAndTargetsWidget::initConnect() {
 }
 
 void lon::LabelsAndTargetsWidget::deleteLabel() {
-	QPushButton *button = qobject_cast<QPushButton *>(sender());
-	auto i = button->text();
-	auto label_name = i.right(i.length() - 3);
-	sql_->deleteLabel(label_name);
-	emit redrawWidget();
+    QPushButton *button     = qobject_cast<QPushButton *>(sender());
+    auto         i          = button->text();
+    auto         label_name = i.right(i.length() - 3);
+    sql_->deleteLabel(label_name);
+    emit redrawWidget();
 }
 
 void lon::LabelsAndTargetsWidget::closeAddLabelWidget() {
@@ -266,7 +286,7 @@ void lon::LabelsAndTargetsWidget::closeAddTargetWidget() {
 
 void lon::LabelsAndTargetsWidget::addTarget() {
     auto labels             = sql_->getAllLabels();
-    auto addtargetwidget_p_ = new lon::AddTargetWidget(labels, sql_);
+    auto addtargetwidget_p_ = new lon::AddTargetWidget(labels);
     addtargetwidget_p_->show();
     connect(addtargetwidget_p_, SIGNAL(targetAdded(QString, QString)), this,
             SLOT(targetAdded(QString, QString)));
@@ -301,6 +321,11 @@ void lon::LabelsAndTargetsWidget::targetAdded(QString label, QString target) {
     closeAddTargetWidget();
 }
 
+void lon::LabelsAndTargetsWidget::targetFinished(const QString &target_name) {
+	sql_->deleteTarget(target_name);
+	emit redrawWidget();
+}
+
 void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
     lon::Button *button = qobject_cast<lon::Button *>(sender());
     // 如果点击的现在的widget对应的button
@@ -324,8 +349,7 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
         target_main_layout_p_->removeWidget(targets_list_widget_p_);
         targets_list_widget_p_ = new lon::ListWidget(this);
         QPalette palette;
-        palette.setBrush(this->backgroundRole(),
-                         QBrush(QColor(255, 255, 255, 30)));
+        palette.setColor(QPalette::Window, QColor(255, 255, 255, 30));
         targets_list_widget_p_->setPalette(palette);
         iter->second =
             new lon::AutoDeleteWidgetPointer(duration, targets_list_widget_p_);

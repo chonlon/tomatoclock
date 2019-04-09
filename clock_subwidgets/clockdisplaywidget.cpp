@@ -46,6 +46,5 @@ void lon::ClockDisplayWidget::paintEvent(QPaintEvent *) {
     if (left_time_string_p_ == nullptr) return;
     QFont f = QFont("Microsoft YaHei", 15, QFont::Bold);
     p.setFont(f);
-    p.setFont(f);
     p.drawText(outRect, Qt::AlignCenter, *left_time_string_p_);
 }

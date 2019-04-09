@@ -59,9 +59,9 @@ class DisplayClockBase : public QWidget {
   public:
     explicit DisplayClockBase(QWidget *parent = nullptr)
         : QWidget(parent) {
-        working_foreground_brush_       = new QBrush(QColor(244, 12, 36, 50));
-        shortbreaking_foreground_brush_ = new QBrush(QColor(30, 239, 61, 50));
-        longbreaking_foreground_brush_  = new QBrush(QColor(163, 66, 222, 50));
+        working_foreground_brush_       = new QBrush(QColor(255, 255, 255, 180));
+        shortbreaking_foreground_brush_ = new QBrush(QColor(30, 239, 61, 180));
+        longbreaking_foreground_brush_  = new QBrush(QColor(33, 252, 217, 180));
     }
 
     virtual ~DisplayClockBase() {

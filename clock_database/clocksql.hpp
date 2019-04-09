@@ -8,7 +8,15 @@
 #include "DataStructure.hpp"
 #include "LonTypeDefines.h"
 
+
 namespace lon {
+/*!
+ * \class ClockSql
+ *
+ * \brief 封装番茄钟相关数据库操作, 只允许存在一个Sql对象. 此类使用单例模式.
+ *
+ * \author LON
+ */
 class ClockSql {
   private:
     QSqlDatabase sql_;
@@ -60,7 +68,6 @@ class ClockSql {
         return result;
     }
 
-  public:
     ClockSql()
         : sql_(QSqlDatabase::addDatabase("QSQLITE")) {
         sql_.setDatabaseName("ClockSql.db");
@@ -69,17 +76,18 @@ class ClockSql {
         initLabelsTable();
         initTargetsTable();
         initFinishedTomatoTable();
-        // query_->exec(" SELECT datetime(FinishTime) AS time,strftime('%H',
-        // FinishTime) AS hour FROM finishedtomato WHERE date('now', '-1 day') <
-        // date(FinishTime) "); while (query_->next()) {
-        //    qDebug() << query_->value(0).toString();
-        //    qDebug() << query_->value(1).toString();
-        //}
-
-        // getLastWeekData();
     }
+public:
+    ~ClockSql() {
+		delete query_;
+	}
 
-    ~ClockSql() { delete query_; }
+	// Clock 工厂方法.
+    static ClockSql *Get() {
+		static ClockSql *instance_ = nullptr;
+        if (instance_ == nullptr) instance_ = new ClockSql();
+        return instance_;
+    }
     // a tomato have just finished
     void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
         query_->prepare(
@@ -99,10 +107,16 @@ class ClockSql {
         query_->exec();
     }
 
-	void deleteLabel(const QString &label_name) {
-		query_->prepare("DELETE FROM labels WHERE LabelName = :label ");
-		query_->bindValue(":label", label_name);
-		query_->exec();
+    void deleteLabel(const QString &label_name) {
+        query_->prepare("DELETE FROM labels WHERE LabelName = :label ");
+        query_->bindValue(":label", label_name);
+        query_->exec();
+    }
+
+	void deleteTarget(const QString &target_name) {
+        query_->prepare("DELETE FROM targets WHERE TargetName = :target ");
+        query_->bindValue(":target", target_name);
+        query_->exec();
 	}
 
     void addTarget(const QString &label_name, const QString &target_name) {
@@ -299,7 +313,7 @@ class ClockSql {
             ")"
             "GROUP BY time "
             "ORDER BY time;");
-		// 此处如果数据库中存了超过当前时间的值, 会导致超过数据访问范围.
+        // 此处如果数据库中存了超过当前时间的值, 会导致超过数据访问范围.
         while (query_->next()) {
             data.total_time_p[ query_->value(0).toInt() ] =
                 static_cast<uint16_t>(query_->value(1).toInt());

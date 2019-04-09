@@ -30,9 +30,11 @@ static std::vector<QString> GetFileList(QString dir) {
 
 namespace lon {
 /// <summary>
-/// 默认的不是flat的,(因为如果图标设置失败, 而按钮已经时flat的会很尴尬)
-/// 所以添加icon后还是会有边框和背景, 如果不想要, 使用button->setFlat(true)即可.
+/// PushButton的一个封装, 提供简单的设置PushButton三态的方法, 并且可以设置缩放因子以满足不同
+/// 大小要求.
 /// </summary>
+/// 注意: 默认的不是flat的,(因为如果图标设置失败, 而按钮已经时flat的会很尴尬)
+/// 所以添加icon后还是会有边框和背景, 如果不想要, 使用button->setFlat(true)即可.
 class Button : public QPushButton {
     Q_OBJECT
   private:

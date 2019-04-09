@@ -4,6 +4,9 @@
 #include <mutex>
 #include <thread>
 class QWidget;
+/// <summary>
+/// 在duration生命周期后, 删除*w_pointer所指内容并将*w_pointer置为nullptr
+/// </summary>
 static void deleteAfterMs(unsigned int duration, QWidget **w_pointer,
                           std::mutex &mutex, bool &should_delete) {
     if (*w_pointer == nullptr) return;
@@ -48,15 +51,25 @@ class AutoDeleteWidgetPointer {
         t.detach();
     }
 
+	/// <summary>
+	/// 所管理的widget指针是否为空.
+	/// </summary>
     bool isNull() {
         std::lock_guard<std::mutex> lm(pointer_mutex_);
         return widget_p_ == nullptr;
     }
 
+	/// <summary>
+	/// 当前指针是否该被删除, iff should_delete == true, 会持续缩减所持有的widget指针的生命周期.
+	/// </summary>
     void setShouldDelete(bool should_delete) {
         std::lock_guard<std::mutex> lm(pointer_mutex_);
         should_delete_ = should_delete;
     }
+
+	/// <summary>
+	/// 获取所管理的widget的指针.
+	/// </summary>
     QWidget *getWidgetPointer() {
         std::lock_guard<std::mutex> lm(pointer_mutex_);
         return widget_p_;

@@ -1,8 +1,23 @@
 // encoded with gbk, cause QString::fromUtf8 doesn't work.
 #include "chartswidget.h"
+#include "lon_widget/button.hpp"
+#include "lon_widget/listwidget.hpp"
+
+#include <algorithm>
+
 #include <QMessageBox>
 #include <QValueAxis>
-#include <algorithm>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QPieSeries>
+
+
 
 /*
  *	#staic
@@ -53,14 +68,14 @@ QtCharts::QChart *lon::ChartsWidget::initLineChartSeries(
         dynamic_cast<QValueAxis *>(chart->axes(Qt::Horizontal).first());
     ver_axis->setGridLineVisible(true);
     //当纵轴很长时只取最大15, 避免卡顿
-    ver_axis->setTickCount(std::min(15, _max + 1));
+    ver_axis->setTickCount(std::min(15, _max + 1) + 1);
     ver_axis->setRange(0, makeAxisInteger(ver_axis->tickCount(), _max));
     ver_axis->setLabelFormat("%d");
     hor_axis->setRange(0, std::max(length - 1, static_cast<unsigned int>(1)));
     hor_axis->setGridLineVisible(true);
     hor_axis->setTickCount(length);
     hor_axis->setLabelFormat("%d");
-	chart->legend()->setVisible(false);
+    chart->legend()->setVisible(false);
     return chart;
 }
 
@@ -74,14 +89,15 @@ QtCharts::QChart *lon::ChartsWidget::initPieChartSeries(
     for (int i = 0; i < labels_data.size(); ++i) {
         QPieSlice *slice =
             series->append(labels_data[ i ].first, labels_data[ i ].second);
-		slice->setLabel(QString("%1: %2").arg(slice->label()).arg(slice->value()));
+        slice->setLabel(
+            QString("%1: %2").arg(slice->label()).arg(slice->value()));
         slice->setLabelVisible(true);
     }
     series->setPieSize(0.6);
     chart->addSeries(series);
-	chart->legend()->setAlignment(Qt::AlignRight);
-	// #add function fail
-	//chart->setTheme(QChart::ChartTheme::ChartThemeBlueIcy);
+    chart->legend()->setAlignment(Qt::AlignRight);
+    // #add function fail
+    // chart->setTheme(QChart::ChartTheme::ChartThemeBlueIcy);
 
     return chart;
 }
@@ -97,8 +113,8 @@ void lon::ChartsWidget::initDayFinishedLineChart() {
 
 void lon::ChartsWidget::initWeekFinishedLineChart() {
     using namespace QtCharts;
-    finished_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->time_data_p, lastweekdata_p_->length);
+    finished_week_line_chart_p_ = initLineChartSeries(
+        lastweekdata_p_->time_data_p, lastweekdata_p_->length);
     week_finish_line_chart_view_p_ =
         new QChartView(finished_week_line_chart_p_, this);
     week_finish_line_chart_view_p_->setFixedHeight(chart_view_height_);
@@ -106,8 +122,8 @@ void lon::ChartsWidget::initWeekFinishedLineChart() {
 
 void lon::ChartsWidget::initMonthFinishedLineChart() {
     using namespace QtCharts;
-    finished_month_line_chart_p_ =
-        initLineChartSeries(lastmonthdata_p_->time_data_p, lastmonthdata_p_->length);
+    finished_month_line_chart_p_ = initLineChartSeries(
+        lastmonthdata_p_->time_data_p, lastmonthdata_p_->length);
     month_finish_line_chart_view_p_ =
         new QChartView(finished_month_line_chart_p_, this);
     month_finish_line_chart_view_p_->setFixedHeight(chart_view_height_);
@@ -124,8 +140,8 @@ void lon::ChartsWidget::initDayFinishedTimeLineChart() {
 
 void lon::ChartsWidget::initWeekFinishedTimeLineChart() {
     using namespace QtCharts;
-    finishedtime_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->total_time_p, lastweekdata_p_->length);
+    finishedtime_week_line_chart_p_ = initLineChartSeries(
+        lastweekdata_p_->total_time_p, lastweekdata_p_->length);
     week_finishedtime_line_chart_view_p_ =
         new QtCharts::QChartView(finishedtime_week_line_chart_p_, this);
     week_finishedtime_line_chart_view_p_->setFixedHeight(chart_view_height_);
@@ -133,8 +149,8 @@ void lon::ChartsWidget::initWeekFinishedTimeLineChart() {
 
 void lon::ChartsWidget::initMonthFinishedTimeLineChart() {
     using namespace QtCharts;
-    finishedtime_month_line_chart_p_ =
-        initLineChartSeries(lastmonthdata_p_->total_time_p, lastmonthdata_p_->length);
+    finishedtime_month_line_chart_p_ = initLineChartSeries(
+        lastmonthdata_p_->total_time_p, lastmonthdata_p_->length);
     month_finishedtime_line_chart_view_p_ =
         new QtCharts::QChartView(finishedtime_month_line_chart_p_, this);
     month_finishedtime_line_chart_view_p_->setFixedHeight(chart_view_height_);
@@ -142,8 +158,8 @@ void lon::ChartsWidget::initMonthFinishedTimeLineChart() {
 
 void lon::ChartsWidget::initFinishedTimeLineChart() {
     using namespace QtCharts;
-    finishedtime_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->total_time_p, lastweekdata_p_->length);
+    finishedtime_week_line_chart_p_ = initLineChartSeries(
+        lastweekdata_p_->total_time_p, lastweekdata_p_->length);
     week_finishedtime_line_chart_view_p_ =
         new QChartView(finishedtime_week_line_chart_p_, this);
 }
@@ -179,7 +195,8 @@ void lon::ChartsWidget::initMonthLabelsPieChart() {
 
 void lon::ChartsWidget::initDayTargetsPieChart() {
     using namespace QtCharts;
-    day_targets_piechart_chart_p_ = initPieChartSeries(todaydata_p_->target_data);
+    day_targets_piechart_chart_p_ =
+        initPieChartSeries(todaydata_p_->target_data);
     day_targets_pie_chart_view_p_ =
         new QtCharts::QChartView(day_targets_piechart_chart_p_, this);
     day_targets_pie_chart_view_p_->setFixedHeight(chart_view_height_);
@@ -307,7 +324,7 @@ lon::ChartsWidget::ChartsWidget(
     std::shared_ptr<lon::tomato_clock::TodayData>     todaydata_p,
     std::shared_ptr<lon::tomato_clock::LastWeekData>  lastweekdata_p,
     std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonthdata_p,
-    QWidget * parent)
+    QWidget *                                         parent)
     : QWidget(parent)
     , todaydata_p_(todaydata_p)
     , lastweekdata_p_(lastweekdata_p)

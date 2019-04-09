@@ -3,7 +3,7 @@
 #include "tomatoclocktimer.h"
 #include <QLabel>
 
-void lon::ClockRunningWidget::setDisplayWidget(
+void lon::ClockRunningWidget::setReceiveTimerWidget(
     lon::DisplayClockBase *displaye_p) {
     current_display_widget_p_ = displaye_p;
 }
@@ -47,7 +47,7 @@ lon::ClockRunningWidget::ClockRunningWidget(const QString label_name,
     small_window_switch_button_p_->setMaximumSize(QSize(45, 45));
     main_layout_p_->addWidget(small_window_switch_button_p_, 3, 1, 1, 1);
 
-    setDisplayWidget(main_display_widget_p_);
+    setReceiveTimerWidget(main_display_widget_p_);
 
     connect(stop_button_p_, SIGNAL(clicked()), this,
             SLOT(onStopButtonClicked()));
@@ -64,7 +64,7 @@ void lon::ClockRunningWidget::onSmallWindowButtonClicked() {
     this->window()->setVisible(false);
     small_window_p_ = new lon::clock_window::ClockSmallWindow(
         label_label_p_->text(), target_label_p_->text());
-    this->setDisplayWidget(small_window_p_->progress_widget_);
+    this->setReceiveTimerWidget(small_window_p_->progress_widget_);
     timer_p_->setDisplayClockPointer(current_display_widget_p_);
     small_window_p_->show();
     connect(small_window_p_, SIGNAL(clockStoped()), this,
@@ -74,7 +74,7 @@ void lon::ClockRunningWidget::onSmallWindowButtonClicked() {
 }
 
 void lon::ClockRunningWidget::backToCurrentWidget() {
-    this->setDisplayWidget(main_display_widget_p_);
+    this->setReceiveTimerWidget(main_display_widget_p_);
     timer_p_->setDisplayClockPointer(current_display_widget_p_);
     small_window_p_->window()->close();
     delete small_window_p_;

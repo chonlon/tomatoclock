@@ -1,23 +1,31 @@
 ﻿#ifndef CHARTSWIDGET_H
 #define CHARTSWIDGET_H
 
-#include <QComboBox>
-#include <QGridLayout>
-#include <QLabel>
-#include <QVBoxLayout>
+#include "clock_database/clocksql.hpp"
 #include <QWidget>
-#include <QtCharts/QBarSeries>
-#include <QtCharts/QChart>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QPieSeries>
 #include <memory>
 
-#include "clock_database/clocksql.hpp"
-#include "lon_widget/button.hpp"
-#include "lon_widget/listwidget.hpp"
+class QComboBox;
+class QLabel;
+class QGridLayout;
+class QVBoxLayout;
+namespace lon {
+class ListWidget;
+class Button;
+} // namespace lon
+namespace QtCharts {
+class QChartView;
+class QChart;
+} // namespace QtCharts
 
 namespace lon {
+/*!
+ * \class ChartsWidget
+ *
+ * \brief 显示图表类, 包括两个折线图, 两个饼图.
+ *
+ * \author LON
+ */
 class ChartsWidget : public QWidget {
     Q_OBJECT
   private:
@@ -43,10 +51,10 @@ class ChartsWidget : public QWidget {
 
     lon::ClockSql *sql_;
 
-    std::shared_ptr<lon::tomato_clock::TodayData> todaydata_p_;
-	std::shared_ptr < lon::tomato_clock::LastWeekData>  lastweekdata_p_;
-	std::shared_ptr < lon::tomato_clock::LastMonthData> lastmonthdata_p_;
-	std::shared_ptr < lon::tomato_clock::LastYearData> lastyeardata_p_;
+    std::shared_ptr<lon::tomato_clock::TodayData>     todaydata_p_;
+    std::shared_ptr<lon::tomato_clock::LastWeekData>  lastweekdata_p_;
+    std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonthdata_p_;
+    std::shared_ptr<lon::tomato_clock::LastYearData>  lastyeardata_p_;
 
     lon::ListWidget *list_widget_p_;
     lon::Button *    close_button_p_;
@@ -127,14 +135,17 @@ class ChartsWidget : public QWidget {
     void initBestworkTimeWidget();
 
   public:
-
-	explicit ChartsWidget(std::shared_ptr<lon::tomato_clock::TodayData> todaydata_p, std::shared_ptr<lon::tomato_clock::LastWeekData> lastweekdata_p, std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonthdata_p, QWidget * parent = nullptr);
-	~ChartsWidget();
+    explicit ChartsWidget(
+        std::shared_ptr<lon::tomato_clock::TodayData>     todaydata_p,
+        std::shared_ptr<lon::tomato_clock::LastWeekData>  lastweekdata_p,
+        std::shared_ptr<lon::tomato_clock::LastMonthData> lastmonthdata_p,
+        QWidget *                                         parent = nullptr);
+    ~ChartsWidget();
 
   signals:
     void closeButtonClicked();
   public slots:
-    // switch to other chartwidgets
+    // 每个图的时间段切换事件.
     void finishLineWidgetSwitchEvent(int index);
     void finishedTimeLineWidgetSwitchEvent(int index);
     void labelsPieWidgetSwitchEvent(int index);

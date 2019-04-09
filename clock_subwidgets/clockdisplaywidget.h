@@ -7,6 +7,13 @@
 #include "displayclockbase.h"
 
 namespace lon {
+/*!
+ * \class ClockDisplayWidget
+ *
+ * \brief 显示计时组件, 将会根据剩余时间画一个圆形进度条
+ *
+ * \author LON
+ */
 class ClockDisplayWidget : public DisplayClockBase {
     Q_OBJECT
   private:
@@ -19,7 +26,13 @@ class ClockDisplayWidget : public DisplayClockBase {
   public:
     explicit ClockDisplayWidget(QWidget *parent = nullptr);
 
+	/// <summary>
+	/// 根据timer_status更新计时以及进度条.
+	/// </summary>
     virtual void updateTimeDisplay(lon::TimerStatus const *timer_status);
+	/// <summary>
+	/// 在此界面上画一个进度条和剩余时间.
+	/// </summary>
     virtual void paintEvent(QPaintEvent *);
   signals:
 
