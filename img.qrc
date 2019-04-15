@@ -28,5 +28,11 @@
         <file>Icons/play_focus.png</file>
         <file>Icons/play_normal.png</file>
         <file>Icons/play_pressed.png</file>
+        <file>Icons/finish.png</file>
+        <file>Icons/restore.png</file>
+        <file>Icons/small_window.png</file>
+        <file>Icons/stop_focus.png</file>
+        <file>Icons/stop_normal.png</file>
+        <file>Icons/stop_pressed.png</file>
     </qresource>
 </RCC>

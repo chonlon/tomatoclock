@@ -10,6 +10,7 @@
 #include <QMouseEvent>
 #include <QWidget>
 #include <cassert>
+#include <functional>
 #include <memory>
 namespace lon {
 class TitleBar : public QWidget {
@@ -40,6 +41,11 @@ class TitleBar : public QWidget {
 
     bool   is_pressed_;
     QPoint move_start_position_;
+
+    // actions titlebar will exec when specific button clicked.
+    std::function<void(void)> min_func_;
+    std::function<void(void)> max_func_;
+    std::function<void(void)> close_func_;
 
   private:
     // 点击最大化按钮以后需要更新一些控件
@@ -253,6 +259,27 @@ class TitleBar : public QWidget {
         initWidgets(button);
         initLayout(button);
         initConnection(button);
+
+        min_func_ = std::bind(
+            [](QWidget *widget) {
+                if (widget->window()->isTopLevel())
+                    widget->window()->showMinimized();
+            },
+            this);
+        max_func_ = std::bind(
+            [this](QWidget *widget) {
+                if (widget->window()->isTopLevel())
+                    widget->window()->isMaximized()
+                        ? widget->window()->showNormal()
+                        : widget->window()->showMaximized();
+                this->updateMaximize();
+            },
+            this);
+        close_func_ = std::bind(
+            [](QWidget *widget) {
+                if (widget->window()->isTopLevel()) widget->window()->close();
+            },
+            this);
     }
 
     /// <summary> 以传入参数设置title</summary>
@@ -303,6 +330,24 @@ class TitleBar : public QWidget {
 
         delete pixmap_;
     }
+
+    /// <summary>
+    /// 设置最小化按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
+    void setMinFunc(std::function<void(void)> val) { min_func_ = val; }
+
+    /// <summary>
+    /// 设置最大化按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
+    void setMaxFunc(std::function<void(void)> val) { max_func_ = val; }
+
+	/// <summary>
+    /// 关闭按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
+    void setCloseFunc(std::function<void(void)> val) { close_func_ = val; }
   signals:
     void minimizeButtonClicked();
     void maximizeButtonClicked();
@@ -310,21 +355,15 @@ class TitleBar : public QWidget {
   private slots:
     void onButtonClicked() {
         QPushButton *pButton = qobject_cast<QPushButton *>(sender());
-        QWidget *    pWindow = this->window();
-        if (pWindow->isTopLevel()) {
-            if (pButton == pminimize_button_) {
-                emit minimizeButtonClicked();
-                pWindow->showMinimized();
-            } else if (pButton == pmaximize_button_) {
-                emit maximizeButtonClicked();
-                pWindow->isMaximized() ? pWindow->showNormal()
-                                       : pWindow->showMaximized();
-
-                this->updateMaximize();
-            } else if (pButton == pclose_button_) {
-                pWindow->close();
-                emit closeButtonClicked();
-            }
+        if (pButton == pminimize_button_) {
+            emit minimizeButtonClicked();
+            min_func_();
+        } else if (pButton == pmaximize_button_) {
+            emit maximizeButtonClicked();
+            max_func_();
+        } else if (pButton == pclose_button_) {
+            close_func_();
+            emit closeButtonClicked();
         }
     }
 };

@@ -93,9 +93,10 @@ public:
         query_->prepare(
             "INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
             "FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
-            "targets.TargetId, 25, DateTime('now', 'localtime') from "
+            "targets.TargetId, :during , DateTime('now', 'localtime') from "
             "finishedtomato , targets where TargetName = :target and LabelName "
             "= :label");
+		query_->bindValue(":during", QString::number(duringtime));
         query_->bindValue(":target", target);
         query_->bindValue(":label", label);
         query_->exec();

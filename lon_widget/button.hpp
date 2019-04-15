@@ -106,6 +106,7 @@ class Button : public QPushButton {
                                 this->height() * scaling_factor_));
     }
 
+
     virtual void resizeEvent(QResizeEvent *event) {
         QPushButton::resizeEvent(event);
         this->setIconSize(QSize(this->width() * scaling_factor_,

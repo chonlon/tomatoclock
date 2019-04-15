@@ -231,6 +231,30 @@ class Widget : public QWidget {
         pixmap_ = pixmap;
     }
 
+	/// <summary>
+	/// 设置最小化按钮按下后的执行函数
+	/// </summary>
+	/// <param name="val"> 执行函数, std::function<void> </param>
+	virtual void setMinFunc(std::function<void(void)> val) {
+        title_bar_->setMinFunc(val);
+    }
+
+	/// <summary>
+	/// 设置最大化按钮按下后的执行函数
+	/// </summary>
+	/// <param name="val"> 执行函数, std::function<void> </param>
+    virtual void setMaxFunc(std::function<void(void)> val) {
+        title_bar_->setMaxFunc(val);
+    }
+
+	/// <summary>
+	/// 关闭按钮按下后的执行函数
+	/// </summary>
+	/// <param name="val"> 执行函数, std::function<void> </param>
+    virtual void setCloseFunc(std::function<void(void)> val) {
+        title_bar_->setCloseFunc(val);
+    }
+
   signals:
     void okButtonClicked();
     void cancelButtonClicked();

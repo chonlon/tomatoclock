@@ -44,10 +44,16 @@ void lon::TargetWidget::setWidgetsStyle() {
         new QIcon(":/icon/Icons/play_pressed.png"));
     start_target_button_p_->setFlat(true);
     start_target_button_p_->setStyleSheet("border:none");
+	start_target_button_p_->setToolTip(QString::fromLocal8Bit("开始番茄钟"));
 
     complete_target_button_p_->setFixedSize(45, 45);
-    // complete_target_button_p_->setFlat(true);
-    // complete_target_button_p_->setStyleSheet("border:none");
+    complete_target_button_p_->setFlat(true);
+    complete_target_button_p_->setStyleSheet("border:none");
+	complete_target_button_p_->setScalingFactor(0.6);
+	complete_target_button_p_->setNormal(new QIcon(":/icon/Icons/finish.png"));
+	complete_target_button_p_->setFocus(new QIcon(":/icon/Icons/finish.png"));
+	complete_target_button_p_->setPressed(new QIcon(":/icon/Icons/finish.png"));
+	complete_target_button_p_->setToolTip(QString::fromLocal8Bit("目标已完成"));
 }
 
 void lon::TargetWidget::setThisWidgetStyle() {
@@ -79,12 +85,7 @@ void lon::TargetWidget::initLayout() {
 }
 
 void lon::TargetWidget::drawWorkStuation(QWidget *widget, int num) {
-    QPainter p(widget);
-    p.setRenderHint(QPainter::Antialiasing);
-    QRect rect(0, 0, widget->width(), widget->height());
-    QFont f = QFont("Microsoft YaHei", 8, QFont::Bold);
-    p.setFont(f);
-    p.drawText(rect, Qt::AlignCenter, QString::number(num));
+	qobject_cast<QLabel*>(widget)->setText(QString::number(num));
 }
 
 lon::TargetWidget::TargetWidget(QString label_name, QString target_name,
@@ -110,7 +111,7 @@ void lon::TargetWidget::setLastWeekData(
     std::shared_ptr<lon::tomato_clock::LastWeekData> ptr) {
     last_week_data_p_        = ptr;
     week_label_p_            = new QLabel(this);
-    week_situation_widget_p_ = new QWidget(this);
+    week_situation_widget_p_ = new QLabel(this);
     week_label_p_->setFixedHeight(label_height);
     week_label_p_->setText(QString::fromLocal8Bit("过去7天"));
     main_layout_p_->addWidget(week_situation_widget_p_, 0, 2, 1, 1);
@@ -126,7 +127,7 @@ void lon::TargetWidget::setLastMonthData(
     std::shared_ptr<lon::tomato_clock::LastMonthData> ptr) {
     last_month_data_p_        = ptr;
     month_label_p_            = new QLabel(this);
-    month_situation_widget_p_ = new QWidget();
+    month_situation_widget_p_ = new QLabel(this);
     month_situation_widget_p_->setPalette(QPalette(Qt::red));
     month_situation_widget_p_->setAutoFillBackground(false);
     month_label_p_->setFixedHeight(label_height);

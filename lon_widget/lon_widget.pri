@@ -9,5 +9,6 @@ HEADERS += lon_widget/titlebar.hpp \
     ./lon_widget/widget.hpp \
     ./lon_widget/listwidget.hpp \
     ./lon_widget/autodeletewidgetpointer.h \
-    ./lon_widget/autodeletewidgetpointer.hpp
+    ./lon_widget/autodeletewidgetpointer.hpp \
+    $$PWD/menu.hpp
 RESOURCES += ./lon_widget/lon_widget.qrc

@@ -319,6 +319,7 @@ void lon::LabelsAndTargetsWidget::targetAdded(QString label, QString target) {
     addTargetWidget(label, target, 0);
     saveTargetToSql(label, target);
     closeAddTargetWidget();
+	emit redrawWidget();
 }
 
 void lon::LabelsAndTargetsWidget::targetFinished(const QString &target_name) {

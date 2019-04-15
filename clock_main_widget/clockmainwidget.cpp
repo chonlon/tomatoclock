@@ -6,20 +6,25 @@
 #include "clock_subwidgets/chartswidget.h"
 #include "clock_subwidgets/clockrunningwidget.h"
 #include "clock_subwidgets/labelsandtargetswidget.h"
+#include "lon_widget/menu.hpp"
 #include "lon_widget/messagebox.hpp"
 #include "settingfileoperations.h"
 #include "settingwidget.h"
 #include "tomatoclocktimer.h"
+
+#include <QGridLayout>
+#include <QSystemTrayIcon>
 // PRIVATE
 void lon::ClockMainWidget::tomatoSaveToSql() {
     // if enabel break the tomato..
     // duringtime -= timer->timerStaus()->timeleft()->minutes();
     auto time_status = timer->timerStaus();
-    auto passedtime = time_status->clock_options()->work_time()->minutes_ -
+    auto passedtime  = time_status->clock_options()->work_time()->minutes_ -
                       time_status->timeleft()->minutes();
-	// 说明当前时间已经全部完成.
-	if (passedtime == 0 && time_status->timeleft()->seconds() == 0) passedtime = time_status->clock_options()->work_time()->minutes_;
-	// 说明终止计时时计时没有超过3分钟.
+    // 说明当前时间已经全部完成.
+    if (passedtime == 0 && time_status->timeleft()->seconds() == 0)
+        passedtime = time_status->clock_options()->work_time()->minutes_;
+    // 说明终止计时时计时没有超过3分钟.
     if (passedtime > 3)
         sql_p_->addAFinishedTomato(passedtime, running_clock_label_name_,
                                    running_clock_target_name_);
@@ -28,9 +33,19 @@ void lon::ClockMainWidget::tomatoSaveToSql() {
 void lon::ClockMainWidget::saveSettingToFile(lon::ClockOptions options) {
     SettingFileOperations().saveClockOptionToFile(std::move(options));
     if (setting_widget_p_) {
-        setting_widget_p_->window()->close();
         delete setting_widget_p_;
         setting_widget_p_ = nullptr;
+    }
+}
+
+void lon::ClockMainWidget::iconActivated(
+    QSystemTrayIcon::ActivationReason reason) {
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        if (!this->isVisible()) this->window()->show();
+        break;
+    default:
+        break;
     }
 }
 
@@ -47,9 +62,30 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     // Qt::WindowMinimizeButtonHint);
     // title_bar_p_ = new lon::TitleBar(this);
 
-    labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_, this);
-    clock_running_widget_p_  = nullptr;
-    chart_widget_p_          = nullptr;
+    QIcon icon(
+        QString::fromLocal8Bit("H:\\Code\\codeOfSelf\\学习总结\\history.png"));
+    system_tray_icon_p_ = new QSystemTrayIcon(this);
+    system_tray_icon_p_->setIcon(icon);
+    system_tray_icon_p_->setToolTip(QString::fromLocal8Bit("番茄学习助手"));
+    system_tray_icon_p_->show();
+
+    close_action_p_ = new QAction(QString::fromLocal8Bit("退出番茄钟"), this);
+    about_action_p_   = new QAction(QString::fromLocal8Bit("关于"), this);
+    setting_action_p_ = new QAction(QString::fromLocal8Bit("设置"), this);
+
+    menu_p_ = new lon::Menu(this);
+
+    menu_p_->addAction(about_action_p_);
+    menu_p_->addAction(setting_action_p_);
+    menu_p_->addSeparator();
+    menu_p_->addAction(close_action_p_);
+
+    system_tray_icon_p_->setContextMenu(menu_p_);
+
+    labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(
+        lastweek_data_p_, lastmonth_data_p_, this);
+    clock_running_widget_p_ = nullptr;
+    chart_widget_p_         = nullptr;
 
     timer = nullptr;
 
@@ -77,6 +113,18 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     this->setBackground(new QPixmap(":/all/Res/Img/background.png"));
     // this->resize(1050, 700);
     this->setMinimumSize(950, 650);
+
+    connect(close_action_p_, &QAction::triggered, this,
+            [this](void) { this->window()->close(); });
+    connect(setting_action_p_, &QAction::triggered, this,
+            &lon::ClockMainWidget::displaySetting);
+
+    connect(system_tray_icon_p_,
+            SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
+            SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+
+    lon::Widget::setCloseFunc(
+        std::bind([](QWidget *widget) { widget->window()->hide(); }, this));
 }
 
 lon::ClockMainWidget::~ClockMainWidget() {
@@ -86,7 +134,6 @@ lon::ClockMainWidget::~ClockMainWidget() {
     delete chart_widget_p_;
     delete title_bar_p_;
 }
-
 
 void lon::ClockMainWidget::displayClock(const QString &label,
                                         const QString &target) {
@@ -111,7 +158,7 @@ void lon::ClockMainWidget::displayClock(const QString &label,
     main_layout_->addWidget(clock_running_widget_p_);
 
     connect(clock_running_widget_p_, SIGNAL(clockStoped()), this,
-            SLOT(clockFinished()));
+            SLOT(clockBreaked()));
     // timer->setDisplayClockPointer(
     //   clock_running_widget_p_->clock_display_widget_p_);
 }
@@ -132,10 +179,11 @@ void lon::ClockMainWidget::displayTarget() {
         labels_targets_widget_p_ = nullptr;
     }
 
-    labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
+    labels_targets_widget_p_ =
+        new lon::LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
     main_layout_->addWidget(labels_targets_widget_p_);
 
-	// connections
+    // connections
     connect(labels_targets_widget_p_, SIGNAL(startClock(QString, QString)),
             this, SLOT(displayClock(const QString &, const QString &)));
     connect(labels_targets_widget_p_, SIGNAL(changeSetting()), this,
@@ -166,9 +214,9 @@ void lon::ClockMainWidget::displayChart() {
 void lon::ClockMainWidget::clockFinished() {
     // 在提前结束番茄钟时, 只有已经超过三分钟的才可以被记录.
     tomatoSaveToSql();
-	// 是否开启连续工作模式.
+    // 是否开启连续工作模式.
     if (timer->timerStaus()->clock_options()->keepWorking()) {
-		timer->start();
+        timer->start();
     } else {
         lon::MessageBoxWrapper *m =
             new lon::MessageBoxWrapper(QString::fromLocal8Bit("番茄完成"),
@@ -177,9 +225,20 @@ void lon::ClockMainWidget::clockFinished() {
     }
 }
 
+void lon::ClockMainWidget::clockBreaked() {
+    tomatoSaveToSql();
+    timer->stop();
+    timer->clear();
+    lon::MessageBoxWrapper *m = new lon::MessageBoxWrapper(
+        QString::fromLocal8Bit("番茄中断"),
+        QString::fromLocal8Bit("已中断, 完成数据已储存."));
+    displayTarget();
+}
+
 void lon::ClockMainWidget::displaySetting() {
     setting_widget_p_ = new SettingWidget();
     setting_widget_p_->show();
     connect(setting_widget_p_, SIGNAL(settingChanged(lon::ClockOptions)), this,
             SLOT(saveSettingToFile(lon::ClockOptions)));
 }
+

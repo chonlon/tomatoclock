@@ -368,6 +368,12 @@ lon::ChartsWidget::ChartsWidget(
     close_button_p_->setFixedSize(30, 30);
     close_button_p_->setToolTip(QString::fromLocal8Bit("·µ»Ø"));
 
+	close_button_p_->setFlat(true);
+    close_button_p_->setStyleSheet("border:none");
+    close_button_p_->setNormal(new QIcon(":/icon/Icons/close_normal.png"));
+    close_button_p_->setFocus(new QIcon(":/icon/Icons/close_focus.png"));
+    close_button_p_->setPressed(new QIcon(":/icon/Icons/close_pressed.png"));
+
     initFinishLinewidget();
     initFinishedTimeLinewidget();
     initLabelsPieWidget();

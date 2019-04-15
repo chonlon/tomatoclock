@@ -49,6 +49,18 @@ lon::ClockRunningWidget::ClockRunningWidget(const QString label_name,
 
     setReceiveTimerWidget(main_display_widget_p_);
 
+    stop_button_p_->setFlat(true);
+    stop_button_p_->setStyleSheet("border:none");
+    stop_button_p_->setNormal(new QIcon(":/icon/Icons/stop_normal.png"));
+    stop_button_p_->setFocus(new QIcon(":/icon/Icons/stop_focus.png"));
+    stop_button_p_->setPressed(new QIcon(":/icon/Icons/stop_pressed.png"));
+
+    small_window_switch_button_p_->setFlat(true);
+    small_window_switch_button_p_->setStyleSheet("border:none");
+    small_window_switch_button_p_->setNormal(new QIcon(":/icon/Icons/small_window.png"));
+    small_window_switch_button_p_->setFocus(new QIcon(":/icon/Icons/small_window.png"));
+    small_window_switch_button_p_->setPressed(new QIcon(":/icon/Icons/small_window.png"));
+
     connect(stop_button_p_, SIGNAL(clicked()), this,
             SLOT(onStopButtonClicked()));
     connect(small_window_switch_button_p_, SIGNAL(clicked()), this,

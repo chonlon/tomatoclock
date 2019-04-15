@@ -13,6 +13,7 @@ lon::TomatoClockTimer::TomatoClockTimer(QObject *parent)
     , started_(false) {
     display_clock_ = nullptr;
     timer_         = new QTimer(this);
+	// #timer
     timer_->start(10);
     std::unique_ptr<lon::ClockOptions> clock(new lon::ClockOptions(
         SettingFileOperations().readClockOptionFromFile()));

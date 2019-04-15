@@ -165,9 +165,11 @@ bool Translate::eventFilter(QObject *watched, QEvent *event)
 		auto key_event = static_cast<QKeyEvent*>(event);
 		switch (key_event->key()) {
 		case Qt::Key_Escape:
+        case Qt::Key_Cancel:
 			hideWindow();
 			break;
 		case Qt::Key_Return:
+        case Qt::Key_Enter:
 			doTranSlate();
 			break;
 		default:

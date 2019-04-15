@@ -24,8 +24,20 @@ lon::ToolsWidget::ToolsWidget(const QString &label_name,
     label_label_->setFont(font);
     label_label_->setAlignment(Qt::AlignCenter);
     main_layout_->addWidget(label_label_, 0, 0, 1, 1);
+
     close_ = new lon::Button(this);
     close_->setFixedSize(QSize(45, 45));
+    close_->setFlat(true);
+    close_->setStyleSheet("border:none");
+    close_->setNormal(new QIcon(":/icon/Icons/restore.png"));
+    close_->setFocus(new QIcon(":/icon/Icons/restore.png"));
+    close_->setPressed(new QIcon(":/icon/Icons/restore.png"));
+    stop_->setFlat(true);
+    stop_->setStyleSheet("border:none");
+    stop_->setNormal(new QIcon(":/icon/Icons/stop_normal.png"));
+    stop_->setFocus(new QIcon(":/icon/Icons/stop_focus.png"));
+    stop_->setPressed(new QIcon(":/icon/Icons/stop_pressed.png"));
+
     main_layout_->addWidget(close_, 0, 2, 2, 1);
     target_label_ = new QLabel(this);
     target_label_->setText(target_name);

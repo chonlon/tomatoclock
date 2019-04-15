@@ -39,8 +39,8 @@ class TargetWidget : public QWidget {
     QLabel * target_label_p_;
     QLabel * week_label_p_;
     QLabel * month_label_p_;
-    QWidget *week_situation_widget_p_;
-    QWidget *month_situation_widget_p_;
+    QLabel *week_situation_widget_p_;
+    QLabel *month_situation_widget_p_;
 
     QGridLayout *main_layout_p_;
 
