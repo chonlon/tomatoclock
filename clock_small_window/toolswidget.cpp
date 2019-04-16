@@ -29,9 +29,9 @@ lon::ToolsWidget::ToolsWidget(const QString &label_name,
     close_->setFixedSize(QSize(45, 45));
     close_->setFlat(true);
     close_->setStyleSheet("border:none");
-    close_->setNormal(new QIcon(":/icon/Icons/restore.png"));
-    close_->setFocus(new QIcon(":/icon/Icons/restore.png"));
-    close_->setPressed(new QIcon(":/icon/Icons/restore.png"));
+    close_->setNormal(new QIcon(":/icon/Icons/back_normal.png"));
+    close_->setFocus(new QIcon(":/icon/Icons/back_focus.png"));
+    close_->setPressed(new QIcon(":/icon/Icons/back_pressed.png"));
     stop_->setFlat(true);
     stop_->setStyleSheet("border:none");
     stop_->setNormal(new QIcon(":/icon/Icons/stop_normal.png"));

@@ -42,6 +42,8 @@ class ClockRunningWidget : public QWidget {
 	/// <param name="displaye_p">接管计时器者.</param>
     void setReceiveTimerWidget(lon::DisplayClockBase *displaye_p);
 
+  protected:
+
   public:
 
 	/// <summary>
@@ -50,22 +52,24 @@ class ClockRunningWidget : public QWidget {
 	/// <param name="timer">计时器指针.</param>
     void setTimer(lon::TomatoClockTimer *timer);
 
-  public:
     explicit ClockRunningWidget(const QString label_name,
                                 const QString target_name,
                                 QWidget *     parent = nullptr);
     ~ClockRunningWidget();
 
 signals:
+
 	  /// <summary>
 	  /// 提前中断番茄钟.
 	  /// </summary>
     void clockStoped();
   public slots:
+
 	/// <summary>
 	/// 按下了stopbutton, 将会提前中断计时.
 	/// </summary>
     void onStopButtonClicked();
+
 	/// <summary>
 	/// 按下了小窗口显示按钮, 将会切换小窗显示.
 	/// </summary>

@@ -62,10 +62,10 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     // Qt::WindowMinimizeButtonHint);
     // title_bar_p_ = new lon::TitleBar(this);
 
-    QIcon icon(
-        QString::fromLocal8Bit("H:\\Code\\codeOfSelf\\学习总结\\history.png"));
+	QIcon window_icon(":/icon/Icons/tomato.png");
+
     system_tray_icon_p_ = new QSystemTrayIcon(this);
-    system_tray_icon_p_->setIcon(icon);
+    system_tray_icon_p_->setIcon(window_icon);
     system_tray_icon_p_->setToolTip(QString::fromLocal8Bit("番茄学习助手"));
     system_tray_icon_p_->show();
 
@@ -113,6 +113,10 @@ lon::ClockMainWidget::ClockMainWidget(QWidget *parent)
     this->setBackground(new QPixmap(":/all/Res/Img/background.png"));
     // this->resize(1050, 700);
     this->setMinimumSize(950, 650);
+
+    this->setWindowIcon(window_icon);
+    this->setTitleIcon(window_icon);
+    this->setTitle(QString::fromLocal8Bit("学习助手"));
 
     connect(close_action_p_, &QAction::triggered, this,
             [this](void) { this->window()->close(); });

@@ -66,20 +66,20 @@ class Widget : public QWidget {
         // 所以只好使用样式表了
         // 或者这里得给ok_button换一个类型: QToolButton了.
         ok_button_->setStyleSheet(
-            "QPushButton{border-image: url(:/icon/Resources/max_normal_normal.png);}\
-               QPus0hButton:hover{border-image: url(:/icon/Resources/max_normal_focus.png);}\
-               QPushButton:pressed{border-image: url(:/icon/Resources/max_normal_pressed.png);}");
+            "QPushButton{border-image: url(:/icon/Resources/button.png);} "
+            "QPus0hButton:hover{border-image: url(:/icon/Resources/button.png);} "
+            "QPushButton:pressed{border-image: url(:/icon/Resources/button.png);} ");
         ok_button_->setText("确认");
-        ok_button_->setFixedWidth(100);
+        ok_button_->setFixedSize(90, 30);
         ok_button_->setFlat(true);
 
         cancel_button_->setStyleSheet(
-            "QPushButton{border-image: url(:/icon/Resources/max_normal_normal.png);}\
-               QPushButton:hover{border-image: url(:/icon/Resources/max_normal_focus.png);}\
-               QPushButton:pressed{border-image: url(:/icon/Resources/max_normal_pressed.png);}");
+            "QPushButton{border-image: url(:/icon/Resources/button.png);} "
+            "QPus0hButton:hover{border-image: url(:/icon/Resources/button.png);} "
+            "QPushButton:pressed{border-image: url(:/icon/Resources/button.png);} ");
 
         cancel_button_->setText("取消");
-        cancel_button_->setFixedWidth(100);
+        cancel_button_->setFixedSize(90, 30);
         cancel_button_->setFlat(true);
 
         bottom_layout->addStretch();
@@ -231,26 +231,26 @@ class Widget : public QWidget {
         pixmap_ = pixmap;
     }
 
-	/// <summary>
-	/// 设置最小化按钮按下后的执行函数
-	/// </summary>
-	/// <param name="val"> 执行函数, std::function<void> </param>
-	virtual void setMinFunc(std::function<void(void)> val) {
+    /// <summary>
+    /// 设置最小化按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
+    virtual void setMinFunc(std::function<void(void)> val) {
         title_bar_->setMinFunc(val);
     }
 
-	/// <summary>
-	/// 设置最大化按钮按下后的执行函数
-	/// </summary>
-	/// <param name="val"> 执行函数, std::function<void> </param>
+    /// <summary>
+    /// 设置最大化按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
     virtual void setMaxFunc(std::function<void(void)> val) {
         title_bar_->setMaxFunc(val);
     }
 
-	/// <summary>
-	/// 关闭按钮按下后的执行函数
-	/// </summary>
-	/// <param name="val"> 执行函数, std::function<void> </param>
+    /// <summary>
+    /// 关闭按钮按下后的执行函数
+    /// </summary>
+    /// <param name="val"> 执行函数, std::function<void> </param>
     virtual void setCloseFunc(std::function<void(void)> val) {
         title_bar_->setCloseFunc(val);
     }
