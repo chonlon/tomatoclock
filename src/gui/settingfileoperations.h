@@ -7,11 +7,13 @@ class ClockOptions;
 }
 
 class SettingFileOperations {
-  public:
+public:
     SettingFileOperations();
-    ~SettingFileOperations() {}
 
-    void              saveClockOptionToFile(const lon::ClockOptions &option);
+    ~SettingFileOperations() {
+    }
+
+    void saveClockOptionToFile(const lon::ClockOptions& option);
     lon::ClockOptions readClockOptionFromFile();
 };
 

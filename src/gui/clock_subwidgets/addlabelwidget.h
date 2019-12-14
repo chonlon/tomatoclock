@@ -1,4 +1,4 @@
-#ifndef ADDLABELWIDGET_H
+ï»¿#ifndef ADDLABELWIDGET_H
 #define ADDLABELWIDGET_H
 
 #include <QLabel>
@@ -13,36 +13,36 @@ namespace lon {
 /*!
  * \class AddLabelWidget
  *
- * \brief Ìí¼ÓLabelµ¯´°widget, Ìí¼ÓLabel³É¹¦·µ»ØÖ÷½çÃæ, Ìí¼ÓÊ§°Üµ¯³öÒ»¸öMessageBoxÌáÊ¾Ìí¼ÓÊ§°Ü.
+ * \brief æ·»åŠ Labelå¼¹çª—widget, æ·»åŠ LabelæˆåŠŸè¿”å›ä¸»ç•Œé¢, æ·»åŠ å¤±è´¥å¼¹å‡ºä¸€ä¸ªMessageBoxæç¤ºæ·»åŠ å¤±è´¥.
  *
  * \author LON
  */
 
-class AddLabelWidget : public lon::Widget {
-    Q_OBJECT
-  private:
-    QLineEdit *  line_edit_p_;
-    QLabel *     label_p_;
-    QHBoxLayout *center_layout_p_;
+class AddLabelWidget : public Widget {
+Q_OBJECT
+private:
+    QLineEdit* line_edit_p_;
+    QLabel* label_p_;
+    QHBoxLayout* center_layout_p_;
 
-    lon::MessageBox *messagebox_p_;
+    lon::MessageBox* messagebox_p_;
 
     std::list<QString> labels_;
 
-  public:
+public:
     explicit AddLabelWidget(std::list<QString> labels,
-                            QWidget *          parent = nullptr);
+                            QWidget* parent = nullptr);
 
-  signals:
+signals:
     void labelAdded(QString label_name);
-  private slots:
+private slots:
     void labelExists();
-  public slots:
+public slots:
     void onOkButtonClicked();
     void closeMessagebox();
     void setLineEditFocus();
 
-    void showMessage(const QString &message);
+    void showMessage(const QString& message);
 };
 } // namespace lon
 #endif // ADDLABELWIDGET_H

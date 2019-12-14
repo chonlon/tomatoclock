@@ -11,15 +11,15 @@ class temp;
 }
 
 class temp : public QWidget {
-    Q_OBJECT
+Q_OBJECT
 
-  public:
-    explicit temp(QWidget *parent = nullptr);
+public:
+    explicit temp(QWidget* parent = nullptr);
     ~temp();
 
-  private:
-    Ui::temp *ui;
-    QLabel *  label;
+private:
+    Ui::temp* ui;
+    QLabel* label;
 };
 
 #endif // TEMP_H

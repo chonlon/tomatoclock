@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent) {
     layout_ = new QHBoxLayout(this);
     // temp_   = new temp(this);
@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     const float Pi = 3.14159f;
 
     // 定义一个 item
-    QGraphicsPathItem *pItem = new QGraphicsPathItem();
+    QGraphicsPathItem* pItem = new QGraphicsPathItem();
 
     // 绘制星星
     QPainterPath starPath;
@@ -31,11 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
     pItem->setBrush(QBrush(QColor(0, 160, 230)));
 
     // 将 item 添加至场景中
-    QGraphicsScene *pScene = new QGraphicsScene();
+    QGraphicsScene* pScene = new QGraphicsScene();
     pScene->addItem(pItem);
 
     // 为视图设置场景
-    QGraphicsView *pView = new QGraphicsView();
+    QGraphicsView* pView = new QGraphicsView();
     pView->setScene(pScene);
     pView->setStyleSheet("border:none; background:transparent;");
 
@@ -44,4 +44,5 @@ MainWindow::MainWindow(QWidget *parent)
     pView->show();
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow() {
+}

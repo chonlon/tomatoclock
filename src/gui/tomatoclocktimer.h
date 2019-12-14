@@ -1,4 +1,4 @@
-#ifndef TOMATOCLOCKTIMER_H
+ï»¿#ifndef TOMATOCLOCKTIMER_H
 #define TOMATOCLOCKTIMER_H
 
 #include <QDebug>
@@ -10,34 +10,36 @@
 #include "displayclockbase.h"
 
 namespace lon {
-/// <summary> ¹¤×÷·¨Ê±ÖÓ </summary>
+/// <summary> å·¥ä½œæ³•æ—¶é’Ÿ </summary>
 class TomatoClockTimer : public QObject {
-    Q_OBJECT
-  private:
+Q_OBJECT
+private:
     bool started_;
 
-    TimerStatus *     timer_status_;
-    QTimer *          timer_;
-    DisplayClockBase *display_clock_;
+    TimerStatus* timer_status_;
+    QTimer* timer_;
+    DisplayClockBase* display_clock_;
 
-  public:
-    explicit TomatoClockTimer(QObject *parent = nullptr);
+public:
+    explicit TomatoClockTimer(QObject* parent = nullptr);
 
-    void setDisplayClockPointer(DisplayClockBase *display_clock);
+    void setDisplayClockPointer(DisplayClockBase* display_clock);
 
-    void               clear() { timer_status_->clear(); }
-    void               stop() { started_ = false; }
-    void               start() { started_ = true; }
-    TimerStatus const *timerStaus() { return timer_status_; }
+    void clear() { timer_status_->clear(); }
+    void stop() { started_ = false; }
+    void start() { started_ = true; }
+    TimerStatus const* timerStaus() { return timer_status_; }
 
     /// <summary>
-    /// Çå³ı´Ë´ÎÔËĞĞ, ±ÈÈç·¬ÇÑÖÓÖĞÍ¾±»¹Ø±Õ, »ØÍËµ½ÉÏÒ»¸ö×´Ì¬, ²¢Í£Ö¹¼ÆÊ±.
+    /// æ¸…é™¤æ­¤æ¬¡è¿è¡Œ, æ¯”å¦‚ç•ªèŒ„é’Ÿä¸­é€”è¢«å…³é—­, å›é€€åˆ°ä¸Šä¸€ä¸ªçŠ¶æ€, å¹¶åœæ­¢è®¡æ—¶.
     /// </summary>
-    void clearRunning() {}
-  signals:
+    void clearRunning() {
+    }
+
+signals:
     void tomatoFinished();
-  public slots:
-  private slots:
+public slots:
+private slots:
     void oneSecondPassed();
 };
 } // namespace lon

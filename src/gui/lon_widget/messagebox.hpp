@@ -1,28 +1,32 @@
-#ifndef LON_MESSAGEBOX
+ï»¿#ifndef LON_MESSAGEBOX
 #define LON_MESSAGEBOX
 
 #include "../lon_widget/widget.hpp"
 
 #include <QMessageBox>
+
 //////////////////////////////////////////////////////////////////////////
-/// Èç¹ûÏëÒªÊµÏÖµã»÷Ä³¸ö°´Å¥¾Í×Ô¶¯°ÑÕâ¸öÀàÊÍ·ÅµÄ»°, Ö»ÔÚ´ËÀàÖÐÊÇÎÞ·¨×öµ½µÄ,
-/// Ä¿Ç°Ïëµ½Á½¸ö·½°¸, 1. ÉèÖÃÒ»¸öwrapper, µã»÷ÁË°´Å¥, ÓÉwrapperÊÍ·ÅÄÚ´æ,
-/// ÄÇÃ´¾ÍËãwrapperÊ¹ÓÃºóÃ»ÓÐÊÍ·Å,
-/// ËùÓÃµÄÄÚ´æÒ²²»¹ýÊ®¼¸¸ö×Ö½Ú(Ò»¸ömessageboxÖ¸Õë, Ò»¸öÐé±íÖ¸Õë).
-/// 2. ¶Ôwidget¸ÄÐ´, Ìá¹©closewindowµÄÐÅºÅ, Ê¹ÓÃÕßÊÕµ½ÐÅºÅºódelete.
+/// å¦‚æžœæƒ³è¦å®žçŽ°ç‚¹å‡»æŸä¸ªæŒ‰é’®å°±è‡ªåŠ¨æŠŠè¿™ä¸ªç±»é‡Šæ”¾çš„è¯, åªåœ¨æ­¤ç±»ä¸­æ˜¯æ— æ³•åšåˆ°çš„,
+/// ç›®å‰æƒ³åˆ°ä¸¤ä¸ªæ–¹æ¡ˆ, 1. è®¾ç½®ä¸€ä¸ªwrapper, ç‚¹å‡»äº†æŒ‰é’®, ç”±wrapperé‡Šæ”¾å†…å­˜,
+/// é‚£ä¹ˆå°±ç®—wrapperä½¿ç”¨åŽæ²¡æœ‰é‡Šæ”¾,
+/// æ‰€ç”¨çš„å†…å­˜ä¹Ÿä¸è¿‡åå‡ ä¸ªå­—èŠ‚(ä¸€ä¸ªmessageboxæŒ‡é’ˆ, ä¸€ä¸ªè™šè¡¨æŒ‡é’ˆ).
+/// 2. å¯¹widgetæ”¹å†™, æä¾›closewindowçš„ä¿¡å·, ä½¿ç”¨è€…æ”¶åˆ°ä¿¡å·åŽdelete.
 /////////////////////////////////////////////////////////////////////////
 namespace lon {
 class MessageBox : public Widget {
-    Q_OBJECT
-  private:
-    QLabel *    text_label_p_;
-    QBoxLayout *center_layout_p_;
+Q_OBJECT
+private:
+    QLabel* text_label_p_;
+    QBoxLayout* center_layout_p_;
 
-  public:
-    MessageBox(QWidget *parent = nullptr)
-        : Widget(parent) {}
-    MessageBox(const QString &title, const QString &message,
-               QWidget *parent = nullptr)
+public:
+    MessageBox(QWidget* parent = nullptr)
+        : Widget(parent) {
+    }
+
+    MessageBox(const QString& title,
+               const QString& message,
+               QWidget* parent = nullptr)
         : Widget(parent) {
         setTitle(title);
 
@@ -36,25 +40,30 @@ class MessageBox : public Widget {
 
         centerWidget()->setLayout(center_layout_p_);
 
-        connect(this, SIGNAL(okButtonClicked()), this,
+        connect(this,
+                SIGNAL(okButtonClicked()),
+                this,
                 SLOT(onOkButtonClicked()));
-        connect(this, SIGNAL(cancelButtonClicked()), this,
+        connect(this,
+                SIGNAL(cancelButtonClicked()),
+                this,
                 SLOT(onCancleButtonClicked()));
         this->show();
     }
-  private slots:
+
+private slots:
     void onOkButtonClicked() { window()->close(); }
     void onCancleButtonClicked() { window()->close(); }
 };
 
 class MessageBoxWrapper : QObject {
-    Q_OBJECT
-  private:
-    // ²»ÔÊÐí³õÊ¼»¯ÔÚÕ»ÉÏ.
+Q_OBJECT
+private:
+    // ä¸å…è®¸åˆå§‹åŒ–åœ¨æ ˆä¸Š.
     ~MessageBoxWrapper() = default;
 
-  protected:
-    lon::MessageBox *message_box_p_;
+protected:
+    lon::MessageBox* message_box_p_;
 
     virtual void closeAndDelete() {
         message_box_p_->window()->close();
@@ -62,19 +71,25 @@ class MessageBoxWrapper : QObject {
         message_box_p_ = nullptr;
     }
 
-  public:
-    MessageBoxWrapper(QString title, QString message, QObject *parent = nullptr)
+public:
+    MessageBoxWrapper(QString title, QString message, QObject* parent = nullptr)
         : QObject(parent) {
         message_box_p_ = new lon::MessageBox(title, message);
-        connect(message_box_p_, SIGNAL(closeButtonClicked()), this,
+        connect(message_box_p_,
+                SIGNAL(closeButtonClicked()),
+                this,
                 SLOT(onCloseButtonClicked()));
-        connect(message_box_p_, SIGNAL(okButtonClicked()), this,
+        connect(message_box_p_,
+                SIGNAL(okButtonClicked()),
+                this,
                 SLOT(onOkButtonClicked()));
-        connect(message_box_p_, SIGNAL(cancelButtonClicked()), this,
+        connect(message_box_p_,
+                SIGNAL(cancelButtonClicked()),
+                this,
                 SLOT(onCancelButtonClicked()));
     }
 
-  public slots:
+public slots:
     virtual void onCloseButtonClicked() { closeAndDelete(); }
     virtual void onOkButtonClicked() { closeAndDelete(); }
     virtual void onCancelButtonClicked() { closeAndDelete(); }

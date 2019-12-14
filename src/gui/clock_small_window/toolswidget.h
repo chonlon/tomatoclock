@@ -8,29 +8,31 @@ class QGridLayout;
 
 namespace lon {
 class Button;
+
 class ToolsWidget : public QWidget {
-    Q_OBJECT
-  private:
-    QGridLayout *main_layout_;
+Q_OBJECT
+private:
+    QGridLayout* main_layout_;
 
-    QLabel *label_label_;
-    QLabel *target_label_;
+    QLabel* label_label_;
+    QLabel* target_label_;
 
-    lon::Button *close_;
-    lon::Button *stop_;
+    Button* close_;
+    Button* stop_;
 
-  private:
-  private slots:
+private:
+private slots:
     void onCloseClicked();
 
-  public:
-    explicit ToolsWidget(const QString &label_name, const QString &target_name,
-                         QWidget *parent = nullptr);
+public:
+    explicit ToolsWidget(const QString& label_name,
+                         const QString& target_name,
+                         QWidget* parent = nullptr);
 
-  signals:
+signals:
     void stopButtonClicked();
     void closeButtonClicked();
-  public slots:
+public slots:
 };
 } // namespace lon
 #endif // TOOLSWIDGET_H

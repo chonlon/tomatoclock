@@ -8,10 +8,11 @@
 #include <QtCharts/QtCharts>
 
 class PieChartTest : public QWidget {
-    Q_OBJECT
-  public:
-    PieChartTest(QWidget *parent = nullptr)
-        : QWidget(parent) {}
+Q_OBJECT
+public:
+    PieChartTest(QWidget* parent = nullptr)
+        : QWidget(parent) {
+    }
 };
 
 #endif // PIECHARTTEST_H

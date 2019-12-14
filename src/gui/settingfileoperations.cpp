@@ -1,14 +1,15 @@
-#include "settingfileoperations.h"
+Ôªø#include "settingfileoperations.h"
 #include "clockoptions.hpp"
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <fstream>
 
-SettingFileOperations::SettingFileOperations() {}
+SettingFileOperations::SettingFileOperations() {
+}
 
 void SettingFileOperations::saveClockOptionToFile(
-    const lon::ClockOptions &option) {
+    const lon::ClockOptions& option) {
     QJsonObject clock_page;
     clock_page.insert("WorkTime", option.work_time()->minutes_);
     clock_page.insert("ShortbreakTime", option.sb_time()->minutes_);
@@ -21,8 +22,8 @@ void SettingFileOperations::saveClockOptionToFile(
     document.setObject(json);
     QByteArray byteArray = document.toJson(QJsonDocument::Indented);
 
-    // ’‚¿Ô”√QFile  π”√WriteOnly¥Úø™◊‹ «≥ˆ¥Ì, ≤ª÷™µ¿‘≠“Ú, ‘› ±œ»”√ofstream¥˙ÃÊ.
-    std::string   filename = "user/setting.json";
+    // ËøôÈáåÁî®QFile ‰ΩøÁî®WriteOnlyÊâìÂºÄÊÄªÊòØÂá∫Èîô, ‰∏çÁü•ÈÅìÂéüÂõ†, ÊöÇÊó∂ÂÖàÁî®ofstream‰ª£Êõø.
+    std::string filename = "user/setting.json";
     std::ofstream setting_file(filename, std::ios::binary);
     setting_file.write(byteArray, byteArray.size());
     setting_file.close();
@@ -34,52 +35,63 @@ lon::ClockOptions SettingFileOperations::readClockOptionFromFile() {
     QFile file_("user/setting.json");
     if (!file_.open(QFile::ReadOnly | QFile::Text)) {
         qDebug() << "could not open file in " << __FILE__ << __LINE__;
-        return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0,
+        return lon::ClockOptions(work,
+                                 0,
+                                 shortbreak,
+                                 0,
+                                 longbreak,
+                                 0,
                                  shortbreak_times,
                                  static_cast<bool>(keep_working));
     }
     QTextStream in(&file_);
-    QString     in_string = in.readAll();
+    QString in_string = in.readAll();
 
     QJsonParseError error;
-    QJsonDocument   json_document =
+    QJsonDocument json_document =
         QJsonDocument::fromJson(in_string.toLatin1(), &error);
     if (error.error == QJsonParseError::NoError) {
         if (!(json_document.isNull() || json_document.isEmpty()) &&
             json_document.isObject()) {
             QVariantMap data = json_document.toVariant().toMap();
-            if (!data[ QLatin1String("errorCode") ].toInt()) {
+            if (!data[QLatin1String("errorCode")].toInt()) {
                 QVariantMap clock_settings;
                 if (data.find(QLatin1String("ClockSetting")) != data.end())
                     clock_settings =
-                        data[ QLatin1String("ClockSetting") ].toMap();
+                        data[QLatin1String("ClockSetting")].toMap();
                 if (clock_settings.find(QLatin1String("WorkTime")) !=
                     clock_settings.end())
-                    work = clock_settings[ QLatin1String("WorkTime") ].toInt();
+                    work = clock_settings[QLatin1String("WorkTime")].toInt();
                 if (clock_settings.find(QLatin1String("ShortbreakTime")) !=
                     clock_settings.end())
                     shortbreak =
-                        clock_settings[ QLatin1String("ShortbreakTime") ]
-                            .toInt();
+                        clock_settings[QLatin1String("ShortbreakTime")]
+                        .toInt();
                 if (clock_settings.find(QLatin1String("LongbreakTime")) !=
                     clock_settings.end())
-                    longbreak = clock_settings[ QLatin1String("LongbreakTime") ]
-                                    .toInt();
+                    longbreak = clock_settings[QLatin1String("LongbreakTime")]
+                        .toInt();
                 if (clock_settings.find(QLatin1String("TimesBetweenLong")) !=
                     clock_settings.end())
                     shortbreak_times =
-                        clock_settings[ QLatin1String("TimesBetweenLong") ]
-                            .toInt();
+                        clock_settings[QLatin1String("TimesBetweenLong")]
+                        .toInt();
                 if (clock_settings.find(QLatin1String("KeepWorking")) !=
                     clock_settings.end())
                     keep_working =
-                        clock_settings[ QLatin1String("KeepWorking") ].toInt();
+                        clock_settings[QLatin1String("KeepWorking")].toInt();
             }
         }
     } else {
         qDebug() << "Error String : " << error.errorString();
     }
     file_.close();
-    return lon::ClockOptions(work, 0, shortbreak, 0, longbreak, 0,
-                             shortbreak_times, static_cast<bool>(keep_working));
+    return lon::ClockOptions(work,
+                             0,
+                             shortbreak,
+                             0,
+                             longbreak,
+                             0,
+                             shortbreak_times,
+                             static_cast<bool>(keep_working));
 }

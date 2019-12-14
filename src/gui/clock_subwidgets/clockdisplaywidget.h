@@ -1,4 +1,4 @@
-#ifndef CLOCKDISPLAYWIDGET_H
+ï»¿#ifndef CLOCKDISPLAYWIDGET_H
 #define CLOCKDISPLAYWIDGET_H
 
 #include <QPainter>
@@ -10,33 +10,33 @@ namespace lon {
 /*!
  * \class ClockDisplayWidget
  *
- * \brief ÏÔÊ¾¼ÆÊ±×é¼ş, ½«»á¸ù¾İÊ£ÓàÊ±¼ä»­Ò»¸öÔ²ĞÎ½ø¶ÈÌõ
+ * \brief æ˜¾ç¤ºè®¡æ—¶ç»„ä»¶, å°†ä¼šæ ¹æ®å‰©ä½™æ—¶é—´ç”»ä¸€ä¸ªåœ†å½¢è¿›åº¦æ¡
  *
  * \author LON
  */
 class ClockDisplayWidget : public DisplayClockBase {
-    Q_OBJECT
-  private:
-    double                   current_persent_;
-    lon::ClockTime const *   total_time_;
+Q_OBJECT
+private:
+    double current_persent_;
+    ClockTime const* total_time_;
     std::unique_ptr<QString> left_time_string_p_;
-    const lon::TimerStatus * timer_status_;
-    QBrush *                 current_brush_;
+    const TimerStatus* timer_status_;
+    QBrush* current_brush_;
 
-  public:
-    explicit ClockDisplayWidget(QWidget *parent = nullptr);
+public:
+    explicit ClockDisplayWidget(QWidget* parent = nullptr);
 
-	/// <summary>
-	/// ¸ù¾İtimer_status¸üĞÂ¼ÆÊ±ÒÔ¼°½ø¶ÈÌõ.
-	/// </summary>
-    virtual void updateTimeDisplay(lon::TimerStatus const *timer_status);
-	/// <summary>
-	/// ÔÚ´Ë½çÃæÉÏ»­Ò»¸ö½ø¶ÈÌõºÍÊ£ÓàÊ±¼ä.
-	/// </summary>
-    virtual void paintEvent(QPaintEvent *);
-  signals:
+    /// <summary>
+    /// æ ¹æ®timer_statusæ›´æ–°è®¡æ—¶ä»¥åŠè¿›åº¦æ¡.
+    /// </summary>
+    void updateTimeDisplay(TimerStatus const* timer_status) override;
+    /// <summary>
+    /// åœ¨æ­¤ç•Œé¢ä¸Šç”»ä¸€ä¸ªè¿›åº¦æ¡å’Œå‰©ä½™æ—¶é—´.
+    /// </summary>
+    void paintEvent(QPaintEvent*) override;
+signals:
 
-  public slots:
+public slots:
 };
 } // namespace lon
 #endif // CLOCKDISPLAYWIDGET_H

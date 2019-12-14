@@ -1,21 +1,25 @@
-#include "targetwidget.h"
+ï»¿#include "targetwidget.h"
 #include <QPainter>
 #include <QRect>
 #include <QSpacerItem>
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
+#pragma execution_character_set("utf-8")
+#endif
+
 static const int label_height = 25;
 
 void lon::TargetWidget::initWidgets() {
-    label_p_                  = new QLabel(this);
-    target_label_p_           = new QLabel(this);
-    start_target_button_p_    = new lon::Button(this);
-    complete_target_button_p_ = new lon::Button(this);
-    week_label_p_             = nullptr;
-    month_label_p_            = nullptr;
-    // ÓÉÓÚscrollarea ×Ô¶¯³ÉÎªÁËÕâÁ½¸öÀàµÄ¸¸´°¿Ú,
-    // ¶øÇÒÓÉÓÚÈç¹ûwidgetµÄ¸¸´°¿ÚÓĞ½¥±äµÄ±³¾°É«Ìî³ä£¬ÄÇÃ´Õâ¸öwidgetÊÇ²»ÄÜ¹Ø×Ô¶¯Ìî³ä±³¾°µÄ..ËùÒÔÕâÀïÁ½¸öwidgetµÄpainter¶¼»áÊ§Ğ§.
-    week_situation_widget_p_  = nullptr;
+    label_p_ = new QLabel(this);
+    target_label_p_ = new QLabel(this);
+    start_target_button_p_ = new Button(this);
+    complete_target_button_p_ = new Button(this);
+    week_label_p_ = nullptr;
+    month_label_p_ = nullptr;
+    // ç”±äºscrollarea è‡ªåŠ¨æˆä¸ºäº†è¿™ä¸¤ä¸ªç±»çš„çˆ¶çª—å£,
+    // è€Œä¸”ç”±äºå¦‚æœwidgetçš„çˆ¶çª—å£æœ‰æ¸å˜çš„èƒŒæ™¯è‰²å¡«å……ï¼Œé‚£ä¹ˆè¿™ä¸ªwidgetæ˜¯ä¸èƒ½å…³è‡ªåŠ¨å¡«å……èƒŒæ™¯çš„..æ‰€ä»¥è¿™é‡Œä¸¤ä¸ªwidgetçš„painteréƒ½ä¼šå¤±æ•ˆ.
+    week_situation_widget_p_ = nullptr;
     month_situation_widget_p_ = nullptr;
-    main_layout_p_            = new QGridLayout(this);
+    main_layout_p_ = new QGridLayout(this);
 }
 
 void lon::TargetWidget::setWidgetsStyle() {
@@ -44,16 +48,16 @@ void lon::TargetWidget::setWidgetsStyle() {
         new QIcon(":/icon/Icons/play_pressed.png"));
     start_target_button_p_->setFlat(true);
     start_target_button_p_->setStyleSheet("border:none");
-	start_target_button_p_->setToolTip(QString::fromLocal8Bit("¿ªÊ¼·¬ÇÑÖÓ"));
+    start_target_button_p_->setToolTip(QString("å¼€å§‹ç•ªèŒ„é’Ÿ"));
 
     complete_target_button_p_->setFixedSize(45, 45);
     complete_target_button_p_->setFlat(true);
     complete_target_button_p_->setStyleSheet("border:none");
-	complete_target_button_p_->setScalingFactor(0.6);
-	complete_target_button_p_->setNormal(new QIcon(":/icon/Icons/finish.png"));
-	complete_target_button_p_->setFocus(new QIcon(":/icon/Icons/finish.png"));
-	complete_target_button_p_->setPressed(new QIcon(":/icon/Icons/finish.png"));
-	complete_target_button_p_->setToolTip(QString::fromLocal8Bit("Ä¿±êÒÑÍê³É"));
+    complete_target_button_p_->setScalingFactor(0.6);
+    complete_target_button_p_->setNormal(new QIcon(":/icon/Icons/finish.png"));
+    complete_target_button_p_->setFocus(new QIcon(":/icon/Icons/finish.png"));
+    complete_target_button_p_->setPressed(new QIcon(":/icon/Icons/finish.png"));
+    complete_target_button_p_->setToolTip(QString("ç›®æ ‡å·²å®Œæˆ"));
 }
 
 void lon::TargetWidget::setThisWidgetStyle() {
@@ -62,18 +66,19 @@ void lon::TargetWidget::setThisWidgetStyle() {
     this->setMaximumWidth(850);
 
     this->setAutoFillBackground(true);
-    QPixmap  pixmap(":/all/Res/Img/titlebarbackground.png");
+    QPixmap pixmap(":/all/Res/Img/titlebarbackground.png");
     QPalette palette = this->palette();
     palette.setBrush(this->backgroundRole(),
-                     QBrush(pixmap.scaled(this->size(), Qt::IgnoreAspectRatio,
+                     QBrush(pixmap.scaled(this->size(),
+                                          Qt::IgnoreAspectRatio,
                                           Qt::SmoothTransformation)));
     this->setPalette(palette);
 }
 
 void lon::TargetWidget::initLayout() {
-    QSpacerItem *item1 =
+    QSpacerItem* item1 =
         new QSpacerItem(30, 10, QSizePolicy::Fixed, QSizePolicy::Minimum);
-    QSpacerItem *item2 =
+    QSpacerItem* item2 =
         new QSpacerItem(30, 10, QSizePolicy::Fixed, QSizePolicy::Minimum);
     main_layout_p_->addItem(item1, 0, 0, 1, 1);
     main_layout_p_->addWidget(label_p_, 0, 1, 1, 1);
@@ -84,59 +89,66 @@ void lon::TargetWidget::initLayout() {
     this->setLayout(main_layout_p_);
 }
 
-void lon::TargetWidget::drawWorkStuation(QWidget *widget, int num) {
-	qobject_cast<QLabel*>(widget)->setText(QString::number(num));
+void lon::TargetWidget::drawWorkStuation(QWidget* widget, int num) {
+    qobject_cast<QLabel*>(widget)->setText(QString::number(num));
 }
 
-lon::TargetWidget::TargetWidget(QString label_name, QString target_name,
-                                QWidget *parent)
-    : QWidget(parent)
-    , label_name_(label_name)
-    , target_name_(target_name) {
+lon::TargetWidget::TargetWidget(QString label_name,
+                                QString target_name,
+                                QWidget* parent)
+    : QWidget(parent),
+      target_name_(target_name),
+      label_name_(label_name) {
     initWidgets();
     setWidgetsStyle();
     initLayout();
     setThisWidgetStyle();
     // qt
-    // µÄsingalºÍslotº¯ÊıµÄ²ÎÊı±ØĞëµÄÒ»Ñù(»òÕßsignalµÄ²ÎÊıÍêÈ«°üº¬slotµÄ²ÎÊı).
+    // çš„singalå’Œslotå‡½æ•°çš„å‚æ•°å¿…é¡»çš„ä¸€æ ·(æˆ–è€…signalçš„å‚æ•°å®Œå…¨åŒ…å«slotçš„å‚æ•°).
     // connect(start_target_button_p_, SIGNAL(clicked()), this,
     // SIGNAL(startButtonClicked(label_name_, target_name_)));
-    connect(start_target_button_p_, SIGNAL(clicked()), this,
+    connect(start_target_button_p_,
+            SIGNAL(clicked()),
+            this,
             SLOT(emitButtonClicked()));
-    connect(complete_target_button_p_, &QPushButton::clicked, this,
+    connect(complete_target_button_p_,
+            &QPushButton::clicked,
+            this,
             [this]() { emit targetFinished(target_name_); });
 }
 
 void lon::TargetWidget::setLastWeekData(
-    std::shared_ptr<lon::tomato_clock::LastWeekData> ptr) {
-    last_week_data_p_        = ptr;
-    week_label_p_            = new QLabel(this);
+    std::shared_ptr<tomato_clock::LastWeekData> ptr) {
+    last_week_data_p_ = ptr;
+    week_label_p_ = new QLabel(this);
     week_situation_widget_p_ = new QLabel(this);
     week_label_p_->setFixedHeight(label_height);
-    week_label_p_->setText(QString::fromLocal8Bit("¹ıÈ¥7Ìì"));
+    week_label_p_->setText(QString("è¿‡å»7å¤©"));
     main_layout_p_->addWidget(week_situation_widget_p_, 0, 2, 1, 1);
     main_layout_p_->addWidget(week_label_p_, 1, 2, 1, 1);
     int count{};
     if (last_week_data_p_ != nullptr)
         for (auto i : (last_week_data_p_->target_data))
-            if (i.first == target_name_) count += i.second;
+            if (i.first == target_name_)
+                count += i.second;
     drawWorkStuation(week_situation_widget_p_, count);
 }
 
 void lon::TargetWidget::setLastMonthData(
-    std::shared_ptr<lon::tomato_clock::LastMonthData> ptr) {
-    last_month_data_p_        = ptr;
-    month_label_p_            = new QLabel(this);
+    std::shared_ptr<tomato_clock::LastMonthData> ptr) {
+    last_month_data_p_ = ptr;
+    month_label_p_ = new QLabel(this);
     month_situation_widget_p_ = new QLabel(this);
     month_situation_widget_p_->setPalette(QPalette(Qt::red));
     month_situation_widget_p_->setAutoFillBackground(false);
     month_label_p_->setFixedHeight(label_height);
-    month_label_p_->setText(QString::fromLocal8Bit("¹ıÈ¥30Ìì"));
+    month_label_p_->setText(QString("è¿‡å»30å¤©"));
     main_layout_p_->addWidget(month_situation_widget_p_, 0, 3, 1, 1);
     main_layout_p_->addWidget(month_label_p_, 1, 3, 1, 1);
     int count{};
     if (last_month_data_p_ != nullptr)
         for (auto i : (last_month_data_p_->target_data))
-            if (i.first == target_name_) count += i.second;
+            if (i.first == target_name_)
+                count += i.second;
     drawWorkStuation(month_situation_widget_p_, count);
 }

@@ -13,18 +13,18 @@
 #include <QPainter>
 
 class MainWindow : public QMainWindow {
-    Q_OBJECT
+Q_OBJECT
 
-  public:
-    MainWindow(QWidget *parent = 0);
+public:
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-  private:
-    QLabel *        label;
-    QHBoxLayout *   layout_;
-    temp *          temp_;
-    QGraphicsScene *scene;
-    QPainter *      painter;
+private:
+    QLabel* label;
+    QHBoxLayout* layout_;
+    temp* temp_;
+    QGraphicsScene* scene;
+    QPainter* painter;
 };
 
 #endif // MAINWINDOW_H

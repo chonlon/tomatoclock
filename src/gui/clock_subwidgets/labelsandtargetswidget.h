@@ -1,4 +1,4 @@
-#ifndef LABELSANDTARGETSWIDGET_H
+ï»¿#ifndef LABELSANDTARGETSWIDGET_H
 #define LABELSANDTARGETSWIDGET_H
 
 #include <QGridLayout>
@@ -24,161 +24,161 @@ class AddTargetWidget;
 /*!
  * \class LabelsAndTargetsWidget
  *
- * \brief ÏÔÊ¾ËùÓĞLabelÒÔ¼°ÏÔÊ¾TargetÖ÷½çÃæ.
+ * \brief æ˜¾ç¤ºæ‰€æœ‰Labelä»¥åŠæ˜¾ç¤ºTargetä¸»ç•Œé¢.
  *
  * \author LON
  */
 class LabelsAndTargetsWidget : public QWidget {
-	Q_OBJECT
-  private:
-	QVBoxLayout *main_layout_p_;
-	QHBoxLayout *labels_main_layout_p_;
-	QVBoxLayout *add_label_button_layout_p_;
-	QGridLayout *labels_layout_p_;
-	QHBoxLayout *target_main_layout_p_;
-	QVBoxLayout *target_button_layout_p_;
+Q_OBJECT
+private:
+    QVBoxLayout* main_layout_p_;
+    QHBoxLayout* labels_main_layout_p_;
+    QVBoxLayout* add_label_button_layout_p_;
+    QGridLayout* labels_layout_p_;
+    QHBoxLayout* target_main_layout_p_;
+    QVBoxLayout* target_button_layout_p_;
 
-	QWidget *                     labels_widget_p_;
-	lon::ListWidget *             targets_list_widget_p_;
-	lon::AutoDeleteWidgetPointer *current_widget_pointer_;
+    QWidget* labels_widget_p_;
+    ListWidget* targets_list_widget_p_;
+    AutoDeleteWidgetPointer* current_widget_pointer_;
 
-	QSpacerItem *label_widget_spacer_p_;
-	QSpacerItem *target_button_spacer_p_;
+    QSpacerItem* label_widget_spacer_p_;
+    QSpacerItem* target_button_spacer_p_;
 
-	Button *add_label_button_p_;
-	Button *add_target_button_p_;
-	Button *history_button_p_;
-	Button *setting_button_p_;
-	Button *all_button_;
+    Button* add_label_button_p_;
+    Button* add_target_button_p_;
+    Button* history_button_p_;
+    Button* setting_button_p_;
+    Button* all_button_;
 
-	lon::AddLabelWidget * addlabelwidget_p_;
-	lon::AddTargetWidget *addtargetwidget_p_;
+    AddLabelWidget* addlabelwidget_p_;
+    AddTargetWidget* addtargetwidget_p_;
 
-	ListWidget *all_targets_widget_p_;
-	//¿ª¹ØÊı¾İ¿âµÄ¿ªÏú´ó, ËùÒÔ»¹ÊÇÊ¹ÓÃÖ¸Õë¸üºÃ.
-	ClockSql *sql_;
+    ListWidget* all_targets_widget_p_;
+    //å¼€å…³æ•°æ®åº“çš„å¼€é”€å¤§, æ‰€ä»¥è¿˜æ˜¯ä½¿ç”¨æŒ‡é’ˆæ›´å¥½.
+    ClockSql* sql_;
 
-	std::unordered_map<lon::Button *, lon::AutoDeleteWidgetPointer *>
-											button_map_;
-	std::list<std::pair<QString, QString>> *labels_and_targets_p_;
+    std::unordered_map<Button *, AutoDeleteWidgetPointer *>
+    button_map_;
+    std::list<std::pair<QString, QString>>* labels_and_targets_p_;
 
-	uint8_t current_cloumn;
-	uint8_t current_row;
+    uint8_t current_cloumn;
+    uint8_t current_row;
 
-	std::shared_ptr<lon::tomato_clock::LastWeekData>  last_week_data_p_;
-	std::shared_ptr<lon::tomato_clock::LastMonthData> last_month_data_p_;
+    std::shared_ptr<tomato_clock::LastWeekData> last_week_data_p_;
+    std::shared_ptr<tomato_clock::LastMonthData> last_month_data_p_;
 
-  private: // functions
-	// default construction are not allowed.
-	LabelsAndTargetsWidget();
-	/// <summary>
-	/// ½«°´Å¥Ìí¼Óµ½½çÃæÉÏÏÔÊ¾
-	/// </summary>
-	/// <param name="button">ĞèÒªÌí¼ÓµÄ°´Å¥Ö¸Õë.</param>
-	/// <param name="text">Ìí¼ÓµÄ°´Å¥µÄÎÄ±¾.</param>
-	void addLabelButton(lon::Button *button, const QString &text);
+private: // functions
+    // default construction are not allowed.
+    LabelsAndTargetsWidget();
+    /// <summary>
+    /// å°†æŒ‰é’®æ·»åŠ åˆ°ç•Œé¢ä¸Šæ˜¾ç¤º
+    /// </summary>
+    /// <param name="button">éœ€è¦æ·»åŠ çš„æŒ‰é’®æŒ‡é’ˆ.</param>
+    /// <param name="text">æ·»åŠ çš„æŒ‰é’®çš„æ–‡æœ¬.</param>
+    void addLabelButton(Button* button, const QString& text);
 
-	/// <summary>
-	/// ½«TargetÌí¼Óµ½½çÃæÉÏÏÔÊ¾, ½«¸ù¾İÌá¹©µÄlabelnameºÍtargetname´´½¨targetwidget.
-	/// </summary>
-	/// <param name="labelname">½«ÒªÌí¼ÓµÄtagetËùÊôµÄLabelÃû×Ö.</param>
-	/// <param name="targetname">½«ÒªÌí¼ÓµÄtargetµÄÃû×Ö.</param>
-	/// <param name="index">´ËtargetwidgetÌí¼ÓµÄÎ»ÖÃ, -1ÎªÌí¼Óµ½Ä©Î².</param>
-	void addTargetWidget(QString labelname, QString targetname, int index = -1);
+    /// <summary>
+    /// å°†Targetæ·»åŠ åˆ°ç•Œé¢ä¸Šæ˜¾ç¤º, å°†æ ¹æ®æä¾›çš„labelnameå’Œtargetnameåˆ›å»ºtargetwidget.
+    /// </summary>
+    /// <param name="labelname">å°†è¦æ·»åŠ çš„tagetæ‰€å±çš„Labelåå­—.</param>
+    /// <param name="targetname">å°†è¦æ·»åŠ çš„targetçš„åå­—.</param>
+    /// <param name="index">æ­¤targetwidgetæ·»åŠ çš„ä½ç½®, -1ä¸ºæ·»åŠ åˆ°æœ«å°¾.</param>
+    void addTargetWidget(QString labelname, QString targetname, int index = -1);
 
-	void initConnect();
+    void initConnect();
 
-	/// <summary>
-	/// ³õÊ¼»¯ËùÓĞµÄLabelÏÔÊ¾(ÏÔÊ¾ÓÚLabelLayout).
-	/// </summary>
-	void initLabelsLayout();
+    /// <summary>
+    /// åˆå§‹åŒ–æ‰€æœ‰çš„Labelæ˜¾ç¤º(æ˜¾ç¤ºäºLabelLayout).
+    /// </summary>
+    void initLabelsLayout();
 
-	/// <summary>
-	/// ³õÊ¼»¯ÌØ¶¨labelnameÏÂµÄËùÓĞtargetÏÔÊ¾.
-	/// </summary>
-	/// <param name="label_name">¸ø¶¨µÄlabelname</param>
-	/// <param name="getAllTargets">ÊÇ·ñÊÇÏÔÊ¾ËùÓĞtarget.</param>
-	void initTargets(QString label_name, bool getAllTargets = false);
+    /// <summary>
+    /// åˆå§‹åŒ–ç‰¹å®šlabelnameä¸‹çš„æ‰€æœ‰targetæ˜¾ç¤º.
+    /// </summary>
+    /// <param name="label_name">ç»™å®šçš„labelname</param>
+    /// <param name="getAllTargets">æ˜¯å¦æ˜¯æ˜¾ç¤ºæ‰€æœ‰target.</param>
+    void initTargets(QString label_name, bool getAllTargets = false);
 
-	/// <summary>
-	/// ³õÊ¼»¯TargetLayoutµÄÏÔÊ¾.
-	/// </summary>
-	void initTargetsLayout();
+    /// <summary>
+    /// åˆå§‹åŒ–TargetLayoutçš„æ˜¾ç¤º.
+    /// </summary>
+    void initTargetsLayout();
 
-	// ½«ĞèÒªÌí¼ÓµÄlabelÓëtarget´æµ½Êı¾İ¿âÖĞ.
-	void saveLabelToSql(const QString &label_name);
-	void saveTargetToSql(const QString &label_name, const QString &target_name);
+    // å°†éœ€è¦æ·»åŠ çš„labelä¸targetå­˜åˆ°æ•°æ®åº“ä¸­.
+    void saveLabelToSql(const QString& label_name);
+    void saveTargetToSql(const QString& label_name, const QString& target_name);
 
-  public:
-	/// <summary>
-	/// LabelsAndTargetsWidgetµÄ¹¹Ôìº¯Êı, Ê¹ÓÃÕßĞèÒªÌá¹©ClockSqlÖ¸Õë,
-	/// ÒÔÂú×ãÊı¾İÒªÇó
-	/// </summary>
-	/// <param name="sql">Êı¾İ¿âÖ¸Õë, Ê¹ÓÃÕßÈÔÈ»±£Áô*sqlµÄËùÓĞÈ¨,
-	/// µ«´ËÀà¿ÉÄÜ»áĞŞ¸ÄÊı¾İ¿â.</param>
-	explicit LabelsAndTargetsWidget(
-		std::shared_ptr<lon::tomato_clock::LastWeekData> week_data,
-		std::shared_ptr<lon::tomato_clock::LastMonthData> month_data,
-		QWidget *                                         parent = nullptr);
+public:
+    /// <summary>
+    /// LabelsAndTargetsWidgetçš„æ„é€ å‡½æ•°, ä½¿ç”¨è€…éœ€è¦æä¾›ClockSqlæŒ‡é’ˆ,
+    /// ä»¥æ»¡è¶³æ•°æ®è¦æ±‚
+    /// </summary>
+    /// <param name="sql">æ•°æ®åº“æŒ‡é’ˆ, ä½¿ç”¨è€…ä»ç„¶ä¿ç•™*sqlçš„æ‰€æœ‰æƒ,
+    /// ä½†æ­¤ç±»å¯èƒ½ä¼šä¿®æ”¹æ•°æ®åº“.</param>
+    explicit LabelsAndTargetsWidget(
+        std::shared_ptr<tomato_clock::LastWeekData> week_data,
+        std::shared_ptr<tomato_clock::LastMonthData> month_data,
+        QWidget* parent = nullptr);
 
-	void setLastWeekData(std::shared_ptr<lon::tomato_clock::LastWeekData> ptr);
-	void
-		setLastMonthData(std::shared_ptr<lon::tomato_clock::LastMonthData> ptr);
+    void setLastWeekData(std::shared_ptr<tomato_clock::LastWeekData> ptr);
+    void
+    setLastMonthData(std::shared_ptr<tomato_clock::LastMonthData> ptr);
 
-  signals:
-	void changeSetting();
-	void showChart();
-	void startClock(QString label_name, QString target_name);
-	void redrawWidget();
-  public slots:
-	  /// <summary>
-	  /// ´ò¿ªÒ»¸öÌí¼ÓLabel´°¿Ú.
-	  /// </summary>
-	void addLabel();
+signals:
+    void changeSetting();
+    void showChart();
+    void startClock(QString label_name, QString target_name);
+    void redrawWidget();
+public slots:
+    /// <summary>
+    /// æ‰“å¼€ä¸€ä¸ªæ·»åŠ Labelçª—å£.
+    /// </summary>
+    void addLabel();
 
-	/// <summary>
-	/// ´ò¿ªÒ»¸öÌí¼ÓTarget´°¿Ú.
-	/// </summary>
-	void addTarget();
+    /// <summary>
+    /// æ‰“å¼€ä¸€ä¸ªæ·»åŠ Targetçª—å£.
+    /// </summary>
+    void addTarget();
 
-	/// <summary>
-	/// ¹Ø±ÕÌí¼ÓLabel´°¿Ú.
-	/// </summary>
-	void closeAddLabelWidget();
+    /// <summary>
+    /// å…³é—­æ·»åŠ Labelçª—å£.
+    /// </summary>
+    void closeAddLabelWidget();
 
-	/// <summary>
-	/// ¹Ø±ÕÌí¼ÓTarget´°¿Ú.
-	/// </summary>
-	void closeAddTargetWidget();
+    /// <summary>
+    /// å…³é—­æ·»åŠ Targetçª—å£.
+    /// </summary>
+    void closeAddTargetWidget();
 
-	/// <summary>
-	/// labelÒÑ³É¹¦Ìí¼Ó, ½«´Ëlable´æµ½Êı¾İ¿âÖĞ, ¸üĞÂ´°¿Ú.
-	/// </summary>
-	/// <param name="text">labelÃû</param>
-	void labelAdded(QString text);
+    /// <summary>
+    /// labelå·²æˆåŠŸæ·»åŠ , å°†æ­¤lableå­˜åˆ°æ•°æ®åº“ä¸­, æ›´æ–°çª—å£.
+    /// </summary>
+    /// <param name="text">labelå</param>
+    void labelAdded(QString text);
 
-	/// <summary>
-	/// ÓĞÒ»¸ölabelÑ¡Ôñ°´Å¥±»µã»÷.
-	/// </summary>
-	void onLabelButtonClicked();
+    /// <summary>
+    /// æœ‰ä¸€ä¸ªlabelé€‰æ‹©æŒ‰é’®è¢«ç‚¹å‡».
+    /// </summary>
+    void onLabelButtonClicked();
 
-	/// <summary>
-	/// targetÒÑ³É¹¦Ìí¼Ó, ½«´Ëtarget´æµ½Êı¾İ¿âÖĞ, ¸üĞÂ´°¿Ú.
-	/// </summary>
-	/// <param name="label">labelÃû</param>
-	/// <param name="target">targetÃû</param>
-	void targetAdded(QString label, QString target);
+    /// <summary>
+    /// targetå·²æˆåŠŸæ·»åŠ , å°†æ­¤targetå­˜åˆ°æ•°æ®åº“ä¸­, æ›´æ–°çª—å£.
+    /// </summary>
+    /// <param name="label">labelå</param>
+    /// <param name="target">targetå</param>
+    void targetAdded(QString label, QString target);
 
-	/// <summary>
-	/// Ò»¸ötargetÒÑ¾­Íê³É, ½«Æä´ÓÊı¾İ¿âÖĞÉ¾³ı.
-	/// </summary>
-	void targetFinished(const QString& target_name);
+    /// <summary>
+    /// ä¸€ä¸ªtargetå·²ç»å®Œæˆ, å°†å…¶ä»æ•°æ®åº“ä¸­åˆ é™¤.
+    /// </summary>
+    void targetFinished(const QString& target_name);
 
-	/// <summary>
-	/// É¾³ı±êÇ©.
-	/// </summary>
-	void deleteLabel();
-	// void startClock(const QString &label_name, const QString &target_name);
+    /// <summary>
+    /// åˆ é™¤æ ‡ç­¾.
+    /// </summary>
+    void deleteLabel();
+    // void startClock(const QString &label_name, const QString &target_name);
 };
 } // namespace lon
 #endif // LABELSANDTARGETSWIDGET_H

@@ -1,4 +1,4 @@
-#include "toolswidget.h"
+﻿#include "toolswidget.h"
 #include "../lon_widget/button.hpp"
 
 #include <QGridLayout>
@@ -6,12 +6,13 @@
 
 void lon::ToolsWidget::onCloseClicked() { this->window()->close(); }
 
-lon::ToolsWidget::ToolsWidget(const QString &label_name,
-                              const QString &target_name, QWidget *parent)
+lon::ToolsWidget::ToolsWidget(const QString& label_name,
+                              const QString& target_name,
+                              QWidget* parent)
     : QWidget(parent) {
     main_layout_ = new QGridLayout(this);
     main_layout_->setContentsMargins(5, 0, 0, 0);
-    stop_ = new lon::Button(this);
+    stop_ = new Button(this);
     stop_->setFixedSize(QSize(45, 45));
     main_layout_->addWidget(stop_, 0, 1, 2, 1);
     label_label_ = new QLabel(this);
@@ -25,7 +26,7 @@ lon::ToolsWidget::ToolsWidget(const QString &label_name,
     label_label_->setAlignment(Qt::AlignCenter);
     main_layout_->addWidget(label_label_, 0, 0, 1, 1);
 
-    close_ = new lon::Button(this);
+    close_ = new Button(this);
     close_->setFixedSize(QSize(45, 45));
     close_->setFlat(true);
     close_->setStyleSheet("border:none");

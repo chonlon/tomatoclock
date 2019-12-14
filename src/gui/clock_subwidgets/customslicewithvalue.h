@@ -4,13 +4,12 @@
 #include <QObject>
 #include <QtCharts/QPieSlice>
 
-class CustomSliceWithValue : public QtCharts::QPieSlice
-{
-    Q_OBJECT
+class CustomSliceWithValue : public QtCharts::QPieSlice {
+Q_OBJECT
 private:
     QString name_;
 public:
-    CustomSliceWithValue(QObject *parent = nullptr);
+    CustomSliceWithValue(QObject* parent = nullptr);
 
     void setName(const QString& name);
     QString name() const;

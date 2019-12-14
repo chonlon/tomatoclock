@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QtSql>
 #include <exception>
@@ -9,453 +9,465 @@
 #include "LonTypeDefines.h"
 
 
-
 namespace lon {
 /*!
  * \class ClockSql
  *
- * \brief ·â×°·¬ÇÑÖÓÏà¹ØÊı¾İ¿â²Ù×÷, Ö»ÔÊĞí´æÔÚÒ»¸öSql¶ÔÏó. ´ËÀàÊ¹ÓÃµ¥ÀıÄ£Ê½.
+ * \brief å°è£…ç•ªèŒ„é’Ÿç›¸å…³æ•°æ®åº“æ“ä½œ, åªå…è®¸å­˜åœ¨ä¸€ä¸ªSqlå¯¹è±¡. æ­¤ç±»ä½¿ç”¨å•ä¾‹æ¨¡å¼.
  *
  * \author LON
  */
 class ClockSql {
-  private:
-	QSqlDatabase sql_;
-	QSqlQuery *  query_;
+private:
+    QSqlDatabase sql_;
+    QSqlQuery* query_;
 
-	/// <summary> Ö´ĞĞÃ»ÓĞTargetsTableÊ±µÄ³õÊ¼»¯¶¯×÷ </summary>
-	void initTargetsTable() {
-		bool tableExists = query_->exec(
-			"select count(*) from targets where TargetName = 'table'");
-		if (!tableExists) {
-			query_->exec("CREATE TABLE targets (TargetId INT PRIMARY KEY, "
-						 "TargetName VARCHAR (50) UNIQUE, LabelName  VARCHAR "
-						 "(50) REFERENCES labels (LabelName));");
-		}
-	}
+    /// <summary> æ‰§è¡Œæ²¡æœ‰TargetsTableæ—¶çš„åˆå§‹åŒ–åŠ¨ä½œ </summary>
+    void initTargetsTable() {
+        bool tableExists = query_->exec(
+            "select count(*) from targets where TargetName = 'table'");
+        if (!tableExists) {
+            query_->exec("CREATE TABLE targets (TargetId INT PRIMARY KEY, "
+                "TargetName VARCHAR (50) UNIQUE, LabelName  VARCHAR "
+                "(50) REFERENCES labels (LabelName));");
+        }
+    }
 
-	/// <summary> Ö´ĞĞÃ»ÓĞLabelsTableÊ±µÄ³õÊ¼»¯¶¯×÷ </summary>
-	void initLabelsTable() {
-		bool tableExists = query_->exec(
-			"select count(*) from labels where LabelName = 'table'");
-		if (!tableExists) {
-			query_->exec(
-				"CREATE TABLE labels (LabelName VARCHAR (50) PRIMARY KEY);");
-		}
-	}
+    /// <summary> æ‰§è¡Œæ²¡æœ‰LabelsTableæ—¶çš„åˆå§‹åŒ–åŠ¨ä½œ </summary>
+    void initLabelsTable() {
+        bool tableExists = query_->exec(
+            "select count(*) from labels where LabelName = 'table'");
+        if (!tableExists) {
+            query_->exec(
+                "CREATE TABLE labels (LabelName VARCHAR (50) PRIMARY KEY);");
+        }
+    }
 
-	/// <summary> Ö´ĞĞÃ»ÓĞFinishedTomatoTableÊ±µÄ³õÊ¼»¯¶¯×÷ </summary>
-	void initFinishedTomatoTable() {
-		bool tableExists = query_->exec(
-			"select count(*) from finishedtomato where name = 'table'");
-		if (!tableExists) {
-			query_->exec("CREATE TABLE finishedtomato (TomatoId   INT  PRIMARY "
-						 "KEY, TargetId   INT  REFERENCES targets (TargetId), "
-						 "DuringTime INT, FinishTime DATETIME);");
-		}
-	}
+    /// <summary> æ‰§è¡Œæ²¡æœ‰FinishedTomatoTableæ—¶çš„åˆå§‹åŒ–åŠ¨ä½œ </summary>
+    void initFinishedTomatoTable() {
+        bool tableExists = query_->exec(
+            "select count(*) from finishedtomato where name = 'table'");
+        if (!tableExists) {
+            query_->exec("CREATE TABLE finishedtomato (TomatoId   INT  PRIMARY "
+                "KEY, TargetId   INT  REFERENCES targets (TargetId), "
+                "DuringTime INT, FinishTime DATETIME);");
+        }
+    }
 
-	/// <summary> »ñÈ¡ÔÚ¹ıÈ¥µÄÊıÌì(days)ÄÚ, ·¬ÇÑ¹¤×÷×ÜÊ±¼ä. </summary>
-	uint32_t getTotalTimeInDays(uint8_t days) {
-		uint32_t result;
+    /// <summary> è·å–åœ¨è¿‡å»çš„æ•°å¤©(days)å†…, ç•ªèŒ„å·¥ä½œæ€»æ—¶é—´. </summary>
+    uint32_t getTotalTimeInDays(uint8_t days) {
+        uint32_t result;
 
-		query_->exec("SELECT SUM(DuringTime)\
+        query_->exec(
+            "SELECT SUM(DuringTime)\
 						 FROM finishedtomato\
-						WHERE julianday('now') - julianday(FinishTime) <" +
-					 QString::number(days) + ";");
+						WHERE julianday('now') - julianday(FinishTime) <"
+            +
+            QString::number(days) + ";");
 
-		result = static_cast<uint32_t>(query_->value(0).toInt());
+        result = static_cast<uint32_t>(query_->value(0).toInt());
 
-		return result;
-	}
+        return result;
+    }
 
-	ClockSql()
-		: sql_(QSqlDatabase::addDatabase("QSQLITE")) {
-		sql_.setDatabaseName("ClockSql.db");
-		if (!sql_.open()) throw std::logic_error("database cannot be openned");
-		query_ = new QSqlQuery(sql_);
-		initLabelsTable();
-		initTargetsTable();
-		initFinishedTomatoTable();
-	}
+    ClockSql()
+        : sql_(QSqlDatabase::addDatabase("QSQLITE")) {
+        sql_.setDatabaseName("ClockSql.db");
+        if (!sql_.open())
+            throw std::logic_error("database cannot be openned");
+        query_ = new QSqlQuery(sql_);
+        initLabelsTable();
+        initTargetsTable();
+        initFinishedTomatoTable();
+    }
+
 public:
-	~ClockSql() {
-		delete query_;
-	}
+    ~ClockSql() {
+        delete query_;
+    }
 
-	// Clock ¹¤³§·½·¨.
-	static ClockSql *Get() {
-		static ClockSql *instance_ = nullptr;
-		if (instance_ == nullptr) instance_ = new ClockSql();
-		return instance_;
-	}
-	// a tomato have just finished
-	void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
-		query_->prepare(
-			"INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
-			"FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
-			"targets.TargetId, :during , DateTime('now', 'localtime') from "
-			"finishedtomato , targets where TargetName = :target and LabelName "
-			"= :label");
-		query_->bindValue(":during", QString::number(duringtime));
-		query_->bindValue(":target", target);
-		query_->bindValue(":label", label);
-		query_->exec();
-	}
+    // Clock å·¥å‚æ–¹æ³•.
+    static ClockSql* Get() {
+        static ClockSql* instance_ = nullptr;
+        if (instance_ == nullptr)
+            instance_ = new ClockSql();
+        return instance_;
+    }
 
-	void addLabel(const QString &label_name) {
-		query_->prepare("INSERT INTO labels VALUES (:label)");
-		query_->bindValue(":label", label_name);
-		query_->exec();
-	}
+    // a tomato have just finished
+    void addAFinishedTomato(uint8_t duringtime, QString label, QString target) {
+        query_->prepare(
+            "INSERT INTO finishedtomato(TomatoId, TargetId, DuringTime, "
+            "FinishTime) select MAX(finishedtomato.TomatoId) + 1 as id, "
+            "targets.TargetId, :during , DateTime('now', 'localtime') from "
+            "finishedtomato , targets where TargetName = :target and LabelName "
+            "= :label");
+        query_->bindValue(":during", QString::number(duringtime));
+        query_->bindValue(":target", target);
+        query_->bindValue(":label", label);
+        query_->exec();
+    }
 
-	void deleteLabel(const QString &label_name) {
-		query_->prepare("DELETE FROM labels WHERE LabelName = :label ");
-		query_->bindValue(":label", label_name);
-		query_->exec();
-	}
+    void addLabel(const QString& label_name) {
+        query_->prepare("INSERT INTO labels VALUES (:label)");
+        query_->bindValue(":label", label_name);
+        query_->exec();
+    }
 
-	void deleteTarget(const QString &target_name) {
-		query_->prepare("DELETE FROM targets WHERE TargetName = :target ");
-		query_->bindValue(":target", target_name);
-		query_->exec();
-	}
+    void deleteLabel(const QString& label_name) {
+        query_->prepare("DELETE FROM labels WHERE LabelName = :label ");
+        query_->bindValue(":label", label_name);
+        query_->exec();
+    }
 
-	void addTarget(const QString &label_name, const QString &target_name) {
-		query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 "
-						"AS id, :label, :target FROM targets");
-		query_->bindValue(":label", label_name);
-		query_->bindValue(":target", target_name);
-		query_->exec();
-	}
+    void deleteTarget(const QString& target_name) {
+        query_->prepare("DELETE FROM targets WHERE TargetName = :target ");
+        query_->bindValue(":target", target_name);
+        query_->exec();
+    }
 
-	/// <summary> »ñÈ¡¹ıÈ¥Ò»ÖÜµÄ·¬ÇÑÍê³ÉµÄÇé¿ö. </summary>
-	/// <returns> ÒÔTodayData·µ»Ø½á¹û, °üÀ¨Ê±¼ä·Ö²¼,½«target·Ö²¼, label·Ö²¼
-	/// </returns>
-	lon::tomato_clock::TodayData getTodayData() {
-		using namespace lon::tomato_clock;
-		TodayData data;
-		// »ñÈ¡½ñÌìµÄÃ¿¸öĞ¡Ê±Íê³ÉµÄ·¬ÇÑÊıÁ¿.
-		query_->exec("SELECT hour, "
-					 "count(hour)  "
-					 "FROM ( "
-					 "SELECT strftime('%H', FinishTime) AS hour "
-					 "FROM finishedtomato "
-					 "WHERE date('now', '-1 day') < date(FinishTime)  "
-					 ") "
-					 "GROUP BY hour "
-					 "ORDER BY hour; ");
+    void addTarget(const QString& label_name, const QString& target_name) {
+        query_->prepare("INSERT INTO targets SELECT max(targets.TargetId) + 1 "
+            "AS id, :label, :target FROM targets");
+        query_->bindValue(":label", label_name);
+        query_->bindValue(":target", target_name);
+        query_->exec();
+    }
 
-		while (query_->next()) {
-			data.time_data_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
+    /// <summary> è·å–è¿‡å»ä¸€å‘¨çš„ç•ªèŒ„å®Œæˆçš„æƒ…å†µ. </summary>
+    /// <returns> ä»¥TodayDataè¿”å›ç»“æœ, åŒ…æ‹¬æ—¶é—´åˆ†å¸ƒ,å°†targetåˆ†å¸ƒ, labelåˆ†å¸ƒ
+    /// </returns>
+    tomato_clock::TodayData getTodayData() {
+        using namespace tomato_clock;
+        TodayData data;
+        // è·å–ä»Šå¤©çš„æ¯ä¸ªå°æ—¶å®Œæˆçš„ç•ªèŒ„æ•°é‡.
+        query_->exec("SELECT hour, "
+            "count(hour)  "
+            "FROM ( "
+            "SELECT strftime('%H', FinishTime) AS hour "
+            "FROM finishedtomato "
+            "WHERE date('now', '-1 day') < date(FinishTime)  "
+            ") "
+            "GROUP BY hour "
+            "ORDER BY hour; ");
 
-		query_->exec(
-			"SELECT time, "
-			"SUM(DuringTime) "
-			"FROM ( "
-			"SELECT strftime('%H', FinishTime) AS time, DuringTime "
-			"FROM finishedtomato "
-			"WHERE date('now', '-1 day', 'localtime') < date(FinishTime) "
-			")"
-			"GROUP BY time "
-			"ORDER BY time;");
-		while (query_->next()) {
-			data.total_time_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
-		//»ñÈ¡½ñÌìÍê³ÉµÄ·¬ÇÑµÄtargetÇé¿ö
-		query_->exec(
-			"SELECT targetname, "
-			"count(targetname)  "
-			"FROM ( "
-			"SELECT targets.TargetName AS targetname "
-			"FROM finishedtomato, "
-			"targets "
-			"WHERE date('now', '-1 day', 'localtime') < date(FinishTime) AND  "
-			"finishedtomato.TargetId = targets.TargetId "
-			") "
-			"GROUP BY targetname "
-			"ORDER BY targetname; ");
+        while (query_->next()) {
+            data.time_data_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
 
-		while (query_->next()) {
-			data.target_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		//»ñÈ¡½ñÌìÍê³ÉµÄ·¬ÇÑµÄlabelÊı¾İ
-		query_->exec(
-			"SELECT labelname,"
-			"count(labelname) "
-			"FROM ("
-			"SELECT targets.LabelName AS labelname "
-			"FROM finishedtomato,"
-			"targets "
-			"WHERE date('now', '-1 day','localtime') < date(FinishTime) AND "
-			"finishedtomato.TargetId = targets.TargetId"
-			") "
-			"GROUP BY labelname "
-			"ORDER BY labelname; ");
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ( "
+            "SELECT strftime('%H', FinishTime) AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-1 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.total_time_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
+        //è·å–ä»Šå¤©å®Œæˆçš„ç•ªèŒ„çš„targetæƒ…å†µ
+        query_->exec(
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-1 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
-		while (query_->next()) {
-			data.label_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		return data;
-	}
+        while (query_->next()) {
+            data.target_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        //è·å–ä»Šå¤©å®Œæˆçš„ç•ªèŒ„çš„labelæ•°æ®
+        query_->exec(
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-1 day','localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
-	lon::tomato_clock::LastWeekData getLastWeekData() {
-		using namespace lon::tomato_clock;
-		LastWeekData data;
-		// »ñÈ¡¹ıÈ¥ÆßÌìµÄÃ¿ÌìÍê³ÉµÄ·¬ÇÑÊıÁ¿.
-		query_->exec(
-			"SELECT time, "
-			"count(time) "
-			"FROM ("
-			"SELECT julianday('now', 'localtime', 'start of day') - "
-			"julianday(FinishTime, 'start of day') AS time "
-			"FROM finishedtomato "
-			"WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
-			")"
-			"GROUP BY time "
-			"ORDER BY time;");
-		while (query_->next()) {
-			data.time_data_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
+        while (query_->next()) {
+            data.label_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        return data;
+    }
 
-		// »ñÈ¡¹ıÈ¥ÆßÌìÃ¿ÌìÍê³ÉµÄ×ÜÊ±¼ä
-		query_->exec(
-			"SELECT time, "
-			"SUM(DuringTime) "
-			"FROM ( "
-			"SELECT julianday('now', 'localtime', 'start of day') - "
-			"julianday(FinishTime, 'start of day') AS time, DuringTime "
-			"FROM finishedtomato "
-			"WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
-			")"
-			"GROUP BY time "
-			"ORDER BY time;");
-		while (query_->next()) {
-			data.total_time_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
-		//»ñÈ¡±¾ÖÜÍê³ÉµÄ·¬ÇÑµÄtargetÇé¿ö
-		query_->exec(
-			"SELECT targetname, "
-			"count(targetname)  "
-			"FROM ( "
-			"SELECT targets.TargetName AS targetname "
-			"FROM finishedtomato, "
-			"targets "
-			"WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND  "
-			"finishedtomato.TargetId = targets.TargetId "
-			") "
-			"GROUP BY targetname "
-			"ORDER BY targetname; ");
+    tomato_clock::LastWeekData getLastWeekData() {
+        using namespace tomato_clock;
+        LastWeekData data;
+        // è·å–è¿‡å»ä¸ƒå¤©çš„æ¯å¤©å®Œæˆçš„ç•ªèŒ„æ•°é‡.
+        query_->exec(
+            "SELECT time, "
+            "count(time) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time "
+            "FROM finishedtomato "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.time_data_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
 
-		while (query_->next()) {
-			data.target_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		//»ñÈ¡±¾ÖÜÍê³ÉµÄ·¬ÇÑµÄlabelÊı¾İ
-		query_->exec(
-			"SELECT labelname,"
-			"count(labelname) "
-			"FROM ("
-			"SELECT targets.LabelName AS labelname "
-			"FROM finishedtomato,"
-			"targets "
-			"WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND "
-			"finishedtomato.TargetId = targets.TargetId"
-			") "
-			"GROUP BY labelname "
-			"ORDER BY labelname; ");
+        // è·å–è¿‡å»ä¸ƒå¤©æ¯å¤©å®Œæˆçš„æ€»æ—¶é—´
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ( "
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        while (query_->next()) {
+            data.total_time_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
+        //è·å–æœ¬å‘¨å®Œæˆçš„ç•ªèŒ„çš„targetæƒ…å†µ
+        query_->exec(
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
-		while (query_->next()) {
-			data.label_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		return data;
-	}
+        while (query_->next()) {
+            data.target_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        //è·å–æœ¬å‘¨å®Œæˆçš„ç•ªèŒ„çš„labelæ•°æ®
+        query_->exec(
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-7 day', 'localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
-	/// <summary> »ñÈ¡¹ıÈ¥Ò»ÔÂµÄ·¬ÇÑÍê³ÉµÄÇé¿ö. </summary>
-	/// <returns> ÒÔQStringÊı×é´æ´¢Íê³ÉµÄ·¬ÇÑµÄÈÕÆÚµÄÁĞ±í.¸ñÊ½ÎªYYYY-MM-DD
-	/// </returns>
-	lon::tomato_clock::LastMonthData getLastMonthData() {
-		using namespace lon::tomato_clock;
-		LastMonthData data;
-		// »ñÈ¡±¾ÔÂµÄÃ¿ÌìÍê³ÉµÄ·¬ÇÑÊıÁ¿.
-		query_->exec(
-			"SELECT time, "
-			"count(time) "
-			"FROM ("
-			"SELECT julianday('now', 'localtime', 'start of day') - "
-			"julianday(FinishTime, 'start of day') AS time "
-			"FROM finishedtomato "
-			"WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
-			")"
-			"GROUP BY time "
-			"ORDER BY time;");
+        while (query_->next()) {
+            data.label_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        return data;
+    }
 
-		while (query_->next()) {
-			data.time_data_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
+    /// <summary> è·å–è¿‡å»ä¸€æœˆçš„ç•ªèŒ„å®Œæˆçš„æƒ…å†µ. </summary>
+    /// <returns> ä»¥QStringæ•°ç»„å­˜å‚¨å®Œæˆçš„ç•ªèŒ„çš„æ—¥æœŸçš„åˆ—è¡¨.æ ¼å¼ä¸ºYYYY-MM-DD
+    /// </returns>
+    tomato_clock::LastMonthData getLastMonthData() {
+        using namespace tomato_clock;
+        LastMonthData data;
+        // è·å–æœ¬æœˆçš„æ¯å¤©å®Œæˆçš„ç•ªèŒ„æ•°é‡.
+        query_->exec(
+            "SELECT time, "
+            "count(time) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time "
+            "FROM finishedtomato "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
 
-		// »ñÈ¡¹ıÈ¥ÆßÌìÃ¿ÌìÍê³ÉµÄ×ÜÊ±¼ä
-		query_->exec(
-			"SELECT time, "
-			"SUM(DuringTime) "
-			"FROM ("
-			"SELECT julianday('now', 'localtime', 'start of day') - "
-			"julianday(FinishTime, 'start of day') AS time, DuringTime "
-			"FROM finishedtomato "
-			"WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
-			")"
-			"GROUP BY time "
-			"ORDER BY time;");
-		// ´Ë´¦Èç¹ûÊı¾İ¿âÖĞ´æÁË³¬¹ıµ±Ç°Ê±¼äµÄÖµ, »áµ¼ÖÂ³¬¹ıÊı¾İ·ÃÎÊ·¶Î§.
-		while (query_->next()) {
-			data.total_time_p[ query_->value(0).toInt() ] =
-				static_cast<uint16_t>(query_->value(1).toInt());
-		}
+        while (query_->next()) {
+            data.time_data_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
 
-		//»ñÈ¡±¾ÔÂÍê³ÉµÄ·¬ÇÑµÄtargetÇé¿ö
-		query_->exec(
-			"SELECT targetname, "
-			"count(targetname)  "
-			"FROM ( "
-			"SELECT targets.TargetName AS targetname "
-			"FROM finishedtomato, "
-			"targets "
-			"WHERE date('now', '-30 day', 'localtime') < date(FinishTime) AND  "
-			"finishedtomato.TargetId = targets.TargetId "
-			") "
-			"GROUP BY targetname "
-			"ORDER BY targetname; ");
+        // è·å–è¿‡å»ä¸ƒå¤©æ¯å¤©å®Œæˆçš„æ€»æ—¶é—´
+        query_->exec(
+            "SELECT time, "
+            "SUM(DuringTime) "
+            "FROM ("
+            "SELECT julianday('now', 'localtime', 'start of day') - "
+            "julianday(FinishTime, 'start of day') AS time, DuringTime "
+            "FROM finishedtomato "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) "
+            ")"
+            "GROUP BY time "
+            "ORDER BY time;");
+        // æ­¤å¤„å¦‚æœæ•°æ®åº“ä¸­å­˜äº†è¶…è¿‡å½“å‰æ—¶é—´çš„å€¼, ä¼šå¯¼è‡´è¶…è¿‡æ•°æ®è®¿é—®èŒƒå›´.
+        while (query_->next()) {
+            data.total_time_p[query_->value(0).toInt()] =
+                static_cast<uint16_t>(query_->value(1).toInt());
+        }
 
-		while (query_->next()) {
-			data.target_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		//»ñÈ¡±¾ÔÂÍê³ÉµÄ·¬ÇÑµÄlabelÊı¾İ
-		query_->exec(
-			"SELECT labelname,"
-			"count(labelname) "
-			"FROM ("
-			"SELECT targets.LabelName AS labelname "
-			"FROM finishedtomato,"
-			"targets "
-			"WHERE date('now', '-30 day','localtime') < date(FinishTime) AND "
-			"finishedtomato.TargetId = targets.TargetId"
-			") "
-			"GROUP BY labelname "
-			"ORDER BY labelname; ");
+        //è·å–æœ¬æœˆå®Œæˆçš„ç•ªèŒ„çš„targetæƒ…å†µ
+        query_->exec(
+            "SELECT targetname, "
+            "count(targetname)  "
+            "FROM ( "
+            "SELECT targets.TargetName AS targetname "
+            "FROM finishedtomato, "
+            "targets "
+            "WHERE date('now', '-30 day', 'localtime') < date(FinishTime) AND  "
+            "finishedtomato.TargetId = targets.TargetId "
+            ") "
+            "GROUP BY targetname "
+            "ORDER BY targetname; ");
 
-		while (query_->next()) {
-			data.label_data.push_back(std::make_pair(
-				query_->value(0).toString(), query_->value(1).toInt()));
-		}
-		return data;
-	}
+        while (query_->next()) {
+            data.target_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        //è·å–æœ¬æœˆå®Œæˆçš„ç•ªèŒ„çš„labelæ•°æ®
+        query_->exec(
+            "SELECT labelname,"
+            "count(labelname) "
+            "FROM ("
+            "SELECT targets.LabelName AS labelname "
+            "FROM finishedtomato,"
+            "targets "
+            "WHERE date('now', '-30 day','localtime') < date(FinishTime) AND "
+            "finishedtomato.TargetId = targets.TargetId"
+            ") "
+            "GROUP BY labelname "
+            "ORDER BY labelname; ");
 
-	// TODO make last year a bit different.
-	/// <summary> »ñÈ¡¹ıÈ¥Ò»ÄêµÄ·¬ÇÑÍê³ÉµÄÇé¿ö. </summary>
-	/// <returns> ÒÔQStringÊı×é´æ´¢Íê³ÉµÄ·¬ÇÑµÄÈÕÆÚµÄÁĞ±í.¸ñÊ½ÎªYYYY-MM-DD
-	/// </returns>
-	std::vector<QString> getLastYearData() {
-		std::vector<QString> result;
-		query_->exec("SELECT date(FinishTime) \
+        while (query_->next()) {
+            data.label_data.push_back(std::make_pair(
+                query_->value(0).toString(),
+                query_->value(1).toInt()));
+        }
+        return data;
+    }
+
+    // TODO make last year a bit different.
+    /// <summary> è·å–è¿‡å»ä¸€å¹´çš„ç•ªèŒ„å®Œæˆçš„æƒ…å†µ. </summary>
+    /// <returns> ä»¥QStringæ•°ç»„å­˜å‚¨å®Œæˆçš„ç•ªèŒ„çš„æ—¥æœŸçš„åˆ—è¡¨.æ ¼å¼ä¸ºYYYY-MM-DD
+    /// </returns>
+    std::vector<QString> getLastYearData() {
+        std::vector<QString> result;
+        query_->exec(
+            "SELECT date(FinishTime) \
 						FROM finishedtomato\
 						WHERE date('now', '-1 year') < date(FinishTime);");
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toString());
-		}
-		return result;
-	}
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toString());
+        }
+        return result;
+    }
 
 
-	std::vector<int> getWorkTimeLastMouth() { return std::vector<int>(); }
+    std::vector<int> getWorkTimeLastMouth() { return std::vector<int>(); }
 
-	std::vector<int> getWorkTimeLastYear() { return std::vector<int>(); }
+    std::vector<int> getWorkTimeLastYear() { return std::vector<int>(); }
 
-	/// <summary> ½«Ä³Ê±¼ä¶ÎµÄ¹¤×÷Ê±¶ÎÒÔ½µĞòµÄ·½Ê½±£´æµ½Êı×éÖĞ. </summary>
-	/// <param name: duration> ÒÔdurationÎªµ¥Î»²éÕÒ. eg: ÔÂ: 'month',
-	/// Ìì:'day'</param>
-	std::vector<int> getBestWorkTimeDesc(const QString &duration) {
-		std::vector<int> result;
-		query_->prepare("SELECT DuringTime,"
-						"strftime('%H', FinishTime) AS hours "
-						"FROM ("
-						"SELECT * "
-						"FROM finishedtomato "
-						"GROUP BY strftime('%H', FinishTime)"
-						")"
-						"WHERE date('now', "
-						":duration) < date(FinishTime)"
-						"ORDER BY DuringTime DESC;");
-		query_->bindValue(":duration", "-1" + duration);
-		query_->exec();
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toInt());
-		}
-		return result;
-	}
+    /// <summary> å°†æŸæ—¶é—´æ®µçš„å·¥ä½œæ—¶æ®µä»¥é™åºçš„æ–¹å¼ä¿å­˜åˆ°æ•°ç»„ä¸­. </summary>
+    /// <param name: duration> ä»¥durationä¸ºå•ä½æŸ¥æ‰¾. eg: æœˆ: 'month',
+    /// å¤©:'day'</param>
+    std::vector<int> getBestWorkTimeDesc(const QString& duration) {
+        std::vector<int> result;
+        query_->prepare("SELECT DuringTime,"
+            "strftime('%H', FinishTime) AS hours "
+            "FROM ("
+            "SELECT * "
+            "FROM finishedtomato "
+            "GROUP BY strftime('%H', FinishTime)"
+            ")"
+            "WHERE date('now', "
+            ":duration) < date(FinishTime)"
+            "ORDER BY DuringTime DESC;");
+        query_->bindValue(":duration", "-1" + duration);
+        query_->exec();
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toInt());
+        }
+        return result;
+    }
 
-	/// <summary>
-	/// get all labels name order by name, return by QString
-	/// </summary>
-	std::list<QString> getAllLabels() {
-		std::list<QString> result;
-		query_->exec("SELECT LabelName FROM labels ORDER BY LabelName");
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toString());
-		}
-		return result;
-	}
+    /// <summary>
+    /// get all labels name order by name, return by QString
+    /// </summary>
+    std::list<QString> getAllLabels() {
+        std::list<QString> result;
+        query_->exec("SELECT LabelName FROM labels ORDER BY LabelName");
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toString());
+        }
+        return result;
+    }
 
-	QString getLabelByTarget() { return QString(); }
+    QString getLabelByTarget() { return QString(); }
 
-	// get targets by label name.
-	/// <summary>
-	/// get all targets belong to label.
-	/// </summary>
-	/// <param name="label">labelÃû×Ö, Ã¿¸ö±êÇ©Î¨Ò», µ±label¿ÉÎª¿Õ.</param>
-	/// <returns>all targets' name.</returns>
-	std::vector<QString> getTargetsByLabel(const QString &label) {
-		std::vector<QString> result;
-		if (label.isEmpty()) {
-			query_->exec("SELECT TargetName FROM targets");
-		} else {
-			query_->exec("SELECT TargetName FROM targets WHERE LabelName =" +
-						 label);
-		}
-		while (query_->next()) {
-			result.emplace_back(query_->value(0).toString());
-		}
-		return result;
-	}
+    // get targets by label name.
+    /// <summary>
+    /// get all targets belong to label.
+    /// </summary>
+    /// <param name="label">labelåå­—, æ¯ä¸ªæ ‡ç­¾å”¯ä¸€, å½“labelå¯ä¸ºç©º.</param>
+    /// <returns>all targets' name.</returns>
+    std::vector<QString> getTargetsByLabel(const QString& label) {
+        std::vector<QString> result;
+        if (label.isEmpty()) {
+            query_->exec("SELECT TargetName FROM targets");
+        } else {
+            query_->exec("SELECT TargetName FROM targets WHERE LabelName =" +
+                label);
+        }
+        while (query_->next()) {
+            result.emplace_back(query_->value(0).toString());
+        }
+        return result;
+    }
 
-	/// <summary>
-	/// get all labels name and target name pair order by label, return by
-	/// std::pair.
-	/// </summary>
-	std::list<std::pair<QString, QString>> getAllTargetsAndLabels() {
-		std::list<std::pair<QString, QString>> result;
-		query_->exec(
-			"select LabelName, TargetName from targets order by LabelName");
-		while (query_->next()) {
-			result.push_back(std::make_pair(query_->value(0).toString(),
-											query_->value(1).toString()));
-		}
-		return result;
-	}
+    /// <summary>
+    /// get all labels name and target name pair order by label, return by
+    /// std::pair.
+    /// </summary>
+    std::list<std::pair<QString, QString>> getAllTargetsAndLabels() {
+        std::list<std::pair<QString, QString>> result;
+        query_->exec(
+            "select LabelName, TargetName from targets order by LabelName");
+        while (query_->next()) {
+            result.push_back(std::make_pair(query_->value(0).toString(),
+                                            query_->value(1).toString()));
+        }
+        return result;
+    }
 
-	bool targetExists(const QString &label, const QString &target) {
-		query_->exec("select count(*) from targets where LabelName = " + label +
-					 " and TargetName = " + target);
-		return query_->value(0).toInt();
-	}
+    bool targetExists(const QString& label, const QString& target) {
+        query_->exec("select count(*) from targets where LabelName = " + label +
+            " and TargetName = " + target);
+        return query_->value(0).toInt();
+    }
 };
 } // namespace lon

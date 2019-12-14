@@ -1,4 +1,4 @@
-#include "clockmainwidget.h"
+ï»¿#include "clockmainwidget.h"
 #include "../lon_widget/titlebar.hpp"
 
 #include "clock_database/clocksql.hpp"
@@ -10,7 +10,7 @@
 #include "../lon_widget/messagebox.hpp"
 #include "../settingfileoperations.h"
 #include "../settingwidget.h"
-// fixme ÕâÀïµÄtomatotimerÓ¦¸ÃÒÆµ½utilityÖĞ.
+// fixme è¿™é‡Œçš„tomatotimeråº”è¯¥ç§»åˆ°utilityä¸­.
 #include "../tomatoclocktimer.h"
 
 #include <QGridLayout>
@@ -22,17 +22,17 @@ void lon::ClockMainWidget::tomatoSaveToSql() {
     auto time_status = timer->timerStaus();
     auto passedtime = time_status->clock_options()->work_time()->minutes_ -
         time_status->timeleft()->minutes();
-    // ËµÃ÷µ±Ç°Ê±¼äÒÑ¾­È«²¿Íê³É.
+    // è¯´æ˜å½“å‰æ—¶é—´å·²ç»å…¨éƒ¨å®Œæˆ.
     if (passedtime == 0 && time_status->timeleft()->seconds() == 0)
         passedtime = time_status->clock_options()->work_time()->minutes_;
-    // ËµÃ÷ÖÕÖ¹¼ÆÊ±Ê±¼ÆÊ±Ã»ÓĞ³¬¹ı3·ÖÖÓ.
+    // è¯´æ˜ç»ˆæ­¢è®¡æ—¶æ—¶è®¡æ—¶æ²¡æœ‰è¶…è¿‡3åˆ†é’Ÿ.
     if (passedtime > 3)
         sql_p_->addAFinishedTomato(passedtime,
                                    running_clock_label_name_,
                                    running_clock_target_name_);
 }
 
-void lon::ClockMainWidget::saveSettingToFile(lon::ClockOptions options) {
+void lon::ClockMainWidget::saveSettingToFile(ClockOptions options) {
     SettingFileOperations().saveClockOptionToFile(std::move(options));
     if (setting_widget_p_) {
         delete setting_widget_p_;
@@ -53,14 +53,14 @@ void lon::ClockMainWidget::iconActivated(
 }
 
 lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
-    : lon::Widget(parent),
+    : Widget(parent),
       keep_working_(false),
-      sql_p_(lon::ClockSql::Get()),
-      today_data_p_(new lon::tomato_clock::TodayData(sql_p_->getTodayData())),
+      sql_p_(ClockSql::Get()),
+      today_data_p_(new tomato_clock::TodayData(sql_p_->getTodayData())),
       lastweek_data_p_(
-          new lon::tomato_clock::LastWeekData(sql_p_->getLastWeekData())),
+          new tomato_clock::LastWeekData(sql_p_->getLastWeekData())),
       lastmonth_data_p_(
-          new lon::tomato_clock::LastMonthData(sql_p_->getLastMonthData())) {
+          new tomato_clock::LastMonthData(sql_p_->getLastMonthData())) {
     // this->setWindowFlags(Qt::FramelessWindowHint |
     // Qt::WindowMinimizeButtonHint);
     // title_bar_p_ = new lon::TitleBar(this);
@@ -69,14 +69,14 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     system_tray_icon_p_ = new QSystemTrayIcon(this);
     system_tray_icon_p_->setIcon(window_icon);
-    system_tray_icon_p_->setToolTip(QString::fromLocal8Bit("·¬ÇÑÑ§Ï°ÖúÊÖ"));
+    system_tray_icon_p_->setToolTip(QString{u8"ç•ªèŒ„å­¦ä¹ åŠ©æ‰‹"});
     system_tray_icon_p_->show();
 
-    close_action_p_ = new QAction(QString::fromLocal8Bit("ÍË³ö·¬ÇÑÖÓ"), this);
-    about_action_p_ = new QAction(QString::fromLocal8Bit("¹ØÓÚ"), this);
-    setting_action_p_ = new QAction(QString::fromLocal8Bit("ÉèÖÃ"), this);
+    close_action_p_ = new QAction(QString{u8"é€€å‡ºç•ªèŒ„é’Ÿ"}, this);
+    about_action_p_ = new QAction(QString{u8"å…³äº"}, this);
+    setting_action_p_ = new QAction(QString{u8"è®¾ç½®"}, this);
 
-    menu_p_ = new lon::Menu(this);
+    menu_p_ = new Menu(this);
 
     menu_p_->addAction(about_action_p_);
     menu_p_->addAction(setting_action_p_);
@@ -85,7 +85,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     system_tray_icon_p_->setContextMenu(menu_p_);
 
-    labels_targets_widget_p_ = new lon::LabelsAndTargetsWidget(
+    labels_targets_widget_p_ = new LabelsAndTargetsWidget(
         lastweek_data_p_,
         lastmonth_data_p_,
         this);
@@ -118,17 +118,17 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
     this->setBottomBar(temp);
 
     this->enabelSizeGrip();
-    // ÉèÖÃ±êÌâÀ¸µÄ±³¾°Í¼.
+    // è®¾ç½®æ ‡é¢˜æ çš„èƒŒæ™¯å›¾.
     this->setTitleBackground(
         new QPixmap(":/all/Res/Img/titlebarbackground.png"));
-    // ÉèÖÃ³ÌĞò±³¾°
+    // è®¾ç½®ç¨‹åºèƒŒæ™¯
     this->setBackground(new QPixmap(":/all/Res/Img/background.png"));
     // this->resize(1050, 700);
     this->setMinimumSize(950, 650);
 
     this->setWindowIcon(window_icon);
     this->setTitleIcon(window_icon);
-    this->setTitle(QString::fromLocal8Bit("Ñ§Ï°ÖúÊÖ"));
+    this->setTitle(QString{ u8"å­¦ä¹ åŠ©æ‰‹" });
 
     connect(close_action_p_,
             &QAction::triggered,
@@ -137,14 +137,14 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
     connect(setting_action_p_,
             &QAction::triggered,
             this,
-            &lon::ClockMainWidget::displaySetting);
+            &ClockMainWidget::displaySetting);
 
     connect(system_tray_icon_p_,
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,
             SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    lon::Widget::setCloseFunc(
+    Widget::setCloseFunc(
         std::bind([](QWidget* widget) { widget->window()->hide(); }, this));
 }
 
@@ -165,7 +165,7 @@ void lon::ClockMainWidget::displayClock(const QString& label,
     }
 
     if (!timer) {
-        timer = new lon::TomatoClockTimer(this);
+        timer = new TomatoClockTimer(this);
         connect(timer, SIGNAL(tomatoFinished()), this, SLOT(clockFinished()));
     }
     timer->start();
@@ -173,7 +173,7 @@ void lon::ClockMainWidget::displayClock(const QString& label,
     running_clock_label_name_ = label;
     running_clock_target_name_ = target;
 
-    clock_running_widget_p_ = new lon::ClockRunningWidget(
+    clock_running_widget_p_ = new ClockRunningWidget(
         running_clock_label_name_,
         running_clock_target_name_);
     clock_running_widget_p_->setTimer(timer);
@@ -188,7 +188,7 @@ void lon::ClockMainWidget::displayClock(const QString& label,
 }
 
 void lon::ClockMainWidget::displayTarget() {
-    // ÇĞ»»½çÃæÊ±, ²Ù×÷²»»áºÜÆµ·±, ¹Ê²»±£ÁôÔ­½çÃæ.
+    // åˆ‡æ¢ç•Œé¢æ—¶, æ“ä½œä¸ä¼šå¾ˆé¢‘ç¹, æ•…ä¸ä¿ç•™åŸç•Œé¢.
     if (clock_running_widget_p_) {
         main_layout_->removeWidget(clock_running_widget_p_);
         delete clock_running_widget_p_;
@@ -204,7 +204,7 @@ void lon::ClockMainWidget::displayTarget() {
     }
 
     labels_targets_widget_p_ =
-        new lon::LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
+        new LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
     main_layout_->addWidget(labels_targets_widget_p_);
 
     // connections
@@ -232,9 +232,9 @@ void lon::ClockMainWidget::displayChart() {
         delete labels_targets_widget_p_;
         labels_targets_widget_p_ = nullptr;
     }
-    chart_widget_p_ = new lon::ChartsWidget(today_data_p_,
-                                            lastweek_data_p_,
-                                            lastmonth_data_p_);
+    chart_widget_p_ = new ChartsWidget(today_data_p_,
+                                       lastweek_data_p_,
+                                       lastmonth_data_p_);
     //# background
     QPalette palette;
     palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
@@ -247,15 +247,15 @@ void lon::ClockMainWidget::displayChart() {
 }
 
 void lon::ClockMainWidget::clockFinished() {
-    // ÔÚÌáÇ°½áÊø·¬ÇÑÖÓÊ±, Ö»ÓĞÒÑ¾­³¬¹ıÈı·ÖÖÓµÄ²Å¿ÉÒÔ±»¼ÇÂ¼.
+    // åœ¨æå‰ç»“æŸç•ªèŒ„é’Ÿæ—¶, åªæœ‰å·²ç»è¶…è¿‡ä¸‰åˆ†é’Ÿçš„æ‰å¯ä»¥è¢«è®°å½•.
     tomatoSaveToSql();
-    // ÊÇ·ñ¿ªÆôÁ¬Ğø¹¤×÷Ä£Ê½.
+    // æ˜¯å¦å¼€å¯è¿ç»­å·¥ä½œæ¨¡å¼.
     if (timer->timerStaus()->clock_options()->keepWorking()) {
         timer->start();
     } else {
-        lon::MessageBoxWrapper* m =
-            new lon::MessageBoxWrapper(QString::fromLocal8Bit("·¬ÇÑÍê³É"),
-                                       QString::fromLocal8Bit("·¬ÇÑÒÑÍê³É."));
+        MessageBoxWrapper* m =
+            new MessageBoxWrapper(QString{ u8"ç•ªèŒ„å®Œæˆ" },
+                QString{ u8"ç•ªèŒ„å·²å®Œæˆ." });
         displayTarget();
     }
 }
@@ -264,9 +264,9 @@ void lon::ClockMainWidget::clockBreaked() {
     tomatoSaveToSql();
     timer->stop();
     timer->clear();
-    lon::MessageBoxWrapper* m = new lon::MessageBoxWrapper(
-        QString::fromLocal8Bit("·¬ÇÑÖĞ¶Ï"),
-        QString::fromLocal8Bit("ÒÑÖĞ¶Ï, Íê³ÉÊı¾İÒÑ´¢´æ."));
+    MessageBoxWrapper* m = new MessageBoxWrapper(
+        QString{ u8"ç•ªèŒ„ä¸­æ–­" },
+        QString{ u8"å·²ä¸­æ–­, å®Œæˆæ•°æ®å·²å‚¨å­˜." });
     displayTarget();
 }
 

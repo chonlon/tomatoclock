@@ -5,10 +5,11 @@
 
 namespace lon {
 class Menu : public QMenu {
-    Q_OBJECT
-  public:
-    explicit Menu(QWidget *parent = nullptr) { init(); }
-    explicit Menu(const QString &title) { init(); }
+Q_OBJECT
+public:
+    explicit Menu(QWidget* parent = nullptr) { init(); }
+    explicit Menu(const QString& title) { init(); }
+
     void init() {
         setMenu(QColor("#46e6b7"));
 
@@ -20,12 +21,12 @@ class Menu : public QMenu {
         this->setObjectName("CustomMenu");
     }
 
-  protected:
-  private:
+protected:
+private:
     void setMenu(QColor hoverColor) {
         /*Qmenu Style Sheets*/
         QString qss;
-        QFont   f("consolas", 12, QFont::Normal);
+        QFont f("consolas", 12, QFont::Normal);
         //    qss = "QMenu{ background-color: rgb(255, 255, 255); border: 1px
         //    solid rgb(125, 125, 125); border-radius: 6px; }"
         //          "QMenu::item { background-color: transparent; padding:3px
@@ -36,7 +37,8 @@ class Menu : public QMenu {
         //          hoverColor.name()
         //          +";/*这一句是设置菜单项鼠标经过选中的样式*/ }";
         //    menu->setStyleSheet(qss);
-        const QString MenuStyle = " \
+        const QString MenuStyle =
+            " \
                 QMenu{ padding:5px; border:none; background:rgba(255, 255, 255, 210); border-radius:4px;} \
                 QMenu::icon{ margin-left:10px;} \
                 QMenu::item{ color:rab(0, 0, 0); padding:6px 30px 6px 30px; border:1px solid transparent;} \
@@ -47,9 +49,9 @@ class Menu : public QMenu {
         this->setFont(f);
     }
 
-  signals:
+signals:
 
-  public slots:
+public slots:
 };
 } // namespace lon
 

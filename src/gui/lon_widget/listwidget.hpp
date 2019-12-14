@@ -11,28 +11,30 @@
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QWidget>
+
 namespace lon {
 /// 这是一个list显示widget的简单封装.
 /// 这个类会获得添加的widget的所有权.
 class ListWidget : public QWidget {
-    Q_OBJECT
+Q_OBJECT
     // private:
-  public:
-    QVBoxLayout *                         main_layout_;
-    QVBoxLayout *                         inner_layout_;
+public:
+    QVBoxLayout* main_layout_;
+    QVBoxLayout* inner_layout_;
     std::vector<std::shared_ptr<QWidget>> widget_list_;
-    QWidget *                             widget_;
+    QWidget* widget_;
 
-    QScrollArea *scroll_area_p_;
+    QScrollArea* scroll_area_p_;
 
-  protected:
-    virtual void resizeEvent(QResizeEvent *event) {
+protected:
+    void resizeEvent(QResizeEvent* event) override {
         int w = event->size().width();
         int h = event->size().height();
         this->resize(w, h);
     }
+
     virtual void setVerticalScrollBarStyle() {
-        QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect;
+        QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect;
         // QWidget takes ownership of effect.
         scroll_area_p_->verticalScrollBar()->setGraphicsEffect(opacityEffect);
         opacityEffect->setOpacity(0.4);
@@ -98,11 +100,11 @@ class ListWidget : public QWidget {
             "}");
     }
 
-  public:
-    explicit ListWidget(QWidget *parent = nullptr)
+public:
+    explicit ListWidget(QWidget* parent = nullptr)
         : QWidget(parent) {
-        main_layout_  = new QVBoxLayout(this);
-        widget_       = new QWidget();
+        main_layout_ = new QVBoxLayout(this);
+        widget_ = new QWidget();
         inner_layout_ = new QVBoxLayout(widget_);
         main_layout_->setContentsMargins(0, 0, 0, 0);
         inner_layout_->setContentsMargins(5, 5, 0, 0);
@@ -118,13 +120,13 @@ class ListWidget : public QWidget {
         setVerticalScrollBarStyle();
     }
 
-    void addWidget(QWidget *widget) {
+    void addWidget(QWidget* widget) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
         inner_layout_->addWidget(widget);
     }
 
-    void insertWidget(int index, QWidget *widget) {
+    void insertWidget(int index, QWidget* widget) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
         inner_layout_->insertWidget(index, widget);
@@ -135,7 +137,7 @@ class ListWidget : public QWidget {
     std::shared_ptr<QWidget> indexOf(int index) {
         if (index < 0 || index > widget_list_.size())
             return std::shared_ptr<QWidget>();
-        return widget_list_[ index ];
+        return widget_list_[index];
     }
 
     int count() { return widget_list_.size(); }

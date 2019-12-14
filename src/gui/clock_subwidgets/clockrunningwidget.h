@@ -29,12 +29,12 @@ private:
     QGridLayout* main_layout_p_;
     QLabel* label_label_p_;
     QLabel* target_label_p_;
-    lon::Button* stop_button_p_;
-    lon::Button* small_window_switch_button_p_;
-    lon::TomatoClockTimer* timer_p_;
-    lon::clock_window::ClockSmallWindow* small_window_p_;
-    lon::ClockDisplayWidget* main_display_widget_p_;
-    lon::DisplayClockBase* current_display_widget_p_;
+    Button* stop_button_p_;
+    Button* small_window_switch_button_p_;
+    TomatoClockTimer* timer_p_;
+    clock_window::ClockSmallWindow* small_window_p_;
+    ClockDisplayWidget* main_display_widget_p_;
+    DisplayClockBase* current_display_widget_p_;
 
 private:
 
@@ -42,7 +42,7 @@ private:
     /// 设置此类中接管计时器的DisplayClockBase.
     /// </summary>
     /// <param name="displaye_p">接管计时器者.</param>
-    void setReceiveTimerWidget(lon::DisplayClockBase* displaye_p);
+    void setReceiveTimerWidget(DisplayClockBase* displaye_p);
 
 protected:
 
@@ -52,10 +52,10 @@ public:
     /// 设置番茄钟计时器.
     /// </summary>
     /// <param name="timer">计时器指针.</param>
-    void setTimer(lon::TomatoClockTimer* timer);
+    void setTimer(TomatoClockTimer* timer);
 
-    explicit ClockRunningWidget(const QString label_name,
-                                const QString target_name,
+    explicit ClockRunningWidget(QString label_name,
+                                QString target_name,
                                 QWidget* parent = nullptr);
     ~ClockRunningWidget();
 

@@ -1,4 +1,4 @@
-#ifndef ADDTARGETWIDGET_H
+ï»¿#ifndef ADDTARGETWIDGET_H
 #define ADDTARGETWIDGET_H
 
 #include <QWidget>
@@ -13,47 +13,48 @@ class QGridLayout;
 class QLabel;
 
 namespace lon {
-	class ClockSql;
+class ClockSql;
+
 /*!
  * \class AddTargetWidget
  *
- * \brief Ìí¼ÓÄ¿±êµ¯´°widget, Ìí¼Ó³É¹¦·µ»ØÖ÷½çÃæ, ¸üĞÂÏÔÊ¾, Ìí¼ÓÊ§°Üµ¯³öMessageBoxÌáÊ¾.
+ * \brief æ·»åŠ ç›®æ ‡å¼¹çª—widget, æ·»åŠ æˆåŠŸè¿”å›ä¸»ç•Œé¢, æ›´æ–°æ˜¾ç¤º, æ·»åŠ å¤±è´¥å¼¹å‡ºMessageBoxæç¤º.
  *
  * \author LON
  */
-class AddTargetWidget : public lon::Widget {
-	Q_OBJECT
-  private:
-	QComboBox *labels_combobox_p_;
-	QLineEdit *lineedit_p_;
-	QLabel *   select_label_p_;
-	QLabel *   label_p_;
+class AddTargetWidget : public Widget {
+Q_OBJECT
+private:
+    QComboBox* labels_combobox_p_;
+    QLineEdit* lineedit_p_;
+    QLabel* select_label_p_;
+    QLabel* label_p_;
 
-	QGridLayout *      main_layout_p_;
-	std::list<QString> labels_;
+    QGridLayout* main_layout_p_;
+    std::list<QString> labels_;
 
-	lon::ClockSql *sql_;
+    ClockSql* sql_;
 
-  public:
-	explicit AddTargetWidget(std::list<QString> labels ,
-							 QWidget *parent = nullptr);
+public:
+    explicit AddTargetWidget(std::list<QString> labels,
+                             QWidget* parent = nullptr);
 
 signals:
-	  /// <summary>
-	  /// µ±Ò»¸öºÏ·¨µÄtarget±»Ìí¼Ó, Ôò·¢Éä´ËĞÅºÅ.
-	  /// </summary>
-	void targetAdded(QString label_name, QString target_name);
+    /// <summary>
+    /// å½“ä¸€ä¸ªåˆæ³•çš„targetè¢«æ·»åŠ , åˆ™å‘å°„æ­¤ä¿¡å·.
+    /// </summary>
+    void targetAdded(QString label_name, QString target_name);
 
-  public slots:
-	  /// <summary>
-	  /// °´ÏÂOkÊ±, ¼ì²éÊäÈëÊÇ·ñºÏ·¨, ºÏ·¨ÔòÌí¼Ó´Ëtarget.
-	  /// </summary>
-	void onOkButtonClicked();
+public slots:
+    /// <summary>
+    /// æŒ‰ä¸‹Okæ—¶, æ£€æŸ¥è¾“å…¥æ˜¯å¦åˆæ³•, åˆæ³•åˆ™æ·»åŠ æ­¤target.
+    /// </summary>
+    void onOkButtonClicked();
 
-	/// <summary>
-	/// ÊäÈë²»ºÏ·¨Ê±, µ¯´°ÌáÊ¾.
-	/// </summary>
-	void showMessage(const QString &message);
+    /// <summary>
+    /// è¾“å…¥ä¸åˆæ³•æ—¶, å¼¹çª—æç¤º.
+    /// </summary>
+    void showMessage(const QString& message);
 };
 } // namespace lon
 

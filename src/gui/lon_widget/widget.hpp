@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QtWidgets>
 #include <cassert>
+
 namespace lon {
 /// 统一样式的widget订制.
 /// 其实也只是一个简单的封装.
@@ -22,28 +23,29 @@ namespace lon {
 /// 只允许对centerWidget和botttomWidget进行操作(包括替换).
 ///	</summary>
 class Widget : public QWidget {
-    Q_OBJECT
-  private:
-    lon::TitleBar *title_bar_;
+Q_OBJECT
+private:
+    TitleBar* title_bar_;
 
-    QSizeGrip *size_grip_;
+    QSizeGrip* size_grip_;
 
-    lon::Button *ok_button_;
-    lon::Button *cancel_button_;
+    Button* ok_button_;
+    Button* cancel_button_;
 
-    QGridLayout *p_layout_;
+    QGridLayout* p_layout_;
 
     bool size_girp_enabled;
 
-    QPixmap *pixmap_;
+    QPixmap* pixmap_;
 
-  protected:
-    QWidget *center_widget_;
-    QWidget *bottom_bar_;
+protected:
+    QWidget* center_widget_;
+    QWidget* bottom_bar_;
 
-  private:
+private:
     // 禁用setlayout, 只允许操作centerWidget和botttomWidget.
-    virtual void setLayout(QLayout *) {}
+    virtual void setLayout(QLayout*) {
+    }
 
     void initLayout() {
         p_layout_ = new QGridLayout(this);
@@ -53,14 +55,15 @@ class Widget : public QWidget {
         p_layout_->addWidget(bottom_bar_, 2, 0, 1, 1);
         p_layout_->setContentsMargins(0, 0, 0, 0);
     }
+
     void initBottomBar() {
         bottom_bar_->setFixedHeight(50);
         bottom_bar_->setWindowFlags(Qt::SubWindow);
 
-        QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_bar_);
+        QHBoxLayout* bottom_layout = new QHBoxLayout(bottom_bar_);
 
-        ok_button_     = new lon::Button(bottom_bar_);
-        cancel_button_ = new lon::Button(bottom_bar_);
+        ok_button_ = new Button(bottom_bar_);
+        cancel_button_ = new Button(bottom_bar_);
 
         // 这里由于pushbutton不能使text在icon下面显示.
         // 所以只好使用样式表了
@@ -93,13 +96,21 @@ class Widget : public QWidget {
 
     void initConnect() {
         connect(ok_button_, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()));
-        connect(cancel_button_, SIGNAL(clicked()), this,
+        connect(cancel_button_,
+                SIGNAL(clicked()),
+                this,
                 SLOT(onCancelButtonClicked()));
-        connect(title_bar_, SIGNAL(minimizeButtonClicked()), this,
+        connect(title_bar_,
+                SIGNAL(minimizeButtonClicked()),
+                this,
                 SIGNAL(minimizeButtonClicked()));
-        connect(title_bar_, SIGNAL(maximizeButtonClicked()), this,
+        connect(title_bar_,
+                SIGNAL(maximizeButtonClicked()),
+                this,
                 SIGNAL(maximizeButtonClicked()));
-        connect(title_bar_, SIGNAL(closeButtonClicked()), this,
+        connect(title_bar_,
+                SIGNAL(closeButtonClicked()),
+                this,
                 SIGNAL(closeButtonClicked()));
     }
 
@@ -111,24 +122,26 @@ class Widget : public QWidget {
         title_bar_->setPalette(palette);
     }
 
-  protected:
-    virtual void resizeEvent(QResizeEvent *event) {
+protected:
+    void resizeEvent(QResizeEvent* event) override {
         QWidget::resizeEvent(event);
         sizeChanged(event);
-        if (pixmap_ == nullptr) return;
-        if (pixmap_->isNull()) return;
+        if (pixmap_ == nullptr)
+            return;
+        if (pixmap_->isNull())
+            return;
         this->setBackground(pixmap_);
     }
 
-  public:
-    explicit Widget(QWidget *              parent = nullptr,
-                    lon::TitleBar::Buttons status = TitleBar::ALL)
+public:
+    explicit Widget(QWidget* parent = nullptr,
+                    TitleBar::Buttons status = TitleBar::ALL)
         : QWidget(parent) {
         this->setWindowFlags(Qt::FramelessWindowHint |
-                             Qt::WindowMinimizeButtonHint);
-        title_bar_        = new lon::TitleBar(this, status);
-        center_widget_    = new QWidget();
-        bottom_bar_       = new QWidget();
+            Qt::WindowMinimizeButtonHint);
+        title_bar_ = new TitleBar(this, status);
+        center_widget_ = new QWidget();
+        bottom_bar_ = new QWidget();
         size_girp_enabled = false;
 
         initWidgets();
@@ -137,18 +150,19 @@ class Widget : public QWidget {
         initConnect();
     }
 
-    explicit Widget(QWidget *center_widget, QWidget *bottom_bar,
-                    QWidget *parent = nullptr)
+    explicit Widget(QWidget* center_widget,
+                    QWidget* bottom_bar,
+                    QWidget* parent = nullptr)
         : QWidget(parent) {
         assert(center_widget && "pointer cannot be null");
         assert(bottom_bar && "pointer cannot be null");
         this->setWindowFlags(Qt::FramelessWindowHint |
-                             Qt::WindowMinimizeButtonHint);
+            Qt::WindowMinimizeButtonHint);
 
-        title_bar_ = new lon::TitleBar(this);
+        title_bar_ = new TitleBar(this);
 
         center_widget_ = center_widget;
-        bottom_bar_    = bottom_bar;
+        bottom_bar_ = bottom_bar;
 
         initWidgets();
         initLayout();
@@ -162,59 +176,64 @@ class Widget : public QWidget {
     }
 
     /// <summary> 返回中间栏的widget指针. </summary>
-    QWidget *centerWidget() const { return center_widget_; }
+    QWidget* centerWidget() const { return center_widget_; }
 
     /// <summary> 设置自定义的bottombar. </summary>
     /// 注意: 重新设置bottomBar会导致默认生成的按钮的信号与槽的失效.
     /// 此类会获取次widget的所有权.
-    virtual bool setBottomBar(QWidget *widget) {
+    virtual bool setBottomBar(QWidget* widget) {
         p_layout_->removeWidget(bottom_bar_);
 
         delete bottom_bar_;
 
         bottom_bar_ = widget;
-        if (bottom_bar_) p_layout_->addWidget(bottom_bar_, 2, 0, 1, 1);
+        if (bottom_bar_)
+            p_layout_->addWidget(bottom_bar_, 2, 0, 1, 1);
         return true;
     }
 
     /// <summary> 设置自定义的centerwidget. </summary>
     /// 此类会获得widget的所有权.
-    virtual bool setCenterWidget(QWidget *widget) {
-        if (!widget) return false;
+    virtual bool setCenterWidget(QWidget* widget) {
+        if (!widget)
+            return false;
 
         p_layout_->removeWidget(center_widget_);
 
         delete center_widget_;
         center_widget_ = widget;
-        if (center_widget_) p_layout_->addWidget(center_widget_, 1, 0);
+        if (center_widget_)
+            p_layout_->addWidget(center_widget_, 1, 0);
         return true;
     }
 
     /// <summary> 返回底部栏的widget指针. </summary>
-    QWidget *    bottomBar() const { return bottom_bar_; }
-    virtual void setTitle(const QString &title) { title_bar_->setTitle(title); }
+    QWidget* bottomBar() const { return bottom_bar_; }
+    virtual void setTitle(const QString& title) { title_bar_->setTitle(title); }
 
-    virtual void setTitleIcon(const QIcon &icon) {
+    virtual void setTitleIcon(const QIcon& icon) {
         title_bar_->setTitleIcon(icon);
     }
 
     // this class will take pixmap's ownship
-    virtual void setTitleBackground(QPixmap *pixmap) {
+    virtual void setTitleBackground(QPixmap* pixmap) {
         title_bar_->setBackground(pixmap);
     }
 
     virtual void enabelSizeGrip() {
         size_girp_enabled = true;
-        size_grip_        = new QSizeGrip(this);
+        size_grip_ = new QSizeGrip(this);
         size_grip_->setFixedSize(size_grip_->sizeHint());
-        p_layout_->addWidget(size_grip_, 2, 1,
+        p_layout_->addWidget(size_grip_,
+                             2,
+                             1,
                              Qt::AlignRight | Qt::AlignBottom);
     }
 
     virtual bool sizeGripEnabled() { return size_girp_enabled; }
 
     // this class will take pixmap's ownship
-    virtual void setBackground(QPixmap *pixmap) {
+    virtual void setBackground(QPixmap* pixmap) {
         this->setAutoFillBackground(true);
         //判断图片是否为空
         if (pixmap->isNull()) {
@@ -225,7 +244,8 @@ class Widget : public QWidget {
         QPalette palette = this->palette();
         palette.setBrush(
             this->backgroundRole(),
-            QBrush(pixmap->scaled(this->size(), Qt::IgnoreAspectRatio,
+            QBrush(pixmap->scaled(this->size(),
+                                  Qt::IgnoreAspectRatio,
                                   Qt::SmoothTransformation)));
         this->setPalette(palette);
         pixmap_ = pixmap;
@@ -255,28 +275,33 @@ class Widget : public QWidget {
         title_bar_->setCloseFunc(val);
     }
 
-  signals:
+signals:
     void okButtonClicked();
     void cancelButtonClicked();
     void minimizeButtonClicked();
     void maximizeButtonClicked();
     void closeButtonClicked();
-    void sizeChanged(QResizeEvent *event);
-  private slots:
-    void onOkButtonClicked() { emit okButtonClicked(); }
-    void onCancelButtonClicked() { emit cancelButtonClicked(); }
+    void sizeChanged(QResizeEvent* event);
+private slots:
+    void onOkButtonClicked() {
+        emit okButtonClicked();
+    }
+
+    void onCancelButtonClicked() {
+        emit cancelButtonClicked();
+    }
 };
 
 class ShadowWindow : public QWidget {
-    Q_OBJECT
-  public:
-    explicit ShadowWindow(QWidget *contentWidget, QWidget *parent = nullptr)
+Q_OBJECT
+public:
+    explicit ShadowWindow(QWidget* contentWidget, QWidget* parent = nullptr)
         : QWidget(parent) {
         setWindowFlags(Qt::FramelessWindowHint);    // 去掉边框
         setAttribute(Qt::WA_TranslucentBackground); // 背景透明
 
         // 添加阴影
-        QGraphicsDropShadowEffect *shadowEffect =
+        QGraphicsDropShadowEffect* shadowEffect =
             new QGraphicsDropShadowEffect(contentWidget);
         shadowEffect->setColor(Qt::lightGray);
         shadowEffect->setBlurRadius(6); // 阴影的大小
@@ -284,15 +309,18 @@ class ShadowWindow : public QWidget {
         contentWidget->setGraphicsEffect(shadowEffect);
 
         // 添加到窗口中
-        QVBoxLayout *layout = new QVBoxLayout(this);
+        QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(contentWidget);
         layout->setContentsMargins(4, 4, 4, 4); // 注意和阴影大小的协调
         setLayout(layout);
-        connect(contentWidget, SIGNAL(sizeChanged(QResizeEvent *)), this,
+        connect(contentWidget,
+                SIGNAL(sizeChanged(QResizeEvent *)),
+                this,
                 SLOT(sizeChanged(QResizeEvent *)));
     }
-  public slots:
-    void sizeChanged(QResizeEvent *event) {
+
+public slots:
+    void sizeChanged(QResizeEvent* event) {
         this->resize(event->size().width() + 8, event->size().height() + 8);
     }
 };

@@ -15,36 +15,35 @@
 class QLineEdit;
 class QVBoxLayout;
 
-class Translate : public QWidget
-{
-	Q_OBJECT
+class Translate : public QWidget {
+Q_OBJECT
 
 public:
-	Translate(QWidget *parent = nullptr);
+    Translate(QWidget* parent = nullptr);
 
-	void youdaoTranslate(const QString &source);
-	QByteArray getYoudaoSign(const QString &source, int salt);
+    void youdaoTranslate(const QString& source);
+    QByteArray getYoudaoSign(const QString& source, int salt);
 
-	void resgisterHotKey();
+    void resgisterHotKey();
 protected:
-	void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
-	void focusOutEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent* event) override;
 
-	bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
-	bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 private:
-	QVBoxLayout *vertical_layout_p_;
-	QLineEdit *line_edit_p_;
+    QVBoxLayout* vertical_layout_p_;
+    QLineEdit* line_edit_p_;
 
-	void hideWindow();
-	void activeWindowListener();
-	void doTranSlate();
-	void clearResultDisplaying();
+    void hideWindow();
+    void activeWindowListener();
+    void doTranSlate();
+    void clearResultDisplaying();
 
 public slots:
-	void displayResult(std::vector<QString>);
+    void displayResult(std::vector<QString>);
 signals:
-	void translateResult(std::vector<QString>);
+    void translateResult(std::vector<QString>);
 };
