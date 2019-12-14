@@ -1,38 +1,53 @@
-/debug
-/release
-/x64
-*.fliter
+#ignore all file expect which meet the rule below
+*
 
-# ignore all . files and . folders
-.*
-
-# Dont ignore .gitignore (this file)
-# This is just for verbosity, you can leave it out if
-# .gitignore is already tracked or if you use -f to
-# force-add it if you just created it
-#files
+!*/
 !/.gitignore
+#enable cpp files
+!*.cc
+!*.hpp
 !*.cpp
 !*.h
-!*.hpp
-##Qt and Vs files
-!*.pro
-!*.sln
-!*.ui
-!*.db
+
+#enable go files
+!*.go
+
+#enable python files
+!*.py
+
+#enable ahk files
+!*.ahk
+
+#enable res files
+!*.jpg
 !*.png
-!*.stash
-!*.pri
+
+#enable qt files
+!*.ui
 !*.qrc
 
-#folders
-!/clock_database
-!/clock_main_widget
-!/clock_small_window
-!/clock_subwidgets
-!/lon_widget
+#enable doc files
+!*.md
 
-#exclude
-*.user
-*.filters
-/ClassDiagram1.cd
+#enable project files
+!*Makefile
+!*makefile
+!*.pro
+!*.pri
+!*.sln
+!*.cmake
+!*CMakeLists.txt
+
+#enable vscode config files
+!*c_cpp_properties.json
+!*launch.json
+!*task.json
+
+#igore qt generate files
+ui*.h
+*moc*.h
+*qrc*.cpp
+
+*Debug
+*Release
+*build

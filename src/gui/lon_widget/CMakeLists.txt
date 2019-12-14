@@ -1,0 +1,10 @@
+set(LonWidgetSrc
+	autodeletewidgetpointer.hpp
+	button.hpp
+	listwidget.hpp
+	menu.hpp
+	messagebox.hpp
+	titlebar.hpp
+	widget.hpp
+	lon_widget.qrc
+)
