@@ -78,6 +78,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     menu_p_ = new Menu(this);
 
+    // addAction will take ownship of pointers.
     menu_p_->addAction(about_action_p_);
     menu_p_->addAction(setting_action_p_);
     menu_p_->addSeparator();
@@ -182,8 +183,6 @@ void lon::ClockMainWidget::displayClock(const QString& label,
             SIGNAL(clockStoped()),
             this,
             SLOT(clockBreaked()));
-    // timer->setDisplayClockPointer(
-    //   clock_running_widget_p_->clock_display_widget_p_);
 }
 
 void lon::ClockMainWidget::displayTarget() {

@@ -35,7 +35,7 @@ namespace lon {
 /// <summary>
 /// 这个类是番茄钟在主界面显示的主界面.
 /// </summary>
-class ClockMainWidget : public Widget {
+class ClockMainWidget final : public Widget {
 Q_OBJECT
 private:
     bool keep_working_;
@@ -44,7 +44,7 @@ private:
     ClockRunningWidget* clock_running_widget_p_;
     ChartsWidget* chart_widget_p_;
 
-    SettingWidget* setting_widget_p_;
+    SettingWidget* setting_widget_p_{nullptr};
 
     TomatoClockTimer* timer;
 
@@ -63,10 +63,10 @@ private:
 
     Menu* menu_p_;
 
-    QAction* close_action_p_;
-    QAction* about_action_p_;
-    QAction* setting_action_p_;
-    QWidgetAction* clock_widget_action_p_;
+    QAction* close_action_p_{nullptr};
+    QAction* about_action_p_{nullptr};
+    QAction* setting_action_p_{nullptr};
+    QWidgetAction* clock_widget_action_p_{nullptr};
 
 private:
     void tomatoSaveToSql();
