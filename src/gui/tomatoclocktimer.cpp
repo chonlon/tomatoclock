@@ -22,7 +22,7 @@ lon::TomatoClockTimer::TomatoClockTimer(QObject* parent)
 }
 
 void lon::TomatoClockTimer::oneSecondPassed() {
-    if (!started_)
+    if (!running_)
         return;
     bool finish = timer_status_->subOneSecond();
 
