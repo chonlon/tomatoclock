@@ -153,7 +153,6 @@ lon::ClockMainWidget::~ClockMainWidget() {
     delete labels_targets_widget_p_;
     delete clock_running_widget_p_;
     delete chart_widget_p_;
-    delete title_bar_p_;
 }
 
 void lon::ClockMainWidget::displayClock(const QString& label,

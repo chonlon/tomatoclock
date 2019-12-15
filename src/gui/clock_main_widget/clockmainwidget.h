@@ -1,4 +1,4 @@
-#ifndef CLOCKMAINWIDGET_H
+﻿#ifndef CLOCKMAINWIDGET_H
 #define CLOCKMAINWIDGET_H
 
 #include <QDateTime>
@@ -43,7 +43,6 @@ private:
     LabelsAndTargetsWidget* labels_targets_widget_p_;
     ClockRunningWidget* clock_running_widget_p_;
     ChartsWidget* chart_widget_p_;
-    TitleBar* title_bar_p_;
 
     SettingWidget* setting_widget_p_;
 
