@@ -8,3 +8,6 @@ set(LonWidgetSrc
 	widget.hpp
 	lon_widget.qrc
 )
+
+add_library(LonWidgetLib STATIC ${LonWidgetSrc})
+target_link_libraries(LonWidgetLib Qt5::Widgets Qt5::Gui Qt5::Core)

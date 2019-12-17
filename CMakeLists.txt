@@ -17,8 +17,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SrcDir ${PROJECT_SOURCE_DIR}/src)
 
-#这里不知道Qt怎么去加一个子路径
-#add_subdirectory(${SrcDir}/gui/lon_widget)
+add_subdirectory(${SrcDir}/gui/lon_widget)
 
 #所有源文件
 set(TomatoSrc
@@ -68,16 +67,6 @@ set(TomatoSrc
 	${SrcDir}/utility/TimeStatus.hpp
 	${SrcDir}/utility/clock_database/clocksql.hpp
 	${SrcDir}/utility/clock_database/DataStructure.hpp
-	#子路径(子项目)怎么办?
-
-	${SrcDir}/gui/lon_widget/autodeletewidgetpointer.hpp
-	${SrcDir}/gui/lon_widget/button.hpp
-	${SrcDir}/gui/lon_widget/listwidget.hpp
-	${SrcDir}/gui/lon_widget/menu.hpp
-	${SrcDir}/gui/lon_widget/messagebox.hpp
-	${SrcDir}/gui/lon_widget/titlebar.hpp
-	${SrcDir}/gui/lon_widget/widget.hpp
-	${SrcDir}/gui/lon_widget/lon_widget.qrc
 )
 
 if (WIN32)
@@ -171,4 +160,6 @@ endif (UNIX)
 if(WIN32)
 	target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Sql Qt5::Charts)
 endif (WIN32)
+
+target_link_libraries(tomatoclock LonWidgetLib)
 

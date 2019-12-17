@@ -51,3 +51,4 @@ ui*.h
 *Debug
 *Release
 *build
+build*
