@@ -2,7 +2,7 @@
 
 #ifdef _WIN32
 #define LON_WINDOWS
-#elif
+#else
 #endif // _WIN32
 
 #ifdef LON_WINDOWS

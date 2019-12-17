@@ -3,7 +3,7 @@
 
 #ifdef _MSC_VER
 #define LON_MSVC
-#elif
+#else
 #define LON_GCC
 #endif
 
