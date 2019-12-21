@@ -19,17 +19,15 @@ struct ChartDataBase {
     std::vector<std::pair<QString, int>> target_data;
     std::vector<std::pair<QString, int>> label_data;
 
-    ChartDataBase()
-        : length(len_num) {
-        time_data_p = new uint16_t[ length ]{};
+    ChartDataBase() : length(len_num) {
+        time_data_p = new uint16_t[length]{};
     }
 
     ChartDataBase(const ChartDataBase& chart_data_base)
-        : target_data(chart_data_base.target_data),
-          label_data(chart_data_base.label_data) {
+        : target_data(chart_data_base.target_data), label_data(chart_data_base.label_data) {
         length = chart_data_base.length;
 
-        time_data_p = new uint16_t[ length ]{};
+        time_data_p = new uint16_t[length]{};
         std::copy(chart_data_base.time_data_p,
                   chart_data_base.time_data_p + chart_data_base.length,
                   time_data_p);
@@ -44,7 +42,9 @@ struct ChartDataBase {
         chart_data_base.time_data_p = nullptr;
     }
 
-    ~ChartDataBase() { delete[] time_data_p; }
+    ~ChartDataBase() {
+        delete[] time_data_p;
+    }
 };
 
 template <unsigned int len_num>
@@ -52,15 +52,13 @@ struct ChartDataWithTotalTime : public ChartDataBase<len_num> {
     uint16_t* total_time_p;
 
     ChartDataWithTotalTime() {
-        total_time_p = new uint16_t[ ChartDataBase<len_num>::length ]{};
+        total_time_p = new uint16_t[ChartDataBase<len_num>::length]{};
     }
 
     ChartDataWithTotalTime(const ChartDataWithTotalTime& data)
         : ChartDataBase<len_num>::ChartDataBase(data) {
-        total_time_p = new uint16_t[ ChartDataBase<len_num>::length ]{};
-        std::copy(data.total_time_p,
-                  data.total_time_p + data.length,
-                  total_time_p);
+        total_time_p = new uint16_t[ChartDataBase<len_num>::length]{};
+        std::copy(data.total_time_p, data.total_time_p + data.length, total_time_p);
     }
 
     ChartDataWithTotalTime(ChartDataWithTotalTime&& data)
@@ -69,7 +67,9 @@ struct ChartDataWithTotalTime : public ChartDataBase<len_num> {
         data.total_time_p = nullptr;
     }
 
-    ~ChartDataWithTotalTime() { delete[] total_time_p; }
+    ~ChartDataWithTotalTime() {
+        delete[] total_time_p;
+    }
 };
 
 // clock chart 所需的每日数据.
@@ -168,5 +168,5 @@ struct LastYearData {
     }
 };
 #endif
-} // namespace tomato_clock
-} // namespace lon
+}  // namespace tomato_clock
+}  // namespace lon

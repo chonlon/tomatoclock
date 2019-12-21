@@ -10,7 +10,7 @@ namespace lon {
 class Button;
 
 class ToolsWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QGridLayout* main_layout_;
 
@@ -34,5 +34,5 @@ signals:
     void closeButtonClicked();
 public slots:
 };
-} // namespace lon
-#endif // TOOLSWIDGET_H
+}  // namespace lon
+#endif  // TOOLSWIDGET_H

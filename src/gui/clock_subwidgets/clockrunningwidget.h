@@ -24,7 +24,7 @@ class ClockSmallWindow;
  * \author LON
  */
 class ClockRunningWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QGridLayout* main_layout_p_;
     QLabel* label_label_p_;
@@ -37,7 +37,6 @@ private:
     DisplayClockBase* current_display_widget_p_;
 
 private:
-
     /// <summary>
     /// 设置此类中接管计时器的DisplayClockBase.
     /// </summary>
@@ -45,18 +44,14 @@ private:
     void setReceiveTimerWidget(DisplayClockBase* displaye_p);
 
 protected:
-
 public:
-
     /// <summary>
     /// 设置番茄钟计时器.
     /// </summary>
     /// <param name="timer">计时器指针.</param>
     void setTimer(TomatoClockTimer* timer);
 
-    explicit ClockRunningWidget(QString label_name,
-                                QString target_name,
-                                QWidget* parent = nullptr);
+    explicit ClockRunningWidget(QString label_name, QString target_name, QWidget* parent = nullptr);
     ~ClockRunningWidget();
 
 signals:
@@ -82,6 +77,6 @@ public slots:
     /// </summary>
     void backToCurrentWidget();
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // CLOCKRUNNINGWIDGET_H
+#endif  // CLOCKRUNNINGWIDGET_H

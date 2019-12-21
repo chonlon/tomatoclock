@@ -8,8 +8,10 @@
 namespace std {
 template <>
 struct hash<QString> {
-    std::size_t operator()(const QString& s) const { return qHash(s); }
+    std::size_t operator()(const QString& s) const {
+        return qHash(s);
+    }
 };
-} // namespace std
+}  // namespace std
 
-#endif // QSTRINGHASH_H
+#endif  // QSTRINGHASH_H

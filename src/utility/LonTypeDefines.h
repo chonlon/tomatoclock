@@ -25,4 +25,4 @@ typedef signed __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #endif
 
-#endif // LON_TYPE_DEFINES_H
+#endif  // LON_TYPE_DEFINES_H

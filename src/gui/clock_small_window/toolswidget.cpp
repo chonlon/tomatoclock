@@ -4,7 +4,9 @@
 #include <QGridLayout>
 #include <QLabel>
 
-void lon::ToolsWidget::onCloseClicked() { this->window()->close(); }
+void lon::ToolsWidget::onCloseClicked() {
+    this->window()->close();
+}
 
 lon::ToolsWidget::ToolsWidget(const QString& label_name,
                               const QString& target_name,

@@ -3,8 +3,7 @@
 #include "../tomatoclocktimer.h"
 #include <QLabel>
 
-void lon::ClockRunningWidget::setReceiveTimerWidget(
-    DisplayClockBase* displaye_p) {
+void lon::ClockRunningWidget::setReceiveTimerWidget(DisplayClockBase* displaye_p) {
     current_display_widget_p_ = displaye_p;
     if (timer_p_)
         timer_p_->setDisplayClockPointer(current_display_widget_p_);
@@ -62,26 +61,17 @@ lon::ClockRunningWidget::ClockRunningWidget(const QString label_name,
 
     small_window_switch_button_p_->setFlat(true);
     small_window_switch_button_p_->setStyleSheet("border:none");
-    small_window_switch_button_p_->setNormal(
-        new QIcon(":/icon/Icons/small_window_normal.png"));
-    small_window_switch_button_p_->setFocus(
-        new QIcon(":/icon/Icons/small_window_focus.png"));
-    small_window_switch_button_p_->setPressed(
-        new QIcon(":/icon/Icons/small_window_pressed.png"));
+    small_window_switch_button_p_->setNormal(new QIcon(":/icon/Icons/small_window_normal.png"));
+    small_window_switch_button_p_->setFocus(new QIcon(":/icon/Icons/small_window_focus.png"));
+    small_window_switch_button_p_->setPressed(new QIcon(":/icon/Icons/small_window_pressed.png"));
 
-    connect(stop_button_p_,
-            SIGNAL(clicked()),
-            this,
-            SLOT(onStopButtonClicked()));
-    connect(small_window_switch_button_p_,
-            SIGNAL(clicked()),
-            this,
-            SLOT(onSmallWindowButtonClicked()));
+    connect(stop_button_p_, SIGNAL(clicked()), this, SLOT(onStopButtonClicked()));
+    connect(
+        small_window_switch_button_p_, SIGNAL(clicked()), this, SLOT(onSmallWindowButtonClicked()));
     this->show();
 }
 
-lon::ClockRunningWidget::~ClockRunningWidget() {
-}
+lon::ClockRunningWidget::~ClockRunningWidget() {}
 
 void lon::ClockRunningWidget::onStopButtonClicked() {
     emit clockStoped();
@@ -89,19 +79,12 @@ void lon::ClockRunningWidget::onStopButtonClicked() {
 
 void lon::ClockRunningWidget::onSmallWindowButtonClicked() {
     this->window()->setVisible(false);
-    small_window_p_ = new clock_window::ClockSmallWindow(
-        label_label_p_->text(),
-        target_label_p_->text());
+    small_window_p_ =
+        new clock_window::ClockSmallWindow(label_label_p_->text(), target_label_p_->text());
     this->setReceiveTimerWidget(small_window_p_->progress_widget_);
     small_window_p_->show();
-    connect(small_window_p_,
-            SIGNAL(clockStoped()),
-            this,
-            SIGNAL(clockStoped()));
-    connect(small_window_p_,
-            SIGNAL(smallWindowClosing()),
-            this,
-            SLOT(backToCurrentWidget()));
+    connect(small_window_p_, SIGNAL(clockStoped()), this, SIGNAL(clockStoped()));
+    connect(small_window_p_, SIGNAL(smallWindowClosing()), this, SLOT(backToCurrentWidget()));
 }
 
 void lon::ClockRunningWidget::backToCurrentWidget() {

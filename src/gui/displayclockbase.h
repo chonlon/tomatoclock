@@ -13,7 +13,7 @@ namespace lon {
 /// 显示番茄钟的widget的基类, 主要提供timer的更新和time数据.
 /// </summary>
 class DisplayClockBase : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 protected:
     QBrush* working_foreground_brush_;
     QBrush* shortbreaking_foreground_brush_;
@@ -29,8 +29,7 @@ protected:
         int total = total_time->minutes_ * 60 + total_time->seconds_;
         if (total == 0)
             return -1;
-        int left = timer_status->timeleft()->minutes() * 60 +
-            timer_status->timeleft()->seconds();
+        int left = timer_status->timeleft()->minutes() * 60 + timer_status->timeleft()->seconds();
         int current_passed_time = total - left;
 
         // qDebug() << "++" << current_passed_time << "--" << total;
@@ -43,8 +42,7 @@ protected:
     /// <param name="timer_status"> 根据timer_status计算剩余时间. </param>
     /// <returns> 剩余时间的QString类型的指针, 内存的所有权会被移交给调用者.
     /// </returns>
-    std::unique_ptr<QString>
-    leftTimeString(TimerStatus const* timer_status) {
+    std::unique_ptr<QString> leftTimeString(TimerStatus const* timer_status) {
         std::unique_ptr<QString> result(new QString());
         result->append(QString::number(timer_status->timeleft()->minutes()));
         result->append(" : ");
@@ -59,8 +57,7 @@ protected:
     }
 
 public:
-    explicit DisplayClockBase(QWidget* parent = nullptr)
-        : QWidget(parent) {
+    explicit DisplayClockBase(QWidget* parent = nullptr) : QWidget(parent) {
         working_foreground_brush_ = new QBrush(QColor(255, 255, 255, 180));
         shortbreaking_foreground_brush_ = new QBrush(QColor(30, 239, 61, 180));
         longbreaking_foreground_brush_ = new QBrush(QColor(33, 252, 217, 180));
@@ -81,6 +78,6 @@ public slots:
     /// </param>
     virtual void updateTimeDisplay(TimerStatus const* timer_status) = 0;
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // DISPLAYCLOCKWIDGET_H
+#endif  // DISPLAYCLOCKWIDGET_H

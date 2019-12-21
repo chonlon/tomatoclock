@@ -10,8 +10,7 @@ class SettingFileOperations {
 public:
     SettingFileOperations();
 
-    ~SettingFileOperations() {
-    }
+    ~SettingFileOperations() {}
 
     /**
      * \brief save clock options, invoke when setting changed and widget was closed.
@@ -21,4 +20,4 @@ public:
     lon::ClockOptions readClockOptionFromFile();
 };
 
-#endif // SETTINGFILEOPERATIONS_H
+#endif  // SETTINGFILEOPERATIONS_H

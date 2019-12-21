@@ -6,10 +6,10 @@
 #include <QWidget>
 #include <memory>
 
+#include "../lon_widget/widget.hpp"
 #include "clock_database/DataStructure.hpp"
 #include "clock_database/clocksql.hpp"
 #include "clockoptions.hpp"
-#include "../lon_widget/widget.hpp"
 
 class QSystemTrayIcon;
 class QGridLayout;
@@ -28,7 +28,7 @@ class Menu;
 namespace clock_window {
 class ClockSmallWindow;
 }
-} // namespace lon
+}  // namespace lon
 class SettingWidget;
 
 namespace lon {
@@ -36,7 +36,7 @@ namespace lon {
 /// 这个类是番茄钟在主界面显示的主界面.
 /// </summary>
 class ClockMainWidget final : public Widget {
-Q_OBJECT
+    Q_OBJECT
 private:
     bool keep_working_;
 
@@ -121,6 +121,6 @@ public slots:
     /// </summary>
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // CLOCKMAINWIDGET_H
+#endif  // CLOCKMAINWIDGET_H

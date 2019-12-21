@@ -3,6 +3,9 @@
 
 !*/
 !/.gitignore
+#clang-format
+!*clang-format*
+
 #enable cpp files
 !*.cc
 !*.hpp
@@ -48,7 +51,8 @@ ui*.h
 *moc*.h
 *qrc*.cpp
 
-*Debug
-*Release
-*build
-build*
+*[Dd]ebug
+*[Rr]elease
+*[Bb]uild
+[Bb]uild*
+[Oo]ut

@@ -30,10 +30,7 @@ struct ClockTime {
     int8_t minutes_;
     int8_t seconds_;
 
-    ClockTime(int8_t minutes, int8_t seconds)
-        : minutes_(minutes),
-          seconds_(seconds) {
-    }
+    ClockTime(int8_t minutes, int8_t seconds) : minutes_(minutes), seconds_(seconds) {}
 };
 
 /*!
@@ -61,8 +58,7 @@ public:
           sb_time_(new ShortBreakTime(5, 0)),
           lb_time_(new LongBreakTime(15, 0)),
           sbtimes_between_lb_(3),
-          keep_working_(false) {
-    }
+          keep_working_(false) {}
 
     /// <summary> 这个构造函数主要是在用户自定义时间参数以后,
     /// 为各个参数提供初始化 </summary>
@@ -78,8 +74,7 @@ public:
           sb_time_(new ShortBreakTime(short_break_min, short_break_sec)),
           lb_time_(new LongBreakTime(long_break_min, long_break_sec)),
           sbtimes_between_lb_(sbtimes_between_lb),
-          keep_working_(keep_working) {
-    }
+          keep_working_(keep_working) {}
 
     ClockOptions(const ClockOptions& option) {
         work_time_ = new WorkTime(*(option.work_time()));
@@ -90,9 +85,9 @@ public:
     }
 
     ClockOptions(ClockOptions&& clock_option) {
-        work_time_ = const_cast<ClockTime *>(clock_option.work_time());
-        sb_time_ = const_cast<ClockTime *>(clock_option.sb_time());
-        lb_time_ = const_cast<ClockTime *>(clock_option.lb_time());
+        work_time_ = const_cast<ClockTime*>(clock_option.work_time());
+        sb_time_ = const_cast<ClockTime*>(clock_option.sb_time());
+        lb_time_ = const_cast<ClockTime*>(clock_option.lb_time());
         set_sbtimes_between_lb(clock_option.sbtimes_between_lb());
         keep_working_ = clock_option.keepWorking();
     }
@@ -127,18 +122,32 @@ public:
         return true;
     }
 
-    ClockTime const* work_time() const { return work_time_; }
+    ClockTime const* work_time() const {
+        return work_time_;
+    }
 
-    ShortBreakTime const* sb_time() const { return sb_time_; }
+    ShortBreakTime const* sb_time() const {
+        return sb_time_;
+    }
 
-    LongBreakTime const* lb_time() const { return lb_time_; }
+    LongBreakTime const* lb_time() const {
+        return lb_time_;
+    }
 
-    int8_t sbtimes_between_lb() const { return sbtimes_between_lb_; }
+    int8_t sbtimes_between_lb() const {
+        return sbtimes_between_lb_;
+    }
 
-    bool keepWorking() const { return keep_working_; }
-    void setKeepWorking(bool val) { keep_working_ = val; }
-    void set_sbtimes_between_lb(int8_t val) { sbtimes_between_lb_ = val; }
+    bool keepWorking() const {
+        return keep_working_;
+    }
+    void setKeepWorking(bool val) {
+        keep_working_ = val;
+    }
+    void set_sbtimes_between_lb(int8_t val) {
+        sbtimes_between_lb_ = val;
+    }
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // CLOCKOPTIONS_H
+#endif  // CLOCKOPTIONS_H

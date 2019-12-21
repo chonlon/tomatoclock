@@ -5,9 +5,10 @@
 #include <QtCharts/QPieSlice>
 
 class CustomSliceWithValue : public QtCharts::QPieSlice {
-Q_OBJECT
+    Q_OBJECT
 private:
     QString name_;
+
 public:
     CustomSliceWithValue(QObject* parent = nullptr);
 
@@ -15,7 +16,6 @@ public:
     QString name() const;
 
 public slots:
-
 };
 
-#endif // CUSTOMSLICEWITHVALUE_H
+#endif  // CUSTOMSLICEWITHVALUE_H

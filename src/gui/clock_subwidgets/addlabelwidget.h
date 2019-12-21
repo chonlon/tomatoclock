@@ -19,7 +19,7 @@ namespace lon {
  */
 
 class AddLabelWidget : public Widget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QLineEdit* line_edit_p_;
     QLabel* label_p_;
@@ -30,8 +30,7 @@ private:
     std::list<QString> labels_;
 
 public:
-    explicit AddLabelWidget(std::list<QString> labels,
-                            QWidget* parent = nullptr);
+    explicit AddLabelWidget(std::list<QString> labels, QWidget* parent = nullptr);
 
 signals:
     void labelAdded(QString label_name);
@@ -44,5 +43,5 @@ public slots:
 
     void showMessage(const QString& message);
 };
-} // namespace lon
-#endif // ADDLABELWIDGET_H
+}  // namespace lon
+#endif  // ADDLABELWIDGET_H

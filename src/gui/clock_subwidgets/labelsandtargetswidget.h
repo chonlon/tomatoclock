@@ -5,14 +5,14 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QSpacerItem>
-#include <QVBoxLayout>
 #include <QString>
+#include <QVBoxLayout>
 #include <QWidget>
 #include <unordered_map>
 #include <vector>
 
-#include "clock_database/DataStructure.hpp"
 #include "../lon_widget/autodeletewidgetpointer.hpp"
+#include "clock_database/DataStructure.hpp"
 
 namespace lon {
 class ListWidget;
@@ -29,7 +29,7 @@ class AddTargetWidget;
  * \author LON
  */
 class LabelsAndTargetsWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QVBoxLayout* main_layout_p_;
     QHBoxLayout* labels_main_layout_p_;
@@ -58,8 +58,7 @@ private:
     //开关数据库的开销大, 所以还是使用指针更好.
     ClockSql* sql_;
 
-    std::unordered_map<Button *, AutoDeleteWidgetPointer *>
-    button_map_;
+    std::unordered_map<Button*, AutoDeleteWidgetPointer*> button_map_;
     std::list<std::pair<QString, QString>>* labels_and_targets_p_;
 
     uint8_t current_cloumn;
@@ -68,7 +67,7 @@ private:
     std::shared_ptr<tomato_clock::LastWeekData> last_week_data_p_;
     std::shared_ptr<tomato_clock::LastMonthData> last_month_data_p_;
 
-private: // functions
+private:  // functions
     // default construction are not allowed.
     LabelsAndTargetsWidget();
     /// <summary>
@@ -116,14 +115,12 @@ public:
     /// </summary>
     /// <param name="sql">数据库指针, 使用者仍然保留*sql的所有权,
     /// 但此类可能会修改数据库.</param>
-    explicit LabelsAndTargetsWidget(
-        std::shared_ptr<tomato_clock::LastWeekData> week_data,
-        std::shared_ptr<tomato_clock::LastMonthData> month_data,
-        QWidget* parent = nullptr);
+    explicit LabelsAndTargetsWidget(std::shared_ptr<tomato_clock::LastWeekData> week_data,
+                                    std::shared_ptr<tomato_clock::LastMonthData> month_data,
+                                    QWidget* parent = nullptr);
 
     void setLastWeekData(std::shared_ptr<tomato_clock::LastWeekData> ptr);
-    void
-    setLastMonthData(std::shared_ptr<tomato_clock::LastMonthData> ptr);
+    void setLastMonthData(std::shared_ptr<tomato_clock::LastMonthData> ptr);
 
 signals:
     void changeSetting();
@@ -180,5 +177,5 @@ public slots:
     void deleteLabel();
     // void startClock(const QString &label_name, const QString &target_name);
 };
-} // namespace lon
-#endif // LABELSANDTARGETSWIDGET_H
+}  // namespace lon
+#endif  // LABELSANDTARGETSWIDGET_H

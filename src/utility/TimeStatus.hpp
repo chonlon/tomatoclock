@@ -10,13 +10,9 @@
 namespace lon {
 class TimeLeft : public ClockTime {
 public:
-    TimeLeft()
-        : ClockTime(0, 0) {
-    }
+    TimeLeft() : ClockTime(0, 0) {}
 
-    TimeLeft(int8_t minutes, int8_t seconds)
-        : ClockTime(minutes, seconds) {
-    }
+    TimeLeft(int8_t minutes, int8_t seconds) : ClockTime(minutes, seconds) {}
 
     void clear() {
         minutes_ = 0;
@@ -46,11 +42,19 @@ public:
         return 1;
     }
 
-    int8_t minutes() const { return minutes_; }
-    int8_t seconds() const { return seconds_; }
+    int8_t minutes() const {
+        return minutes_;
+    }
+    int8_t seconds() const {
+        return seconds_;
+    }
 
-    void setMinutes(int8_t minutes) { minutes_ = minutes; }
-    void setSeconds(int8_t seconds) { seconds_ = seconds; }
+    void setMinutes(int8_t minutes) {
+        minutes_ = minutes;
+    }
+    void setSeconds(int8_t seconds) {
+        seconds_ = seconds;
+    }
 };
 
 /// <summary> 目前计时器的状态, 包括剩余时间、和目前所在的番茄工作法的进度
@@ -87,17 +91,13 @@ private:
 
 public:
     /// <summary> TimerStatus的默认构造函数, 但是会导致TimeLeft未定义 </summary>
-    TimerStatus()
-        : is_break_(false),
-          short_break_times_(0),
-          timeleft_(new TimeLeft()) {
+    TimerStatus() : is_break_(false), short_break_times_(0), timeleft_(new TimeLeft()) {
         qWarning() << "empty constructor in timerstatus";
     }
 
     /// <summary> 根据clock_options来设置剩余时间 </summary>
     TimerStatus(std::unique_ptr<ClockOptions>& clock_options)
-        : is_break_(false),
-          short_break_times_(0) {
+        : is_break_(false), short_break_times_(0) {
         timeleft_ = new TimeLeft();
         clock_options_ = std::move(clock_options);
         total_time_ = clock_options_->work_time();
@@ -105,7 +105,9 @@ public:
         timeleft_->setSeconds(clock_options_->work_time()->seconds_);
     }
 
-    ~TimerStatus() { delete timeleft_; }
+    ~TimerStatus() {
+        delete timeleft_;
+    }
 
     /// <summary>
     /// 从剩余时间里面减去一秒.
@@ -138,25 +140,34 @@ public:
                 short_break_times_ = 0;
             }
         } else if (status == -1) {
-            throw std::logic_error(
-                "In timer_status, left time is less than zero");
+            throw std::logic_error("In timer_status, left time is less than zero");
         }
 
         return false;
     }
 
-    void clear() { timeleft_->clear(); }
+    void clear() {
+        timeleft_->clear();
+    }
 
-    TimeLeft const* timeleft() const { return timeleft_; }
-    bool is_break() const { return is_break_; }
-    int8_t short_break_times() const { return short_break_times_; }
+    TimeLeft const* timeleft() const {
+        return timeleft_;
+    }
+    bool is_break() const {
+        return is_break_;
+    }
+    int8_t short_break_times() const {
+        return short_break_times_;
+    }
 
     const std::unique_ptr<ClockOptions>& clock_options() const {
         return clock_options_;
     }
 
-    CurrentTotalTime const* getTotalTime() const { return total_time_; }
+    CurrentTotalTime const* getTotalTime() const {
+        return total_time_;
+    }
 };
-} // namespace lon
+}  // namespace lon
 
 #endif

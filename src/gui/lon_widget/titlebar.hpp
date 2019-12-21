@@ -15,7 +15,7 @@
 
 namespace lon {
 class TitleBar : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     static const int32_t BUTTON_HEIGHT = 45;
     static const int32_t BUTTON_WIDTH = 45;
@@ -80,14 +80,13 @@ private:
 
         //初始化最小化按钮
         if ((button & minn) == minn) {
-            pminimize_button_ = new Button(
-                new QIcon(":/icon/Resources/min_normal.png"),
-                // normal
-                new QIcon(":/icon/Resources/min_focus.png"),
-                // focus
-                new QIcon(":/icon/Resources/min_pressed.png"),
-                // pressed
-                this);
+            pminimize_button_ = new Button(new QIcon(":/icon/Resources/min_normal.png"),
+                                           // normal
+                                           new QIcon(":/icon/Resources/min_focus.png"),
+                                           // focus
+                                           new QIcon(":/icon/Resources/min_pressed.png"),
+                                           // pressed
+                                           this);
             pminimize_button_->setFlat(true);
             pminimize_button_->setStyleSheet("border:none");
             pminimize_button_->setFixedSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -109,14 +108,13 @@ private:
             pmaximize_button_->setToolTip("最大化");
         }
         // 初始化关闭按钮
-        pclose_button_ = new Button(
-            new QIcon(":/icon/Resources/close_normal.png"),
-            // normal
-            new QIcon(":/icon/Resources/close_focus.png"),
-            // focus
-            new QIcon(":/icon/Resources/close_pressed.png"),
-            // pressedthis
-            this);
+        pclose_button_ = new Button(new QIcon(":/icon/Resources/close_normal.png"),
+                                    // normal
+                                    new QIcon(":/icon/Resources/close_focus.png"),
+                                    // focus
+                                    new QIcon(":/icon/Resources/close_pressed.png"),
+                                    // pressedthis
+                                    this);
         pclose_button_->setFlat(true);
         pclose_button_->setStyleSheet("border:none");
         pclose_button_->setFixedSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -129,8 +127,7 @@ private:
         icon_label_->setScaledContents(true);
 
         title_label_ = new QLabel(this);
-        title_label_->setSizePolicy(QSizePolicy::Expanding,
-                                    QSizePolicy::Expanding);
+        title_label_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         title_label_->setObjectName("titleLable");
     }
 
@@ -159,19 +156,10 @@ private:
         const char maxn = 2;
 
         if ((button & minn) == minn)
-            connect(pminimize_button_,
-                    SIGNAL(clicked(bool)),
-                    this,
-                    SLOT(onButtonClicked()));
+            connect(pminimize_button_, SIGNAL(clicked(bool)), this, SLOT(onButtonClicked()));
         if ((button & maxn) == maxn)
-            connect(pmaximize_button_,
-                    SIGNAL(clicked(bool)),
-                    this,
-                    SLOT(onButtonClicked()));
-        connect(pclose_button_,
-                SIGNAL(clicked(bool)),
-                this,
-                SLOT(onButtonClicked()));
+            connect(pmaximize_button_, SIGNAL(clicked(bool)), this, SLOT(onButtonClicked()));
+        connect(pclose_button_, SIGNAL(clicked(bool)), this, SLOT(onButtonClicked()));
     }
 
     void initMaxIcons(int32_t button) {
@@ -181,15 +169,11 @@ private:
 
         max_max_normal_.reset(new QIcon(":/icon/Resources/max_max_normal.png"));
         max_max_focus_.reset(new QIcon(":/icon/Resources/max_max_focus.png"));
-        max_max_pressed_.reset(
-            new QIcon(":/icon/Resources/max_max_pressed.png"));
+        max_max_pressed_.reset(new QIcon(":/icon/Resources/max_max_pressed.png"));
 
-        max_normal_normal_.reset(
-            new QIcon(":/icon/Resources/max_normal_normal.png"));
-        max_normal_focus_.reset(
-            new QIcon(":/icon/Resources/max_normal_focus.png"));
-        max_normal_pressed_.reset(
-            new QIcon(":/icon/Resources/max_normal_pressed.png"));
+        max_normal_normal_.reset(new QIcon(":/icon/Resources/max_normal_normal.png"));
+        max_normal_focus_.reset(new QIcon(":/icon/Resources/max_normal_focus.png"));
+        max_normal_pressed_.reset(new QIcon(":/icon/Resources/max_normal_pressed.png"));
     }
 
 protected:
@@ -220,8 +204,7 @@ protected:
         QPoint widget_pos = this->window()->pos();
 
         move_start_position_ = event->globalPos();
-        this->window()->move(widget_pos.x() + move_point.x(),
-                             widget_pos.y() + move_point.y());
+        this->window()->move(widget_pos.x() + move_point.x(), widget_pos.y() + move_point.y());
         return QWidget::mouseMoveEvent(event);
     }
 
@@ -234,7 +217,7 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override {
         switch (event->type()) {
             case QEvent::WindowTitleChange: {
-                QWidget* pWidget = qobject_cast<QWidget *>(obj);
+                QWidget* pWidget = qobject_cast<QWidget*>(obj);
                 if (pWidget) {
                     title_label_->setText(pWidget->windowTitle());
                     return true;
@@ -242,7 +225,7 @@ protected:
                 return false;
             }
             case QEvent::WindowIconChange: {
-                QWidget* pWidget = qobject_cast<QWidget *>(obj);
+                QWidget* pWidget = qobject_cast<QWidget*>(obj);
                 if (pWidget) {
                     QIcon icon = pWidget->windowIcon();
                     icon_label_->setPixmap(icon.pixmap(icon_label_->size()));
@@ -268,8 +251,7 @@ public:
 
     /// <summary> parent不能为空. </summary>
     /// <param name: button> 用于选择最大化以及最小化按钮是否添加. </param>
-    explicit TitleBar(QWidget* parent, Buttons button = ALL)
-        : QWidget(parent) {
+    explicit TitleBar(QWidget* parent, Buttons button = ALL) : QWidget(parent) {
         assert(parent && "the parent of titlebar cannot be empty");
 
         is_pressed_ = false;
@@ -283,25 +265,21 @@ public:
         initConnection(button);
 
         min_func_ = std::bind(
-            [](QWidget* widget)
-            {
+            [](QWidget* widget) {
                 if (widget->window()->isTopLevel())
                     widget->window()->showMinimized();
             },
             this);
         max_func_ = std::bind(
-            [this](QWidget* widget)
-            {
+            [this](QWidget* widget) {
                 if (widget->window()->isTopLevel())
-                    widget->window()->isMaximized()
-                        ? widget->window()->showNormal()
-                        : widget->window()->showMaximized();
+                    widget->window()->isMaximized() ? widget->window()->showNormal()
+                                                    : widget->window()->showMaximized();
                 this->updateMaximize();
             },
             this);
         close_func_ = std::bind(
-            [](QWidget* widget)
-            {
+            [](QWidget* widget) {
                 if (widget->window()->isTopLevel())
                     widget->window()->close();
             },
@@ -330,9 +308,7 @@ public:
         QPalette palette = this->palette();
         palette.setBrush(
             this->backgroundRole(),
-            QBrush(pixmap->scaled(this->size(),
-                                  Qt::IgnoreAspectRatio,
-                                  Qt::SmoothTransformation)));
+            QBrush(pixmap->scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
         this->setPalette(palette);
         pixmap_ = pixmap;
     }
@@ -364,26 +340,32 @@ public:
     /// 设置最小化按钮按下后的执行函数
     /// </summary>
     /// <param name="val"> 执行函数, std::function<void> </param>
-    void setMinFunc(std::function<void(void)> val) { min_func_ = val; }
+    void setMinFunc(std::function<void(void)> val) {
+        min_func_ = val;
+    }
 
     /// <summary>
     /// 设置最大化按钮按下后的执行函数
     /// </summary>
     /// <param name="val"> 执行函数, std::function<void> </param>
-    void setMaxFunc(std::function<void(void)> val) { max_func_ = val; }
+    void setMaxFunc(std::function<void(void)> val) {
+        max_func_ = val;
+    }
 
     /// <summary>
     /// 关闭按钮按下后的执行函数
     /// </summary>
     /// <param name="val"> 执行函数, std::function<void> </param>
-    void setCloseFunc(std::function<void(void)> val) { close_func_ = val; }
+    void setCloseFunc(std::function<void(void)> val) {
+        close_func_ = val;
+    }
 signals:
     void minimizeButtonClicked();
     void maximizeButtonClicked();
     void closeButtonClicked();
 private slots:
     void onButtonClicked() {
-        QPushButton* pButton = qobject_cast<QPushButton *>(sender());
+        QPushButton* pButton = qobject_cast<QPushButton*>(sender());
         if (pButton == pminimize_button_) {
             emit minimizeButtonClicked();
             min_func_();
@@ -396,6 +378,6 @@ private slots:
         }
     }
 };
-} // namespace lon
+}  // namespace lon
 
 #endif

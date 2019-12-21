@@ -14,9 +14,9 @@
 /// <returns> 目录下的所有文件的文件名数组 </returns>
 static std::vector<QString> GetFileList(QString dir) {
     std::vector<QString> filePath;
-    QDir                 dirPath(dir);
-    QList<QFileInfo>     file(dirPath.entryInfoList());
-    QString              name = "";
+    QDir dirPath(dir);
+    QList<QFileInfo> file(dirPath.entryInfoList());
+    QString name = "";
 
     for (auto it = file.begin(); it != file.end(); it++) {
         name = dir + "/" + it->fileName();
@@ -26,7 +26,7 @@ static std::vector<QString> GetFileList(QString dir) {
     }
     return filePath;
 }
-#endif // DEBUG
+#endif  // DEBUG
 
 namespace lon {
 /// <summary>
@@ -36,7 +36,7 @@ namespace lon {
 /// 注意: 默认的不是flat的,(因为如果图标设置失败, 而按钮已经时flat的会很尴尬)
 /// 所以添加icon后还是会有边框和背景, 如果不想要, 使用button->setFlat(true)即可.
 class Button : public QPushButton {
-Q_OBJECT
+    Q_OBJECT
 private:
     std::shared_ptr<QIcon> normal_icon_;
     std::shared_ptr<QIcon> focus_icon_;
@@ -102,15 +102,13 @@ protected:
 
     virtual void setIcon(const QIcon& icon) {
         QPushButton::setIcon(icon);
-        this->setIconSize(QSize(this->width() * scaling_factor_,
-                                this->height() * scaling_factor_));
+        this->setIconSize(QSize(this->width() * scaling_factor_, this->height() * scaling_factor_));
     }
 
 
     void resizeEvent(QResizeEvent* event) override {
         QPushButton::resizeEvent(event);
-        this->setIconSize(QSize(this->width() * scaling_factor_,
-                                this->height() * scaling_factor_));
+        this->setIconSize(QSize(this->width() * scaling_factor_, this->height() * scaling_factor_));
     }
 
 public:
@@ -121,9 +119,7 @@ public:
     /// 以及是否存在icon文件
     /// </summary>
     /// <param name: parent> 用于设置当前Button的parent </param>
-    Button(QWidget* parent = nullptr)
-        : QPushButton(parent),
-          scaling_factor_(0.8) {
+    Button(QWidget* parent = nullptr) : QPushButton(parent), scaling_factor_(0.8) {
         normal_icon_.reset(new QIcon("normal.png"));
         focus_icon_.reset(new QIcon("focus.png"));
         pressed_icon_.reset(new QIcon("pressed.png"));
@@ -135,12 +131,8 @@ public:
     /// 使用这个方式会接管三个icon的指针指向变量的所有权.
     /// </summary>
     /// <param name = "pnormal_icon"> </param>
-    Button(QIcon* pnormal_icon,
-           QIcon* pfocus_icon,
-           QIcon* ppressed_icon,
-           QWidget* parent = nullptr)
-        : QPushButton(parent),
-          scaling_factor_(0.8) {
+    Button(QIcon* pnormal_icon, QIcon* pfocus_icon, QIcon* ppressed_icon, QWidget* parent = nullptr)
+        : QPushButton(parent), scaling_factor_(0.8) {
         if (pnormal_icon == nullptr) {
             normal_icon_.reset(new QIcon("./normal.png"));
         } else {
@@ -169,8 +161,7 @@ public:
            const std::shared_ptr<QIcon>& focus_icon,
            const std::shared_ptr<QIcon>& pressed_icon,
            QWidget* parent = nullptr)
-        : QPushButton(parent),
-          scaling_factor_(0.8) {
+        : QPushButton(parent), scaling_factor_(0.8) {
         normal_icon_ = normal_icon;
         focus_icon_ = focus_icon;
         pressed_icon_ = pressed_icon;
@@ -183,8 +174,7 @@ public:
     /// <param name="factor">缩放比例, 范围 0 - 1</param>
     void setScalingFactor(double factor) {
         scaling_factor_ = factor;
-        this->setIconSize(QSize(this->width() * scaling_factor_,
-                                this->height() * scaling_factor_));
+        this->setIconSize(QSize(this->width() * scaling_factor_, this->height() * scaling_factor_));
     }
 
     /// <summary> 设置normal图标, 接管指针所指内存管理权 </summary>
@@ -233,5 +223,5 @@ public:
         pressed_icon_ = nullptr;
     }
 };
-} // namespace lon
+}  // namespace lon
 #endif

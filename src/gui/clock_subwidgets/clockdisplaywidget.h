@@ -15,7 +15,7 @@ namespace lon {
  * \author LON
  */
 class ClockDisplayWidget : public DisplayClockBase {
-Q_OBJECT
+    Q_OBJECT
 private:
     double current_persent_;
     ClockTime const* total_time_;
@@ -38,5 +38,5 @@ signals:
 
 public slots:
 };
-} // namespace lon
-#endif // CLOCKDISPLAYWIDGET_H
+}  // namespace lon
+#endif  // CLOCKDISPLAYWIDGET_H

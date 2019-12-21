@@ -1,7 +1,6 @@
 ﻿#include "clockmainwidget.h"
 #include "../lon_widget/titlebar.hpp"
 
-#include "clock_database/clocksql.hpp"
 #include "../clock_small_window/clocksmallwindow.h"
 #include "../clock_subwidgets/chartswidget.h"
 #include "../clock_subwidgets/clockrunningwidget.h"
@@ -10,6 +9,7 @@
 #include "../lon_widget/messagebox.hpp"
 #include "../settingfileoperations.h"
 #include "../settingwidget.h"
+#include "clock_database/clocksql.hpp"
 // fixme 这里的tomatotimer应该移到utility中.
 #include "../tomatoclocktimer.h"
 
@@ -20,16 +20,15 @@ void lon::ClockMainWidget::tomatoSaveToSql() {
     // if enabel break the tomato..
     // duringtime -= timer->timerStaus()->timeleft()->minutes();
     auto time_status = timer->timerStaus();
-    auto passedtime = time_status->clock_options()->work_time()->minutes_ -
-        time_status->timeleft()->minutes();
+    auto passedtime =
+        time_status->clock_options()->work_time()->minutes_ - time_status->timeleft()->minutes();
     // 说明当前时间已经全部完成.
     if (passedtime == 0 && time_status->timeleft()->seconds() == 0)
         passedtime = time_status->clock_options()->work_time()->minutes_;
     // 说明终止计时时计时没有超过3分钟.
     if (passedtime > 3)
-        sql_p_->addAFinishedTomato(passedtime,
-                                   running_clock_label_name_,
-                                   running_clock_target_name_);
+        sql_p_->addAFinishedTomato(
+            passedtime, running_clock_label_name_, running_clock_target_name_);
 }
 
 void lon::ClockMainWidget::saveSettingToFile(ClockOptions options) {
@@ -40,8 +39,7 @@ void lon::ClockMainWidget::saveSettingToFile(ClockOptions options) {
     }
 }
 
-void lon::ClockMainWidget::iconActivated(
-    QSystemTrayIcon::ActivationReason reason) {
+void lon::ClockMainWidget::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     switch (reason) {
         case QSystemTrayIcon::Trigger:
             if (!this->isVisible())
@@ -57,10 +55,8 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
       keep_working_(false),
       sql_p_(ClockSql::Get()),
       today_data_p_(new tomato_clock::TodayData(sql_p_->getTodayData())),
-      lastweek_data_p_(
-          new tomato_clock::LastWeekData(sql_p_->getLastWeekData())),
-      lastmonth_data_p_(
-          new tomato_clock::LastMonthData(sql_p_->getLastMonthData())) {
+      lastweek_data_p_(new tomato_clock::LastWeekData(sql_p_->getLastWeekData())),
+      lastmonth_data_p_(new tomato_clock::LastMonthData(sql_p_->getLastMonthData())) {
     // this->setWindowFlags(Qt::FramelessWindowHint |
     // Qt::WindowMinimizeButtonHint);
     // title_bar_p_ = new lon::TitleBar(this);
@@ -86,10 +82,8 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     system_tray_icon_p_->setContextMenu(menu_p_);
 
-    labels_targets_widget_p_ = new LabelsAndTargetsWidget(
-        lastweek_data_p_,
-        lastmonth_data_p_,
-        this);
+    labels_targets_widget_p_ =
+        new LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_, this);
     clock_running_widget_p_ = nullptr;
     chart_widget_p_ = nullptr;
 
@@ -98,21 +92,12 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
     main_layout_ = new QVBoxLayout();
     main_layout_->addWidget(labels_targets_widget_p_);
     connect(labels_targets_widget_p_,
-            SIGNAL(startClock(const QString &, const QString &)),
+            SIGNAL(startClock(const QString&, const QString&)),
             this,
-            SLOT(displayClock(const QString &, const QString &)));
-    connect(labels_targets_widget_p_,
-            SIGNAL(changeSetting()),
-            this,
-            SLOT(displaySetting()));
-    connect(labels_targets_widget_p_,
-            SIGNAL(showChart()),
-            this,
-            SLOT(displayChart()));
-    connect(labels_targets_widget_p_,
-            SIGNAL(redrawWidget()),
-            this,
-            SLOT(displayTarget()));
+            SLOT(displayClock(const QString&, const QString&)));
+    connect(labels_targets_widget_p_, SIGNAL(changeSetting()), this, SLOT(displaySetting()));
+    connect(labels_targets_widget_p_, SIGNAL(showChart()), this, SLOT(displayChart()));
+    connect(labels_targets_widget_p_, SIGNAL(redrawWidget()), this, SLOT(displayTarget()));
     this->centerWidget()->setLayout(main_layout_);
     QWidget* temp = new QWidget(this);
     temp->setMaximumHeight(50);
@@ -120,8 +105,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     this->enabelSizeGrip();
     // 设置标题栏的背景图.
-    this->setTitleBackground(
-        new QPixmap(":/all/Res/Img/titlebarbackground.png"));
+    this->setTitleBackground(new QPixmap(":/all/Res/Img/titlebarbackground.png"));
     // 设置程序背景
     this->setBackground(new QPixmap(":/all/Res/Img/background.png"));
     // this->resize(1050, 700);
@@ -129,24 +113,17 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     this->setWindowIcon(window_icon);
     this->setTitleIcon(window_icon);
-    this->setTitle(QString{ u8"番茄钟" });
+    this->setTitle(QString{u8"番茄钟"});
 
-    connect(close_action_p_,
-            &QAction::triggered,
-            this,
-            [this](void) { this->window()->close(); });
-    connect(setting_action_p_,
-            &QAction::triggered,
-            this,
-            &ClockMainWidget::displaySetting);
+    connect(close_action_p_, &QAction::triggered, this, [this](void) { this->window()->close(); });
+    connect(setting_action_p_, &QAction::triggered, this, &ClockMainWidget::displaySetting);
 
     connect(system_tray_icon_p_,
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,
             SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    Widget::setCloseFunc(
-        std::bind([](QWidget* widget) { widget->window()->hide(); }, this));
+    Widget::setCloseFunc(std::bind([](QWidget* widget) { widget->window()->hide(); }, this));
 }
 
 lon::ClockMainWidget::~ClockMainWidget() {
@@ -156,8 +133,7 @@ lon::ClockMainWidget::~ClockMainWidget() {
     delete chart_widget_p_;
 }
 
-void lon::ClockMainWidget::displayClock(const QString& label,
-                                        const QString& target) {
+void lon::ClockMainWidget::displayClock(const QString& label, const QString& target) {
     if (labels_targets_widget_p_) {
         main_layout_->removeWidget(labels_targets_widget_p_);
         delete labels_targets_widget_p_;
@@ -173,16 +149,12 @@ void lon::ClockMainWidget::displayClock(const QString& label,
     running_clock_label_name_ = label;
     running_clock_target_name_ = target;
 
-    clock_running_widget_p_ = new ClockRunningWidget(
-        running_clock_label_name_,
-        running_clock_target_name_);
+    clock_running_widget_p_ =
+        new ClockRunningWidget(running_clock_label_name_, running_clock_target_name_);
     clock_running_widget_p_->setTimer(timer);
     main_layout_->addWidget(clock_running_widget_p_);
 
-    connect(clock_running_widget_p_,
-            SIGNAL(clockStoped()),
-            this,
-            SLOT(clockBreaked()));
+    connect(clock_running_widget_p_, SIGNAL(clockStoped()), this, SLOT(clockBreaked()));
 }
 
 void lon::ClockMainWidget::displayTarget() {
@@ -201,27 +173,17 @@ void lon::ClockMainWidget::displayTarget() {
         labels_targets_widget_p_ = nullptr;
     }
 
-    labels_targets_widget_p_ =
-        new LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
+    labels_targets_widget_p_ = new LabelsAndTargetsWidget(lastweek_data_p_, lastmonth_data_p_);
     main_layout_->addWidget(labels_targets_widget_p_);
 
     // connections
     connect(labels_targets_widget_p_,
             SIGNAL(startClock(QString, QString)),
             this,
-            SLOT(displayClock(const QString &, const QString &)));
-    connect(labels_targets_widget_p_,
-            SIGNAL(changeSetting()),
-            this,
-            SLOT(displaySetting()));
-    connect(labels_targets_widget_p_,
-            SIGNAL(showChart()),
-            this,
-            SLOT(displayChart()));
-    connect(labels_targets_widget_p_,
-            SIGNAL(redrawWidget()),
-            this,
-            SLOT(displayTarget()));
+            SLOT(displayClock(const QString&, const QString&)));
+    connect(labels_targets_widget_p_, SIGNAL(changeSetting()), this, SLOT(displaySetting()));
+    connect(labels_targets_widget_p_, SIGNAL(showChart()), this, SLOT(displayChart()));
+    connect(labels_targets_widget_p_, SIGNAL(redrawWidget()), this, SLOT(displayTarget()));
 }
 
 void lon::ClockMainWidget::displayChart() {
@@ -230,18 +192,13 @@ void lon::ClockMainWidget::displayChart() {
         delete labels_targets_widget_p_;
         labels_targets_widget_p_ = nullptr;
     }
-    chart_widget_p_ = new ChartsWidget(today_data_p_,
-                                       lastweek_data_p_,
-                                       lastmonth_data_p_);
+    chart_widget_p_ = new ChartsWidget(today_data_p_, lastweek_data_p_, lastmonth_data_p_);
     //# background
     QPalette palette;
     palette.setBrush(this->backgroundRole(), QBrush(QColor(255, 255, 255, 30)));
     chart_widget_p_->setPalette(palette);
     main_layout_->addWidget(chart_widget_p_);
-    connect(chart_widget_p_,
-            SIGNAL(closeButtonClicked()),
-            this,
-            SLOT(displayTarget()));
+    connect(chart_widget_p_, SIGNAL(closeButtonClicked()), this, SLOT(displayTarget()));
 }
 
 void lon::ClockMainWidget::clockFinished() {
@@ -252,8 +209,7 @@ void lon::ClockMainWidget::clockFinished() {
         timer->start();
     } else {
         MessageBoxWrapper* m =
-            new MessageBoxWrapper(QString{ u8"番茄完成" },
-                QString{ u8"番茄已完成." });
+            new MessageBoxWrapper(QString{u8"番茄完成"}, QString{u8"番茄已完成."});
         displayTarget();
     }
 }
@@ -262,9 +218,8 @@ void lon::ClockMainWidget::clockBreaked() {
     tomatoSaveToSql();
     timer->stop();
     timer->clear();
-    MessageBoxWrapper* m = new MessageBoxWrapper(
-        QString{ u8"番茄中断" },
-        QString{ u8"已中断, 完成数据已储存." });
+    MessageBoxWrapper* m =
+        new MessageBoxWrapper(QString{u8"番茄中断"}, QString{u8"已中断, 完成数据已储存."});
     displayTarget();
 }
 

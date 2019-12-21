@@ -8,13 +8,13 @@
 #include <QLabel>
 #include <QWidget>
 
-#include "LonTypeDefines.h"
 #include "../displayclockbase.h"
+#include "LonTypeDefines.h"
 
 namespace lon {
 namespace clock_window {
 class ProgressWidget : public DisplayClockBase {
-Q_OBJECT
+    Q_OBJECT
 private:
     QGraphicsItem* current_progress_;
 
@@ -36,9 +36,7 @@ private:
 public:
     explicit ProgressWidget(QWidget* parent = nullptr);
 
-    explicit ProgressWidget(uint16_t height,
-                            uint16_t width,
-                            QWidget* parent = nullptr);
+    explicit ProgressWidget(uint16_t height, uint16_t width, QWidget* parent = nullptr);
 
     ~ProgressWidget();
 
@@ -50,10 +48,9 @@ public slots:
     /// <param name: current> 当前进度 </param>
     /// <param name: total> 所有的进度, current/total即为当前进度条的百分比
     /// </param>
-    void progressChanged(uint16_t current, uint16_t total) {
-    }
+    void progressChanged(uint16_t current, uint16_t total) {}
 };
-} // namespace clock_window
-} // namespace lon
+}  // namespace clock_window
+}  // namespace lon
 
-#endif // PROGRESSWIDGET_H
+#endif  // PROGRESSWIDGET_H

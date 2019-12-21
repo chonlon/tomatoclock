@@ -1,18 +1,18 @@
 <RCC>
-  <qresource prefix="/icon">
-    <file>Resources/back.png</file>
-    <file>Resources/button.png</file>
-    <file>Resources/close_focus.png</file>
-    <file>Resources/close_normal.png</file>
-    <file>Resources/close_pressed.png</file>
-    <file>Resources/max_max_focus.png</file>
-    <file>Resources/max_max_normal.png</file>
-    <file>Resources/max_max_pressed.png</file>
-    <file>Resources/max_normal_focus.png</file>
-    <file>Resources/max_normal_normal.png</file>
-    <file>Resources/max_normal_pressed.png</file>
-    <file>Resources/min_focus.png</file>
-    <file>Resources/min_normal.png</file>
-    <file>Resources/min_pressed.png</file>
-  </qresource>
+    <qresource prefix="/icon">
+        <file>Resources/back.png</file>
+        <file>Resources/button.png</file>
+        <file>Resources/close_focus.png</file>
+        <file>Resources/close_normal.png</file>
+        <file>Resources/close_pressed.png</file>
+        <file>Resources/max_max_focus.png</file>
+        <file>Resources/max_max_normal.png</file>
+        <file>Resources/max_max_pressed.png</file>
+        <file>Resources/max_normal_focus.png</file>
+        <file>Resources/max_normal_normal.png</file>
+        <file>Resources/max_normal_pressed.png</file>
+        <file>Resources/min_focus.png</file>
+        <file>Resources/min_normal.png</file>
+        <file>Resources/min_pressed.png</file>
+    </qresource>
 </RCC>

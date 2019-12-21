@@ -23,7 +23,7 @@ class ClockSql;
  * \author LON
  */
 class AddTargetWidget : public Widget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QComboBox* labels_combobox_p_;
     QLineEdit* lineedit_p_;
@@ -36,8 +36,7 @@ private:
     ClockSql* sql_;
 
 public:
-    explicit AddTargetWidget(std::list<QString> labels,
-                             QWidget* parent = nullptr);
+    explicit AddTargetWidget(std::list<QString> labels, QWidget* parent = nullptr);
 
 signals:
     /// <summary>
@@ -56,6 +55,6 @@ public slots:
     /// </summary>
     void showMessage(const QString& message);
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // ADDTARGETWIDGET_H
+#endif  // ADDTARGETWIDGET_H

@@ -15,7 +15,7 @@ namespace lon {
 class ClockSql;
 
 class TargetWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     void initWidgets();
     void setWidgetsStyle();
@@ -34,6 +34,7 @@ private:
     void initLayout();
 
     void drawWorkStuation(QWidget* widget, int num);
+
 private:
     QLabel* label_p_;
     QLabel* target_label_p_;
@@ -54,9 +55,7 @@ private:
     std::shared_ptr<tomato_clock::LastMonthData> last_month_data_p_;
 
 public:
-    explicit TargetWidget(QString label_name,
-                          QString target_name,
-                          QWidget* parent = nullptr);
+    explicit TargetWidget(QString label_name, QString target_name, QWidget* parent = nullptr);
     void setLastWeekData(std::shared_ptr<tomato_clock::LastWeekData> ptr);
     void setLastMonthData(std::shared_ptr<tomato_clock::LastMonthData> ptr);
 signals:
@@ -67,5 +66,5 @@ public slots:
         emit startButtonClicked(label_name_, target_name_);
     }
 };
-} // namespace lon
-#endif // TARGETWIDGET_H
+}  // namespace lon
+#endif  // TARGETWIDGET_H

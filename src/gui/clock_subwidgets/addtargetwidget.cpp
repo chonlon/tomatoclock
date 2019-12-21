@@ -6,10 +6,8 @@
 static const int window_height = 300;
 static const int window_width = 500;
 
-lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels,
-                                      QWidget* parent /*= nullptr*/)
-    : Widget(parent, TitleBar::CLOSE_MIN),
-      sql_(ClockSql::Get()) {
+lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels, QWidget* parent /*= nullptr*/)
+    : Widget(parent, TitleBar::CLOSE_MIN), sql_(ClockSql::Get()) {
     labels_combobox_p_ = new QComboBox(this);
     lineedit_p_ = new QLineEdit(this);
     label_p_ = new QLabel(this);

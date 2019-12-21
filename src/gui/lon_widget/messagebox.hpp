@@ -14,19 +14,15 @@
 /////////////////////////////////////////////////////////////////////////
 namespace lon {
 class MessageBox : public Widget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QLabel* text_label_p_;
     QBoxLayout* center_layout_p_;
 
 public:
-    MessageBox(QWidget* parent = nullptr)
-        : Widget(parent) {
-    }
+    MessageBox(QWidget* parent = nullptr) : Widget(parent) {}
 
-    MessageBox(const QString& title,
-               const QString& message,
-               QWidget* parent = nullptr)
+    MessageBox(const QString& title, const QString& message, QWidget* parent = nullptr)
         : Widget(parent) {
         setTitle(title);
 
@@ -40,24 +36,22 @@ public:
 
         centerWidget()->setLayout(center_layout_p_);
 
-        connect(this,
-                SIGNAL(okButtonClicked()),
-                this,
-                SLOT(onOkButtonClicked()));
-        connect(this,
-                SIGNAL(cancelButtonClicked()),
-                this,
-                SLOT(onCancleButtonClicked()));
+        connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
+        connect(this, SIGNAL(cancelButtonClicked()), this, SLOT(onCancleButtonClicked()));
         this->show();
     }
 
 private slots:
-    void onOkButtonClicked() { window()->close(); }
-    void onCancleButtonClicked() { window()->close(); }
+    void onOkButtonClicked() {
+        window()->close();
+    }
+    void onCancleButtonClicked() {
+        window()->close();
+    }
 };
 
 class MessageBoxWrapper : QObject {
-Q_OBJECT
+    Q_OBJECT
 private:
     // 不允许初始化在栈上.
     ~MessageBoxWrapper() = default;
@@ -72,27 +66,23 @@ protected:
     }
 
 public:
-    MessageBoxWrapper(QString title, QString message, QObject* parent = nullptr)
-        : QObject(parent) {
+    MessageBoxWrapper(QString title, QString message, QObject* parent = nullptr) : QObject(parent) {
         message_box_p_ = new lon::MessageBox(title, message);
-        connect(message_box_p_,
-                SIGNAL(closeButtonClicked()),
-                this,
-                SLOT(onCloseButtonClicked()));
-        connect(message_box_p_,
-                SIGNAL(okButtonClicked()),
-                this,
-                SLOT(onOkButtonClicked()));
-        connect(message_box_p_,
-                SIGNAL(cancelButtonClicked()),
-                this,
-                SLOT(onCancelButtonClicked()));
+        connect(message_box_p_, SIGNAL(closeButtonClicked()), this, SLOT(onCloseButtonClicked()));
+        connect(message_box_p_, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
+        connect(message_box_p_, SIGNAL(cancelButtonClicked()), this, SLOT(onCancelButtonClicked()));
     }
 
 public slots:
-    virtual void onCloseButtonClicked() { closeAndDelete(); }
-    virtual void onOkButtonClicked() { closeAndDelete(); }
-    virtual void onCancelButtonClicked() { closeAndDelete(); }
+    virtual void onCloseButtonClicked() {
+        closeAndDelete();
+    }
+    virtual void onOkButtonClicked() {
+        closeAndDelete();
+    }
+    virtual void onCancelButtonClicked() {
+        closeAndDelete();
+    }
 };
-} // namespace lon
+}  // namespace lon
 #endif

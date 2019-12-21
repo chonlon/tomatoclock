@@ -16,7 +16,7 @@ namespace lon {
 /// 这是一个list显示widget的简单封装.
 /// 这个类会获得添加的widget的所有权.
 class ListWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
     // private:
 public:
     QVBoxLayout* main_layout_;
@@ -101,8 +101,7 @@ protected:
     }
 
 public:
-    explicit ListWidget(QWidget* parent = nullptr)
-        : QWidget(parent) {
+    explicit ListWidget(QWidget* parent = nullptr) : QWidget(parent) {
         main_layout_ = new QVBoxLayout(this);
         widget_ = new QWidget();
         inner_layout_ = new QVBoxLayout(widget_);
@@ -120,7 +119,7 @@ public:
         setVerticalScrollBarStyle();
     }
 
-    void addWidget(QWidget* widget, int stretch = 0 ,Qt::Alignment align = Qt::Alignment{}) {
+    void addWidget(QWidget* widget, int stretch = 0, Qt::Alignment align = Qt::Alignment{}) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
         inner_layout_->addWidget(widget, stretch, align);
@@ -129,7 +128,7 @@ public:
     void insertWidget(int index, QWidget* widget) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
-        inner_layout_->insertWidget(index, widget,1, Qt::AlignCenter);
+        inner_layout_->insertWidget(index, widget, 1, Qt::AlignCenter);
     }
 
     // void removeWidget(int index);
@@ -140,7 +139,9 @@ public:
         return widget_list_[index];
     }
 
-    int count() { return widget_list_.size(); }
+    int count() {
+        return widget_list_.size();
+    }
 
     void resize(int w, int h) {
         QWidget::resize(w, h);
@@ -149,8 +150,7 @@ public:
 
     void setHorizontalScrollBarVisible(bool visible) {
         scroll_area_p_->horizontalScrollBar()->setVisible(visible);
-        scroll_area_p_->setHorizontalScrollBarPolicy(
-            Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+        scroll_area_p_->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     }
 
     void setVerticalScrollBarVisible(bool visible) {
@@ -158,6 +158,6 @@ public:
         scroll_area_p_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // LISTWIDGET_HPP
+#endif  // LISTWIDGET_HPP

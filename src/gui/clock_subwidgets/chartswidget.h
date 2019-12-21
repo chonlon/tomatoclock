@@ -13,11 +13,11 @@ class QVBoxLayout;
 namespace lon {
 class ListWidget;
 class Button;
-} // namespace lon
+}  // namespace lon
 namespace QtCharts {
 class QChartView;
 class QChart;
-} // namespace QtCharts
+}  // namespace QtCharts
 
 namespace lon {
 /*!
@@ -28,7 +28,7 @@ namespace lon {
  * \author LON
  */
 class ChartsWidget : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     QComboBox* finish_line_combobox_p_;
     QComboBox* finishedtime_line_combobox_p_;
@@ -108,9 +108,8 @@ private:
     /// <param name="labels_data">生成series所用的数据.</param>
     /// <param name="title">series的标题.</param>
     /// <returns>生成的chart的指针.</returns>
-    QtCharts::QChart*
-    initPieChartSeries(std::vector<std::pair<QString, int>> labels_data,
-                       QString title = QString());
+    QtCharts::QChart* initPieChartSeries(std::vector<std::pair<QString, int>> labels_data,
+                                         QString title = QString());
 
     // init charts
     void initDayFinishedLineChart();
@@ -136,11 +135,10 @@ private:
     void initBestworkTimeWidget();
 
 public:
-    explicit ChartsWidget(
-        std::shared_ptr<tomato_clock::TodayData> todaydata_p,
-        std::shared_ptr<tomato_clock::LastWeekData> lastweekdata_p,
-        std::shared_ptr<tomato_clock::LastMonthData> lastmonthdata_p,
-        QWidget* parent = nullptr);
+    explicit ChartsWidget(std::shared_ptr<tomato_clock::TodayData> todaydata_p,
+                          std::shared_ptr<tomato_clock::LastWeekData> lastweekdata_p,
+                          std::shared_ptr<tomato_clock::LastMonthData> lastmonthdata_p,
+                          QWidget* parent = nullptr);
     ~ChartsWidget();
 
 signals:
@@ -152,6 +150,6 @@ public slots:
     void labelsPieWidgetSwitchEvent(int index);
     void targetsPieWidgetSwitchEvent(int index);
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // CHARTSWIDGET_H
+#endif  // CHARTSWIDGET_H

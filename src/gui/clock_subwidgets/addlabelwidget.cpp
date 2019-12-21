@@ -4,18 +4,15 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-lon::AddLabelWidget::AddLabelWidget(const std::list<QString> labels,
-                                    QWidget* parent)
-    : Widget(parent),
-      labels_(labels) {
+lon::AddLabelWidget::AddLabelWidget(const std::list<QString> labels, QWidget* parent)
+    : Widget(parent), labels_(labels) {
     line_edit_p_ = new QLineEdit(this);
     label_p_ = new QLabel(this);
     center_layout_p_ = new QHBoxLayout(this);
 
     label_p_->setText(QString{"标签名: "});
     label_p_->setFocus();
-    line_edit_p_->setPlaceholderText(
-        QString{"请输入标签名, 标签名不可重复."});
+    line_edit_p_->setPlaceholderText(QString{"请输入标签名, 标签名不可重复."});
     center_layout_p_->addWidget(label_p_);
     center_layout_p_->addWidget(line_edit_p_);
     centerWidget()->setLayout(center_layout_p_);
@@ -54,16 +51,7 @@ void lon::AddLabelWidget::setLineEditFocus() {
 
 void lon::AddLabelWidget::showMessage(const QString& message) {
     messagebox_p_ = new lon::MessageBox("", message);
-    connect(messagebox_p_,
-            SIGNAL(okButtonClicked()),
-            this,
-            SLOT(closeMessagebox()));
-    connect(messagebox_p_,
-            SIGNAL(cancelButtonClicked()),
-            this,
-            SLOT(closeMessagebox()));
-    connect(messagebox_p_,
-            SIGNAL(closeButtonClicked()),
-            this,
-            SLOT(setLineEditFocus()));
+    connect(messagebox_p_, SIGNAL(okButtonClicked()), this, SLOT(closeMessagebox()));
+    connect(messagebox_p_, SIGNAL(cancelButtonClicked()), this, SLOT(closeMessagebox()));
+    connect(messagebox_p_, SIGNAL(closeButtonClicked()), this, SLOT(setLineEditFocus()));
 }

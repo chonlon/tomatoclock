@@ -1,15 +1,13 @@
 #include "clockdisplaywidget.h"
 
 lon::ClockDisplayWidget::ClockDisplayWidget(QWidget* parent)
-    : DisplayClockBase(parent),
-      left_time_string_p_(new QString()) {
+    : DisplayClockBase(parent), left_time_string_p_(new QString()) {
     current_persent_ = 0;
     current_brush_ = working_foreground_brush_;
     total_time_ = nullptr;
 }
 
-void lon::ClockDisplayWidget::updateTimeDisplay(
-    const TimerStatus* timer_status) {
+void lon::ClockDisplayWidget::updateTimeDisplay(const TimerStatus* timer_status) {
     timer_status_ = timer_status;
     ClockTime const* total_time = timer_status->getTotalTime();
     current_persent_ = currentPersent(timer_status);

@@ -5,10 +5,14 @@
 
 namespace lon {
 class Menu : public QMenu {
-Q_OBJECT
+    Q_OBJECT
 public:
-    explicit Menu(QWidget* parent = nullptr) { init(); }
-    explicit Menu(const QString& title) { init(); }
+    explicit Menu(QWidget* parent = nullptr) {
+        init();
+    }
+    explicit Menu(const QString& title) {
+        init();
+    }
 
     void init() {
         setMenu(QColor("#46e6b7"));
@@ -53,6 +57,6 @@ signals:
 
 public slots:
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // MENU_H
+#endif  // MENU_H

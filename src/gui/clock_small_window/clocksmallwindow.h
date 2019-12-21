@@ -16,7 +16,7 @@ namespace clock_window {
 /// 小窗显示番茄钟的控件.
 /// </summary>
 class ClockSmallWindow : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 private:
     bool is_pressed_;
     QPoint move_start_position_;
@@ -62,6 +62,6 @@ signals:
 
 public slots:
 };
-} // namespace clock_window
-} // namespace lon
-#endif // CLOCKSMALLWINDOW_H
+}  // namespace clock_window
+}  // namespace lon
+#endif  // CLOCKSMALLWINDOW_H

@@ -41,14 +41,11 @@ private:
     QWidget* widget_p_;
     bool should_delete_;
     // copy action and default constructor are not allowed.
-    AutoDeleteWidgetPointer() {
-    }
+    AutoDeleteWidgetPointer() {}
 
-    AutoDeleteWidgetPointer(const AutoDeleteWidgetPointer&) {
-    }
+    AutoDeleteWidgetPointer(const AutoDeleteWidgetPointer&) {}
 
-    void operator=(const AutoDeleteWidgetPointer&) {
-    }
+    void operator=(const AutoDeleteWidgetPointer&) {}
 
 public:
     AutoDeleteWidgetPointer(unsigned int widget_duration, QWidget* widget) {
@@ -88,6 +85,6 @@ public:
         return widget_p_;
     }
 };
-} // namespace lon
+}  // namespace lon
 
-#endif // AUTODELETEWIDGETPOINTER_H
+#endif  // AUTODELETEWIDGETPOINTER_H
