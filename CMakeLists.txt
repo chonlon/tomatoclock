@@ -154,7 +154,7 @@ link_directories()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}")
 
-add_executable(tomatoclock ${TomatoSrc} ${TomatoMocHdr} ${TomatoUic} ${TomatoRes})
+add_executable(tomatoclock ${TomatoSrc} ${TomatoUic} ${TomatoRes})
 
 if(UNIX)
 	target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Sql Qt5::Charts pthread)

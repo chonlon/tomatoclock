@@ -95,7 +95,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     timer = nullptr;
 
-    main_layout_ = new QVBoxLayout(this);
+    main_layout_ = new QVBoxLayout();
     main_layout_->addWidget(labels_targets_widget_p_);
     connect(labels_targets_widget_p_,
             SIGNAL(startClock(const QString &, const QString &)),

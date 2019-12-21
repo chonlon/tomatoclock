@@ -42,9 +42,6 @@ lon::LabelsAndTargetsWidget::LabelsAndTargetsWidget(
 
     initConnect();
     // set this widget..
-    main_layout_p_->addLayout(labels_main_layout_p_);
-    main_layout_p_->addLayout(target_main_layout_p_);
-    this->setLayout(main_layout_p_);
 }
 
 void lon::LabelsAndTargetsWidget::setLastWeekData(
@@ -60,8 +57,8 @@ void lon::LabelsAndTargetsWidget::setLastMonthData(
 void lon::LabelsAndTargetsWidget::initLabelsLayout() {
     labels_widget_p_ = new QWidget(this);
     labels_layout_p_ = new QGridLayout(labels_widget_p_);
-    labels_main_layout_p_ = new QHBoxLayout(labels_widget_p_);
-    add_label_button_layout_p_ = new QVBoxLayout(labels_widget_p_);
+    labels_main_layout_p_ = new QHBoxLayout();
+    add_label_button_layout_p_ = new QVBoxLayout();
 
     add_label_button_p_ = new Button(this);
     add_label_button_p_->setFlat(true);
@@ -114,11 +111,12 @@ void lon::LabelsAndTargetsWidget::initLabelsLayout() {
         }
         addLabelButton(button, i);
     }
+    main_layout_p_->addLayout(labels_main_layout_p_);
 }
 
 void lon::LabelsAndTargetsWidget::initTargetsLayout() {
-    target_main_layout_p_ = new QHBoxLayout(this);
-    target_button_layout_p_ = new QVBoxLayout(this);
+    target_main_layout_p_ = new QHBoxLayout();
+    target_button_layout_p_ = new QVBoxLayout();
     targets_list_widget_p_ = new ListWidget(this);
 
     QPalette palette;
@@ -176,6 +174,7 @@ void lon::LabelsAndTargetsWidget::initTargetsLayout() {
     target_button_layout_p_->addWidget(setting_button_p_);
 
     target_main_layout_p_->addLayout(target_button_layout_p_, Qt::AlignRight);
+    main_layout_p_->addLayout(target_main_layout_p_);
 }
 
 void lon::LabelsAndTargetsWidget::addTargetWidget(QString labelname,

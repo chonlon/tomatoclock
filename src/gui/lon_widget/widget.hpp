@@ -41,7 +41,7 @@ private:
     qint64 last_time_epoch_{0};
     // 这个属性主要是在设置了背景图以后每次resize的时候都会resize背景图,
     // 可以适当设置间隔一定的时间来提高resize的流畅度.
-    qint64 reset_background_time_{50};
+    qint64 reset_background_time_{40};
 
     QTimer timer_;
     bool block_one_;
@@ -137,7 +137,6 @@ protected:
             this->setBackground(pixmap_);
         } else if (current_epoch - last_time_epoch_ >= reset_background_time_) {
             this->setBackground(pixmap_);
-            qDebug() << current_epoch << "direct";
         } else {
             if (!block_one_) {
                 timer_.start(reset_background_time_);
