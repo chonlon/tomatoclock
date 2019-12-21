@@ -13,6 +13,10 @@ public:
     ~SettingFileOperations() {
     }
 
+    /**
+     * \brief save clock options, invoke when setting changed and widget was closed.
+     * \param option clock options operate by user.
+     */
     void saveClockOptionToFile(const lon::ClockOptions& option);
     lon::ClockOptions readClockOptionFromFile();
 };

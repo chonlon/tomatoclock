@@ -1,4 +1,4 @@
-#ifndef LON_WIDGET
+﻿#ifndef LON_WIDGET
 #define LON_WIDGET
 
 #include "button.hpp"
@@ -37,6 +37,10 @@ private:
     bool size_girp_enabled;
 
     QPixmap* pixmap_;
+
+    qint64 last_time_epoch_{0};
+    // 这个属性主要是在设置了背景图以后每次resize的时候都会resize背景图, 可以适当设置间隔一定的时间来提高resize的流畅度.
+    qint64 reset_background_time_{100};
 
 protected:
     QWidget* center_widget_;
@@ -123,6 +127,9 @@ private:
     }
 
 protected:
+
+
+
     void resizeEvent(QResizeEvent* event) override {
         QWidget::resizeEvent(event);
         sizeChanged(event);
@@ -130,7 +137,13 @@ protected:
             return;
         if (pixmap_->isNull())
             return;
-        this->setBackground(pixmap_);
+        const auto current_epoch = QDateTime::currentMSecsSinceEpoch();
+        qDebug() << event->size().width() << " h: " << event->size().height() << "\n";
+        if(last_time_epoch_ == 0) {
+            last_time_epoch_ = current_epoch;
+        } else if(current_epoch - last_time_epoch_ >= reset_background_time_){
+            //this->setBackground(pixmap_);
+        }
     }
 
 public:
@@ -173,6 +186,14 @@ public:
         delete pixmap_;
         delete center_widget_;
         delete bottom_bar_;
+    }
+
+    qint64 getResetBackgroundTime() const {
+        return reset_background_time_;
+    }
+
+    void setResetBackgroundTime(const qint64 reset_background_time) {
+        reset_background_time_ = reset_background_time;
     }
 
     /// <summary> 返回中间栏的widget指针. </summary>
@@ -237,16 +258,17 @@ public:
         this->setAutoFillBackground(true);
         //判断图片是否为空
         if (pixmap->isNull()) {
-            qDebug() << tr("illege arguments") << endl;
+            qDebug() << tr("illege arguments, your image is empty") << __FILE__ << "\n";
             return;
         }
         //设置窗口的背景
         QPalette palette = this->palette();
+        auto brush = QBrush(pixmap->scaled(this->size(),
+            Qt::IgnoreAspectRatio,
+            Qt::SmoothTransformation));
         palette.setBrush(
             this->backgroundRole(),
-            QBrush(pixmap->scaled(this->size(),
-                                  Qt::IgnoreAspectRatio,
-                                  Qt::SmoothTransformation)));
+            std::move(brush));
         this->setPalette(palette);
         pixmap_ = pixmap;
     }

@@ -17,6 +17,7 @@ public:
     explicit temp(QWidget* parent = nullptr);
     ~temp();
 
+    void f(int a, int b);
 private:
     Ui::temp* ui;
     QLabel* label;

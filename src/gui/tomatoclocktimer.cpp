@@ -1,4 +1,4 @@
-#include "tomatoclocktimer.h"
+﻿#include "tomatoclocktimer.h"
 #include "settingfileoperations.h"
 #include <QDebug>
 #include <exception>
@@ -10,7 +10,7 @@ void lon::TomatoClockTimer::setDisplayClockPointer(
 
 lon::TomatoClockTimer::TomatoClockTimer(QObject* parent)
     : QObject(parent),
-      started_(false) {
+      running_(false) {
     display_clock_ = nullptr;
     timer_ = new QTimer(this);
     // #timer

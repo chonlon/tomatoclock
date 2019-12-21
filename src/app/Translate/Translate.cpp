@@ -1,4 +1,4 @@
-#include "Translate.h"
+﻿#include "Translate.h"
 
 #include <QCryptographicHash>
 #include <QNetWorkReply>
@@ -94,9 +94,9 @@ void Translate::youdaoTranslate(const QString& source) {
                             isObject()) {
                             QVariantMap data = json_document.toVariant().toMap();
                             //                    qDebug() << data;
-                            int errorcode = data[QLatin1String("errorCode")].toInt();
+                            const int error_code = data[QLatin1String("errorCode")].toInt();
 
-                            if (0 == errorcode) {
+                            if (0 == error_code) {
                                 std::vector<QString> result;
                                 QVariantList detailList = data[QLatin1String("translation")].
                                     toList();
@@ -106,7 +106,7 @@ void Translate::youdaoTranslate(const QString& source) {
                                 auto basicMap = data[QLatin1String("basic")].toMap();
                                 auto detailTranslations = basicMap[QLatin1String("explains")].
                                     toList();
-                                for (auto i : detailTranslations) {
+                                for (const auto& i : detailTranslations) {
                                     result.push_back(i.toString());
                                 }
                                 emit translateResult(result);
@@ -159,7 +159,7 @@ bool Translate::eventFilter(QObject* watched, QEvent* event) {
     Q_UNUSED(watched);
 
     if (event->type() == QEvent::KeyPress) {
-        auto key_event = static_cast<QKeyEvent*>(event);
+        auto key_event = dynamic_cast<QKeyEvent*>(event);
         switch (key_event->key()) {
             case Qt::Key_Escape:
             case Qt::Key_Cancel:
@@ -230,8 +230,8 @@ void Translate::displayResult(std::vector<QString> result) {
     font.setFamily(QString::fromUtf8("Microsoft YaHei"));
     font.setPointSize(16);
     result.erase(std::unique(result.begin(), result.end()), result.end());
-    for (auto i : result) {
-        QLineEdit* line_edit = new QLineEdit(this);
+    for (const auto& i : result) {
+        auto line_edit = new QLineEdit(this);
         line_edit->setReadOnly(true);
         line_edit->setText(i);
         line_edit->setFont(font);

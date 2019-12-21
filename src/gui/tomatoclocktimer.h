@@ -12,7 +12,7 @@
 namespace lon {
 /// <summary> 工作法时钟 </summary>
 class TomatoClockTimer : public QObject {
-    Q_OBJECT
+Q_OBJECT
 private:
     bool running_;
 
@@ -44,7 +44,8 @@ public:
     /// <summary>
     /// 清除此次运行, 比如番茄钟中途被关闭, 回退到上一个状态, 并停止计时.
     /// </summary>
-    void clearRunning() {}
+    void clearRunning() {
+    }
 
 signals:
     void tomatoFinished();
@@ -52,5 +53,5 @@ public slots:
 private slots:
     void oneSecondPassed();
 };
-}  // namespace lon
+} // namespace lon
 #endif  // TOMATOCLOCKTIMER_H
