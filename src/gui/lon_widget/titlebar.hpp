@@ -391,8 +391,8 @@ private slots:
             emit maximizeButtonClicked();
             max_func_();
         } else if (pButton == pclose_button_) {
-            close_func_();
             emit closeButtonClicked();
+            close_func_();
         }
     }
 };

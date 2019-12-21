@@ -69,7 +69,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     system_tray_icon_p_ = new QSystemTrayIcon(this);
     system_tray_icon_p_->setIcon(window_icon);
-    system_tray_icon_p_->setToolTip(QString{u8"番茄学习助手"});
+    system_tray_icon_p_->setToolTip(QString{u8"我是番茄哒"});
     system_tray_icon_p_->show();
 
     close_action_p_ = new QAction(QString{u8"退出番茄钟"}, this);
@@ -129,7 +129,7 @@ lon::ClockMainWidget::ClockMainWidget(QWidget* parent)
 
     this->setWindowIcon(window_icon);
     this->setTitleIcon(window_icon);
-    this->setTitle(QString{ u8"学习助手" });
+    this->setTitle(QString{ u8"番茄钟" });
 
     connect(close_action_p_,
             &QAction::triggered,

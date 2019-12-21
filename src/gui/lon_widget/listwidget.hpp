@@ -120,16 +120,16 @@ public:
         setVerticalScrollBarStyle();
     }
 
-    void addWidget(QWidget* widget) {
+    void addWidget(QWidget* widget, int stretch = 0 ,Qt::Alignment align = Qt::Alignment{}) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
-        inner_layout_->addWidget(widget);
+        inner_layout_->addWidget(widget, stretch, align);
     }
 
     void insertWidget(int index, QWidget* widget) {
         widget_list_.emplace_back(widget);
         inner_layout_->addSpacing(20);
-        inner_layout_->insertWidget(index, widget);
+        inner_layout_->insertWidget(index, widget,1, Qt::AlignCenter);
     }
 
     // void removeWidget(int index);

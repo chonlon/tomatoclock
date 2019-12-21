@@ -254,6 +254,7 @@ void lon::LabelsAndTargetsWidget::initTargets(QString label_name,
     if (targets_list_widget_p_->count() == 0 && label_name.size()) {
         Button* delete_label_button =
             new Button(targets_list_widget_p_);
+        targets_list_widget_p_->addWidget(delete_label_button, 1, Qt::AlignCenter);
         delete_label_button->setFixedSize(100, 50);
         delete_label_button->setText(QString("%1%2")
                                      .arg(QString("删除 "))
@@ -394,9 +395,3 @@ void lon::LabelsAndTargetsWidget::onLabelButtonClicked() {
     current_widget_pointer_->setShouldDelete(false);
     current_widget_pointer_->getWidgetPointer()->setVisible(true);
 }
-
-// void lon::LabelsAndTargetsWidget::startClock(const QString &label_name,const
-// QString &target_name)
-//{
-//	qDebug() << "-------------" << label_name << "=======" << target_name;
-//}
