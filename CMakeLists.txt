@@ -96,8 +96,6 @@ set(LonWidgetSrc
 set(TomatoSrc
 	${SrcDir}/app/main.cpp
 	${SrcDir}/gui/displayclockbase.h
-	${SrcDir}/gui/mainwindow.cpp
-	${SrcDir}/gui/mainwindow.h
 	#fix
 	${SrcDir}/gui/clock_main_widget/clockmainwidget.cpp
 	${SrcDir}/gui/clock_main_widget/clockmainwidget.h
@@ -128,8 +126,6 @@ set(TomatoSrc
 	${SrcDir}/gui/settingfileoperations.h
 	${SrcDir}/gui/settingwidget.h
 	${SrcDir}/gui/settingwidget.cpp
-	${SrcDir}/gui/temp.cpp
-	${SrcDir}/gui/temp.h
 	#fix
 	${SrcDir}/gui/tomatoclocktimer.cpp
 	${SrcDir}/gui/tomatoclocktimer.h
@@ -141,15 +137,10 @@ set(TomatoSrc
 	${LonWidgetSrc}
 )
 
-#头文件
-set(TomatoMocHdr
-)
 
 
 #需要使用uic去编译的ui文件
 set(TomatoUic
-	${SrcDir}/gui/mainwindow.ui
-	${SrcDir}/gui/temp.ui
 	${SrcDir}/gui/settingwidget.ui
 )
 
