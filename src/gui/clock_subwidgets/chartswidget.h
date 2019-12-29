@@ -57,6 +57,7 @@ private:
     std::shared_ptr<tomato_clock::LastMonthData> lastmonthdata_p_;
     std::shared_ptr<tomato_clock::LastYearData> lastyeardata_p_;
 
+    // todo 在listwidget的右边显示一个指示栏。
     ListWidget* list_widget_p_;
     Button* close_button_p_;
 

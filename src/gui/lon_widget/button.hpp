@@ -54,7 +54,6 @@ protected:
 
         if (this->isEnabled() && focus_icon_) {
             this->setIcon(*focus_icon_);
-            qDebug() << focus_icon_->data_ptr();
         } else {
             qDebug() << "button is not enabled or icon is not exits";
         }

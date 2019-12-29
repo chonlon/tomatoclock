@@ -34,8 +34,13 @@ lon::ClockRunningWidget::ClockRunningWidget(const QString label_name,
     font.setPointSize(10);
     label_label_p_->setFont(font);
     label_label_p_->setAlignment(Qt::AlignCenter);
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, QColor{qRgba(179,196,230,150)});
+    label_label_p_->setPalette(palette);
     main_layout_p_->addWidget(label_label_p_, 1, 0, 1, 2);
     target_label_p_ = new QLabel(this);
+    palette.setColor(QPalette::WindowText, QColor{qRgba(134,227,237, 150)});
+    target_label_p_->setPalette(palette);
     target_label_p_->setText(target_name);
     target_label_p_->setMaximumSize(QSize(16777215, 50));
     QFont font1;
@@ -54,24 +59,26 @@ lon::ClockRunningWidget::ClockRunningWidget(const QString label_name,
     setReceiveTimerWidget(main_display_widget_p_);
 
     stop_button_p_->setFlat(true);
+    stop_button_p_->setFixedSize(25, 25);
     stop_button_p_->setStyleSheet("border:none");
     stop_button_p_->setNormal(new QIcon(":/icon/Icons/stop_normal.png"));
     stop_button_p_->setFocus(new QIcon(":/icon/Icons/stop_focus.png"));
     stop_button_p_->setPressed(new QIcon(":/icon/Icons/stop_pressed.png"));
+    stop_button_p_->setToolTip(u8"停止番茄钟");
 
     small_window_switch_button_p_->setFlat(true);
+    small_window_switch_button_p_->setFixedSize(25, 25);
     small_window_switch_button_p_->setStyleSheet("border:none");
     small_window_switch_button_p_->setNormal(new QIcon(":/icon/Icons/small_window_normal.png"));
     small_window_switch_button_p_->setFocus(new QIcon(":/icon/Icons/small_window_focus.png"));
     small_window_switch_button_p_->setPressed(new QIcon(":/icon/Icons/small_window_pressed.png"));
+    small_window_switch_button_p_->setToolTip(u8"小窗口显示");
 
     connect(stop_button_p_, SIGNAL(clicked()), this, SLOT(onStopButtonClicked()));
     connect(
         small_window_switch_button_p_, SIGNAL(clicked()), this, SLOT(onSmallWindowButtonClicked()));
     this->show();
 }
-
-lon::ClockRunningWidget::~ClockRunningWidget() {}
 
 void lon::ClockRunningWidget::onStopButtonClicked() {
     emit clockStoped();

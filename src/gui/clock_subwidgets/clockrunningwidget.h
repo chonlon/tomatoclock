@@ -52,7 +52,7 @@ public:
     void setTimer(TomatoClockTimer* timer);
 
     explicit ClockRunningWidget(QString label_name, QString target_name, QWidget* parent = nullptr);
-    ~ClockRunningWidget();
+    ~ClockRunningWidget() override = default;
 
 signals:
 
