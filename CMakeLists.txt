@@ -121,14 +121,13 @@ set(TomatoSrc
         ${SrcDir}/gui/clock_subwidgets/piecharttest.hpp
         ${SrcDir}/gui/clock_subwidgets/targetwidget.cpp
         ${SrcDir}/gui/clock_subwidgets/targetwidget.h
-        ${SrcDir}/gui/qstringhash.h
         ${SrcDir}/gui/settingfileoperations.cpp
         ${SrcDir}/gui/settingfileoperations.h
         ${SrcDir}/gui/settingwidget.h
         ${SrcDir}/gui/settingwidget.cpp
-        #fix
-        ${SrcDir}/gui/tomatoclocktimer.cpp
-        ${SrcDir}/gui/tomatoclocktimer.h
+        ${SrcDir}/utility/qstringhash.h
+        ${SrcDir}/utility/tomatoclocktimer.cpp
+        ${SrcDir}/utility/tomatoclocktimer.h
         ${SrcDir}/utility/LonTypeDefines.h
         ${SrcDir}/utility/clockoptions.hpp
         ${SrcDir}/utility/TimeStatus.hpp

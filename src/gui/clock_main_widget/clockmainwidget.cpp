@@ -11,7 +11,7 @@
 #include "../settingwidget.h"
 #include "clock_database/clocksql.hpp"
 // fixme 这里的tomatotimer应该移到utility中.
-#include "../tomatoclocktimer.h"
+#include "src/utility/tomatoclocktimer.h"
 
 #include <QGridLayout>
 #include <QSystemTrayIcon>

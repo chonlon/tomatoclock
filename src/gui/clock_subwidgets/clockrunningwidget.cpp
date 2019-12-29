@@ -1,6 +1,6 @@
 ﻿#include "clockrunningwidget.h"
 #include "../lon_widget/button.hpp"
-#include "../tomatoclocktimer.h"
+#include "src/utility/tomatoclocktimer.h"
 #include <QLabel>
 
 void lon::ClockRunningWidget::setReceiveTimerWidget(DisplayClockBase* displaye_p) {

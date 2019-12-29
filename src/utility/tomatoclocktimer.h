@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "TimeStatus.hpp"
-#include "displayclockbase.h"
+#include "src/gui/displayclockbase.h"
 
 namespace lon {
 /// <summary> 工作法时钟 </summary>
