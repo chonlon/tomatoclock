@@ -24,6 +24,7 @@
 #enable res files
 !*.jpg
 !*.png
+!*.gif
 
 #enable qt files
 !*.ui
@@ -41,10 +42,6 @@
 !*.cmake
 !*CMakeLists.txt
 
-#enable vscode config files
-!*c_cpp_properties.json
-!*launch.json
-!*task.json
 
 #igore qt generate files
 ui*.h
