@@ -17,7 +17,6 @@ namespace lon {
  *
  * \author LON
  */
-
 class AddLabelWidget : public Widget {
     Q_OBJECT
 private:

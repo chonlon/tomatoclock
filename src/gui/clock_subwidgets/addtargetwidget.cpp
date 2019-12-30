@@ -25,6 +25,7 @@ lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels, QWidget* parent
     main_layout_p_->addWidget(label_p_, 1, 0, 1, 1);
     main_layout_p_->addWidget(lineedit_p_, 1, 1, 1, 2);
 
+    this->setWindowFlag(Qt::Dialog);
     this->centerWidget()->setLayout(main_layout_p_);
     this->setFixedSize(window_width, window_height);
     connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
@@ -42,5 +43,6 @@ void lon::AddTargetWidget::onOkButtonClicked() {
 }
 
 void lon::AddTargetWidget::showMessage(const QString& message) {
+    // fixme 更好的实现方式是设置deleteonclose。
     new MessageBoxWrapper("", message);
 }

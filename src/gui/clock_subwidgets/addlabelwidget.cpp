@@ -5,7 +5,7 @@
 #endif
 
 lon::AddLabelWidget::AddLabelWidget(const std::list<QString> labels, QWidget* parent)
-    : Widget(parent), labels_(labels) {
+    : Widget(parent, TitleBar::CLOSE_MIN), labels_(labels) {
     line_edit_p_ = new QLineEdit(this);
     label_p_ = new QLabel(this);
     center_layout_p_ = new QHBoxLayout(this);
@@ -17,6 +17,10 @@ lon::AddLabelWidget::AddLabelWidget(const std::list<QString> labels, QWidget* pa
     center_layout_p_->addWidget(line_edit_p_);
     centerWidget()->setLayout(center_layout_p_);
 
+
+    //this->setWindowModality(Qt::WindowModal);
+    this->setWindowFlag(Qt::Dialog);
+    
     this->resize(QSize(400, 250));
     connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
 }
@@ -50,6 +54,7 @@ void lon::AddLabelWidget::setLineEditFocus() {
 }
 
 void lon::AddLabelWidget::showMessage(const QString& message) {
+    // bug memeory leak here
     messagebox_p_ = new lon::MessageBox("", message);
     connect(messagebox_p_, SIGNAL(okButtonClicked()), this, SLOT(closeMessagebox()));
     connect(messagebox_p_, SIGNAL(cancelButtonClicked()), this, SLOT(closeMessagebox()));
