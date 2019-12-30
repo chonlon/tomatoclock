@@ -1,6 +1,5 @@
 ﻿#include "clockmainwidget.h"
 #include "../lon_widget/titlebar.hpp"
-
 #include "../clock_small_window/clocksmallwindow.h"
 #include "../clock_subwidgets/chartswidget.h"
 #include "../clock_subwidgets/clockrunningwidget.h"

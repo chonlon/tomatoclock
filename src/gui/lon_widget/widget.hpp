@@ -80,7 +80,7 @@ private:
             "QPushButton{border-image: url(:/icon/Resources/button.png);} "
             "QPus0hButton:hover{border-image: url(:/icon/Resources/button.png);} "
             "QPushButton:pressed{border-image: url(:/icon/Resources/button.png);} ");
-        ok_button_->setText("确认");
+        ok_button_->setText(u8"确认");
         ok_button_->setFixedSize(90, 30);
         ok_button_->setFlat(true);
 
@@ -89,7 +89,7 @@ private:
             "QPus0hButton:hover{border-image: url(:/icon/Resources/button.png);} "
             "QPushButton:pressed{border-image: url(:/icon/Resources/button.png);} ");
 
-        cancel_button_->setText("取消");
+        cancel_button_->setText(u8"取消");
         cancel_button_->setFixedSize(90, 30);
         cancel_button_->setFlat(true);
 
