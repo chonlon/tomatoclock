@@ -1,5 +1,5 @@
 #|---------------------------------------------------------------------------------------|#
-#|                      较新版本cmake qt项目写法                                            |#
+#|                      较新版本cmake qt项目写法                                         |#
 #|---------------------------------------------------------------------------------------|#
 cmake_minimum_required(VERSION 3.0.2)
 project(tomatoclock)
@@ -9,9 +9,13 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 COMPONENTS Core Gui Network PrintSupport Widgets Sql Charts REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Network Widgets Sql Charts REQUIRED)
 
 add_definitions(-DUNICODE -D_UNICODE)
+
+if (WIN32)
+	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -52,11 +56,9 @@ if (WIN32)
         configure_file("${QT_BINARY_DIR}/Qt5Network${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Network${SUFFIX}.dll" COPYONLY)
         configure_file("${QT_BINARY_DIR}/Qt5Svg${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Svg${SUFFIX}.dll" COPYONLY)
         configure_file("${QT_BINARY_DIR}/Qt5Widgets${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Widgets${SUFFIX}.dll" COPYONLY)
-        #configure_file("${QT_BINARY_DIR}/Qt5WinExtras${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5WinExtras${SUFFIX}.dll" COPYONLY)
+        configure_file("${QT_BINARY_DIR}/Qt5Charts${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Charts${SUFFIX}.dll" COPYONLY)
 
         configure_file("${QT_PLUGINS_DIR}/platforms/qwindows${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/platforms/qwindows${SUFFIX}.dll" COPYONLY)
-
-        configure_file("${QT_PLUGINS_DIR}/styles/qwindowsvistastyle${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/styles/qwindowsvistastyle${SUFFIX}.dll" COPYONLY)
 
         configure_file("${QT_PLUGINS_DIR}/imageformats/qgif${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qgif${SUFFIX}.dll" COPYONLY)
         configure_file("${QT_PLUGINS_DIR}/imageformats/qicns${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qicns${SUFFIX}.dll" COPYONLY)
@@ -150,16 +152,22 @@ include_directories(${SrcDir}/utility)
 
 link_directories()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}")
+
+if (UNIX)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/")
+else ()
+	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+		set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/")
+	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+endif ()
 
 add_executable(tomatoclock ${TomatoSrc} ${TomatoUic} ${TomatoRes})
 
 if (UNIX)
-    target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Sql Qt5::Charts pthread)
+    target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Sql Qt5::Charts pthread)
 endif (UNIX)
 if (WIN32)
-    target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Sql Qt5::Charts)
+    target_link_libraries(tomatoclock Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Sql Qt5::Charts)
 endif (WIN32)
-
-target_link_libraries(tomatoclock)
 
