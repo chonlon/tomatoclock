@@ -38,6 +38,8 @@ public:
 
         connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
         connect(this, SIGNAL(cancelButtonClicked()), this, SLOT(onCancleButtonClicked()));
+        this->setWindowFlag(Qt::Dialog);
+
         this->show();
     }
 

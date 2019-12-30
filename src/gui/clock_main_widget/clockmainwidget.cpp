@@ -223,7 +223,8 @@ void lon::ClockMainWidget::clockBreaked() {
 }
 
 void lon::ClockMainWidget::displaySetting() {
-    setting_widget_p_ = new SettingWidget();
+    if(!setting_widget_p_)
+        setting_widget_p_ = new SettingWidget();
     setting_widget_p_->show();
     connect(setting_widget_p_,
             SIGNAL(settingChanged(lon::ClockOptions)),

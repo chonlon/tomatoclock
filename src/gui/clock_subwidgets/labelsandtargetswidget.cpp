@@ -273,6 +273,10 @@ void lon::LabelsAndTargetsWidget::closeAddTargetWidget() {
 
 void lon::LabelsAndTargetsWidget::addTarget() {
     auto labels = sql_->getAllLabels();
+    {
+        // fixme 不需要每次都重新申请内存。
+       delete addtargetwidget_p_；
+    }
     auto addtargetwidget_p_ = new AddTargetWidget(labels);
     addtargetwidget_p_->show();
     connect(addtargetwidget_p_,
@@ -285,6 +289,10 @@ void lon::LabelsAndTargetsWidget::addTarget() {
 
 void lon::LabelsAndTargetsWidget::addLabel() {
     auto labels = sql_->getAllLabels();
+    {
+        // fixme 不需要每次都重新申请内存。
+        delete addlabelwidget_p_;
+    }
     addlabelwidget_p_ = new AddLabelWidget(labels);
     addlabelwidget_p_->show();
     connect(addlabelwidget_p_, SIGNAL(labelAdded(QString)), this, SLOT(labelAdded(QString)));
