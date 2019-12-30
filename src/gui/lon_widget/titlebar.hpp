@@ -1,4 +1,4 @@
-#ifndef LON_TITLEBAR
+﻿#ifndef LON_TITLEBAR
 #define LON_TITLEBAR
 
 #include "button.hpp"

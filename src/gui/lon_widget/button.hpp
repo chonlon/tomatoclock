@@ -1,4 +1,4 @@
-#ifndef LON_BUTTON
+﻿#ifndef LON_BUTTON
 #define LON_BUTTON
 
 #include <QPushButton>
