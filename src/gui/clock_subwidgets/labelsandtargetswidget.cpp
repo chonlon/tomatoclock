@@ -257,7 +257,6 @@ void lon::LabelsAndTargetsWidget::deleteLabel() {
 
 void lon::LabelsAndTargetsWidget::closeAddLabelWidget() {
     if (addlabelwidget_p_) {
-        addlabelwidget_p_->window()->close();
         delete addlabelwidget_p_;
         addlabelwidget_p_ = nullptr;
     }
@@ -265,7 +264,6 @@ void lon::LabelsAndTargetsWidget::closeAddLabelWidget() {
 
 void lon::LabelsAndTargetsWidget::closeAddTargetWidget() {
     if (addtargetwidget_p_) {
-        addtargetwidget_p_->window()->close();
         delete addtargetwidget_p_;
         addtargetwidget_p_ = nullptr;
     }
@@ -273,31 +271,25 @@ void lon::LabelsAndTargetsWidget::closeAddTargetWidget() {
 
 void lon::LabelsAndTargetsWidget::addTarget() {
     auto labels = sql_->getAllLabels();
-    {
-        // fixme 不需要每次都重新申请内存。
-       delete addtargetwidget_p_;
-    }
-    addtargetwidget_p_ = new AddTargetWidget(labels, this);
+    if(!addlabelwidget_p_)
+        addtargetwidget_p_ = new AddTargetWidget(labels, this);
+    else
+        addtargetwidget_p_->setLabels(labels);
     addtargetwidget_p_->show();
     connect(addtargetwidget_p_,
             SIGNAL(targetAdded(QString, QString)),
             this,
             SLOT(targetAdded(QString, QString)));
-    connect(addtargetwidget_p_, SIGNAL(closeButtonClicked()), this, SLOT(closeAddTargetWidget()));
-    connect(addtargetwidget_p_, SIGNAL(cancelButtonClicked()), this, SLOT(closeAddTargetWidget()));
 }
 
 void lon::LabelsAndTargetsWidget::addLabel() {
     auto labels = sql_->getAllLabels();
-    {
-        // fixme 不需要每次都重新申请内存。
-        delete addlabelwidget_p_;
-    }
-    addlabelwidget_p_ = new AddLabelWidget(labels, this);
+    if(!addlabelwidget_p_)
+        addlabelwidget_p_ = new AddLabelWidget(std::move(labels), this);
+    else
+        addlabelwidget_p_->setLabels(std::move(labels));
     addlabelwidget_p_->show();
     connect(addlabelwidget_p_, SIGNAL(labelAdded(QString)), this, SLOT(labelAdded(QString)));
-    connect(addlabelwidget_p_, SIGNAL(cancelButtonClicked()), this, SLOT(closeAddLabelWidget()));
-    connect(addlabelwidget_p_, SIGNAL(closeButtonClicked()), this, SLOT(closeAddLabelWidget()));
 }
 
 void lon::LabelsAndTargetsWidget::labelAdded(QString text) {

@@ -5,7 +5,7 @@ SettingWidget::SettingWidget(QWidget* parent) : Widget(parent) {
     this->setCenterWidget(widget_p_);
     this->setBottomBar(nullptr);
     this->setFixedSize(800, 550);
-    this->setCloseFunc(std::bind([](QWidget* widget) { widget->setVisible(false); }, this));
+    this->setCloseFunc([this](){this->close();});
     connect(this, &lon::Widget::closeButtonClicked, this, &SettingWidget::closingWindow);
 }
 

@@ -41,6 +41,7 @@ public slots:
     void setLineEditFocus();
 
     void showMessage(const QString& message);
+    void setLabels(const std::list<QString> labels);
 };
 }  // namespace lon
 #endif  // ADDLABELWIDGET_H

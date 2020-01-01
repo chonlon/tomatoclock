@@ -141,11 +141,10 @@ class SettingWidget : public lon::Widget {
     Q_OBJECT
 public:
     explicit SettingWidget(QWidget* parent = nullptr);
-    ~SettingWidget() = default;
+    ~SettingWidget() {};
 
 private:
     SettingWidgetPrivate* widget_p_;
-    lon::ClockOptions* clock_option_setted_p_;
 
 signals:
     void settingChanged(lon::ClockOptions);

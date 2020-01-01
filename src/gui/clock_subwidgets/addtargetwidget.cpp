@@ -6,7 +6,7 @@
 static const int window_height = 300;
 static const int window_width = 500;
 
-lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels, QWidget* parent /*= nullptr*/)
+lon::AddTargetWidget::AddTargetWidget(std::list<QString>& labels, QWidget* parent /*= nullptr*/)
     : Widget(parent, TitleBar::CLOSE_MIN), sql_(ClockSql::Get()) {
     labels_combobox_p_ = new QComboBox(this);
     lineedit_p_ = new QLineEdit(this);
@@ -28,6 +28,7 @@ lon::AddTargetWidget::AddTargetWidget(std::list<QString> labels, QWidget* parent
     this->setWindowFlag(Qt::Dialog);
     this->centerWidget()->setLayout(main_layout_p_);
     this->setFixedSize(window_width, window_height);
+    this->setCloseFunc([this](){this->close();});
     connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
 }
 
@@ -45,4 +46,10 @@ void lon::AddTargetWidget::onOkButtonClicked() {
 void lon::AddTargetWidget::showMessage(const QString& message) {
     // fixme 更好的实现方式是设置deleteonclose。
     new MessageBoxWrapper("", message);
+}
+void lon::AddTargetWidget::setLabels(std::list<QString>& labels) {
+    labels_combobox_p_->clear();
+    for (auto label : labels) {
+        labels_combobox_p_->addItem(label);
+    }
 }

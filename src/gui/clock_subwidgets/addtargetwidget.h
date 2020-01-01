@@ -36,8 +36,9 @@ private:
     ClockSql* sql_;
 
 public:
-    explicit AddTargetWidget(std::list<QString> labels, QWidget* parent = nullptr);
+    explicit AddTargetWidget(std::list<QString>& labels, QWidget* parent = nullptr);
 
+    void setLabels(std::list<QString>& labels);
 signals:
     /// <summary>
     /// 当一个合法的target被添加, 则发射此信号.

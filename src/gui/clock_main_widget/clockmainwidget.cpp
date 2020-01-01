@@ -31,7 +31,7 @@ void lon::ClockMainWidget::tomatoSaveToSql() {
 }
 
 void lon::ClockMainWidget::saveSettingToFile(ClockOptions options) {
-    SettingFileOperations().saveClockOptionToFile(std::move(options));
+    SettingFileOperations::saveClockOptionToFile(std::move(options));
     if (setting_widget_p_) {
         delete setting_widget_p_;
         setting_widget_p_ = nullptr;
@@ -217,8 +217,7 @@ void lon::ClockMainWidget::clockBreaked() {
     tomatoSaveToSql();
     timer->stop();
     timer->clear();
-    MessageBoxWrapper* m =
-        new MessageBoxWrapper(QString{u8"番茄中断"}, QString{u8"已中断, 完成数据已储存."});
+    MessageBox* m = new MessageBox{QString{u8"番茄中断"}, QString{u8"已中断, 完成数据已储存."}};
     displayTarget();
 }
 
@@ -227,7 +226,7 @@ void lon::ClockMainWidget::displaySetting() {
         setting_widget_p_ = new SettingWidget();
     setting_widget_p_->show();
     connect(setting_widget_p_,
-            SIGNAL(settingChanged(lon::ClockOptions)),
+            &SettingWidget::settingChanged,
             this,
-            SLOT(saveSettingToFile(lon::ClockOptions)));
+            &ClockMainWidget::saveSettingToFile);
 }

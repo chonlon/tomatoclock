@@ -20,9 +20,13 @@ lon::AddLabelWidget::AddLabelWidget(const std::list<QString> labels, QWidget* pa
 
     //this->setWindowModality(Qt::WindowModal);
     this->setWindowFlag(Qt::Dialog);
+    this->setCloseFunc([this](){this->setVisible(false);});
     
     this->resize(QSize(400, 250));
     connect(this, SIGNAL(okButtonClicked()), this, SLOT(onOkButtonClicked()));
+}
+void lon::AddLabelWidget::setLabels(const std::list<QString> labels) {
+    labels_ = labels;
 }
 
 void lon::AddLabelWidget::labelExists() {
