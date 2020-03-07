@@ -13,6 +13,8 @@
 #include <functional>
 #include <memory>
 
+#pragma execution_character_set("utf-8")
+
 namespace lon {
 class TitleBar : public QWidget {
     Q_OBJECT
