@@ -139,7 +139,7 @@ public:
         return widget_list_[index];
     }
 
-    int count() {
+    size_t count() {
         return widget_list_.size();
     }
 

@@ -97,11 +97,10 @@ private:
     /// 以data_array初始化一个包含QLineSeries的Chart.
     /// </summary>
     /// <param name="data_array">生成的series所用的数据.</param>
-    /// <param name="length">data_array的长度.</param>
     /// <param name="title">生成series的标题.</param>
     /// <returns>生成的chart的指针.</returns>
-    QtCharts::QChart* initLineChartSeries(uint16_t* data_array,
-                                          unsigned int length,
+    template<size_t Size>
+    QtCharts::QChart* initLineChartSeries(const std::array<uint16_t, Size>& data_array,
                                           QString title = QString());
     /// <summary>
     /// 以labels_data初始化一个包含QPieSeries的Chart.

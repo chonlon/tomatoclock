@@ -42,9 +42,8 @@ static inline int makeAxisInteger(const int& tick_count, const int& max) {
 /*
  *	#member
  */
-
-QtCharts::QChart* lon::ChartsWidget::initLineChartSeries(uint16_t* data_array,
-                                                         unsigned int length,
+template<size_t Size>
+QtCharts::QChart* lon::ChartsWidget::initLineChartSeries(const std::array<uint16_t, Size>& data_array,
                                                          QString title /*= QString()*/) {
     using namespace QtCharts;
     //所有的chart的所有权会被被转移到chartview中, 所以不用担心这里会内存泄漏.
@@ -56,13 +55,14 @@ QtCharts::QChart* lon::ChartsWidget::initLineChartSeries(uint16_t* data_array,
     series->setPointLabelsVisible(true);
     series->setPointLabelsFormat("@yPoint");
     series->setPointsVisible(true);
+    auto length = Size;
     for (int i = 0; i < length; ++i) {
         series->append(i, data_array[i]);
     }
     chart->addSeries(series);
 
     //设置chart的导航线(axes)
-    int _max = *std::max_element(data_array, data_array + length);
+    int _max = *std::max_element(data_array.begin(), data_array.end());
     //避免纵轴长度为零
     _max = std::max(2, _max);
 
@@ -74,7 +74,7 @@ QtCharts::QChart* lon::ChartsWidget::initLineChartSeries(uint16_t* data_array,
     ver_axis->setTickCount(std::min(15, _max + 1) + 1);
     ver_axis->setRange(0, makeAxisInteger(ver_axis->tickCount(), _max));
     ver_axis->setLabelFormat("%d");
-    hor_axis->setRange(0, std::max(length - 1, static_cast<unsigned int>(1)));
+    hor_axis->setRange(0, std::max(length - 1, static_cast<size_t>(1)));
     hor_axis->setGridLineVisible(true);
     hor_axis->setTickCount(length);
     hor_axis->setLabelFormat("%d");
@@ -105,7 +105,7 @@ QtCharts::QChart* lon::ChartsWidget::initPieChartSeries(
 void lon::ChartsWidget::initDayFinishedLineChart() {
     using namespace QtCharts;
     finished_day_line_chart_p_ =
-        initLineChartSeries(todaydata_p_->time_data_p, todaydata_p_->length);
+        initLineChartSeries(todaydata_p_->time_data_p);
     day_finish_line_chart_view_p_ = new QChartView(finished_day_line_chart_p_, this);
     day_finish_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -113,7 +113,7 @@ void lon::ChartsWidget::initDayFinishedLineChart() {
 void lon::ChartsWidget::initWeekFinishedLineChart() {
     using namespace QtCharts;
     finished_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->time_data_p, lastweekdata_p_->length);
+        initLineChartSeries(lastweekdata_p_->time_data_p);
     week_finish_line_chart_view_p_ = new QChartView(finished_week_line_chart_p_, this);
     week_finish_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -121,7 +121,7 @@ void lon::ChartsWidget::initWeekFinishedLineChart() {
 void lon::ChartsWidget::initMonthFinishedLineChart() {
     using namespace QtCharts;
     finished_month_line_chart_p_ =
-        initLineChartSeries(lastmonthdata_p_->time_data_p, lastmonthdata_p_->length);
+        initLineChartSeries(lastmonthdata_p_->time_data_p);
     month_finish_line_chart_view_p_ = new QChartView(finished_month_line_chart_p_, this);
     month_finish_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -129,7 +129,7 @@ void lon::ChartsWidget::initMonthFinishedLineChart() {
 void lon::ChartsWidget::initDayFinishedTimeLineChart() {
     using namespace QtCharts;
     finishedtime_day_line_chart_p_ =
-        initLineChartSeries(todaydata_p_->total_time_p, todaydata_p_->length);
+        initLineChartSeries(todaydata_p_->total_time_p);
     day_finishedtime_line_chart_view_p_ = new QChartView(finishedtime_day_line_chart_p_, this);
     day_finishedtime_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -137,7 +137,7 @@ void lon::ChartsWidget::initDayFinishedTimeLineChart() {
 void lon::ChartsWidget::initWeekFinishedTimeLineChart() {
     using namespace QtCharts;
     finishedtime_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->total_time_p, lastweekdata_p_->length);
+        initLineChartSeries(lastweekdata_p_->total_time_p);
     week_finishedtime_line_chart_view_p_ = new QChartView(finishedtime_week_line_chart_p_, this);
     week_finishedtime_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -145,7 +145,7 @@ void lon::ChartsWidget::initWeekFinishedTimeLineChart() {
 void lon::ChartsWidget::initMonthFinishedTimeLineChart() {
     using namespace QtCharts;
     finishedtime_month_line_chart_p_ =
-        initLineChartSeries(lastmonthdata_p_->total_time_p, lastmonthdata_p_->length);
+        initLineChartSeries(lastmonthdata_p_->total_time_p);
     month_finishedtime_line_chart_view_p_ = new QChartView(finishedtime_month_line_chart_p_, this);
     month_finishedtime_line_chart_view_p_->setFixedHeight(chart_view_height_);
 }
@@ -153,7 +153,7 @@ void lon::ChartsWidget::initMonthFinishedTimeLineChart() {
 void lon::ChartsWidget::initFinishedTimeLineChart() {
     using namespace QtCharts;
     finishedtime_week_line_chart_p_ =
-        initLineChartSeries(lastweekdata_p_->total_time_p, lastweekdata_p_->length);
+        initLineChartSeries(lastweekdata_p_->total_time_p);
     week_finishedtime_line_chart_view_p_ = new QChartView(finishedtime_week_line_chart_p_, this);
 }
 
@@ -426,7 +426,6 @@ void lon::ChartsWidget::finishLineWidgetSwitchEvent(int index) {
 void lon::ChartsWidget::finishedTimeLineWidgetSwitchEvent(int index) {
     switch (index) {
         case 0:  // last year
-
             finishedtime_line_layout_p_->takeAt(2)->widget()->setVisible(false);
             day_finishedtime_line_chart_view_p_->setVisible(true);
             finishedtime_line_layout_p_->addWidget(day_finishedtime_line_chart_view_p_, 1, 0, 1, 2);

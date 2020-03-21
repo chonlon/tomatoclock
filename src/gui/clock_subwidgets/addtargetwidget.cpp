@@ -5,6 +5,7 @@
 #include <QGridLayout>
 static const int window_height = 300;
 static const int window_width = 500;
+#pragma execution_character_set("utf-8")
 
 lon::AddTargetWidget::AddTargetWidget(std::list<QString>& labels, QWidget* parent /*= nullptr*/)
     : Widget(parent, TitleBar::CLOSE_MIN), sql_(ClockSql::Get()) {
